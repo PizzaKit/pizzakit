@@ -1,0 +1,43 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Align",
+        "repositoryURL": "https://github.com/kean/Align",
+        "state": {
+          "branch": null,
+          "revision": "f4ac7f88ccf10161802c42a116ae6226612e1592",
+          "version": "3.0.0"
+        }
+      },
+      {
+        "package": "ALPopup",
+        "repositoryURL": "https://github.com/alxrguz/ALPopup",
+        "state": {
+          "branch": null,
+          "revision": "d2cab88a04545a6fd3c88a6881f0a546b8f8d8ab",
+          "version": "1.1.0"
+        }
+      },
+      {
+        "package": "Nuke",
+        "repositoryURL": "https://github.com/kean/Nuke",
+        "state": {
+          "branch": null,
+          "revision": "93c8dc78fbc0aa3538a0db460eb389d4180af242",
+          "version": "11.3.1"
+        }
+      },
+      {
+        "package": "NVActivityIndicatorView",
+        "repositoryURL": "https://github.com/ninjaprox/NVActivityIndicatorView",
+        "state": {
+          "branch": null,
+          "revision": "bcb52371f2259254bac6690f92bb474a61768c47",
+          "version": "5.1.1"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
