@@ -20,8 +20,8 @@ let package = Package(
             from: "11.3.1"
         ),
         .package(
-            url: "https://github.com/kean/Align",
-            from: "3.0.0"
+            url: "https://github.com/SnapKit/SnapKit",
+            from: "5.6.0"
         ),
         .package(
             url: "https://github.com/ninjaprox/NVActivityIndicatorView",
@@ -40,9 +40,9 @@ let package = Package(
             name: "PizzaDesign",
             dependencies: [
                 "PizzaCore",
-                "Align",
                 "NVActivityIndicatorView",
                 "Nuke",
+                .product(name: "SnapKit", package: "SnapKit"),
                 .product(name: "NukeUI", package: "Nuke"),
                 .product(name: "NukeExtensions", package: "Nuke")
             ]
