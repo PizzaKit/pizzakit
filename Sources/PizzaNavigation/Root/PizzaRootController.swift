@@ -102,7 +102,6 @@ open class PizzaRootViewController: UIViewController, PizzaRootPresentable {
 
     open override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemGreen
 
         if let viewControllerOld, viewControllerOld.parent == nil {
             setInitial(viewController: viewControllerOld)
