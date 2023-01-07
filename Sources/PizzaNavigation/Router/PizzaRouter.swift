@@ -78,11 +78,11 @@ public extension PizzaRouter {
         push(module: module, animated: true)
     }
 
-    func popModule(animated: Bool) {
+    func popModule() {
         popModule(animated: true)
     }
 
-    func popToRoot(animated: Bool) {
+    func popToRoot() {
         popToRoot(animated: true)
     }
 

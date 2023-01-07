@@ -44,8 +44,7 @@ open class PizzaRouterCoordinator<Deeplink>: PizzaCoordinator {
     /// Method for adding dependency
     @discardableResult
     open func addDependency<T: PizzaRouterCoordinator<Deeplink>>(
-        coordinator: T,
-        deeplink: Deeplink?
+        coordinator: T
     ) -> T {
         let newCoordinator = coordinator
         newCoordinator.fill(router: router)
