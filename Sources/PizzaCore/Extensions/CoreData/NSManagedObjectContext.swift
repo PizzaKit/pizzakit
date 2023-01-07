@@ -1,6 +1,6 @@
 import CoreData
 
-extension NSManagedObjectContext {
+public extension NSManagedObjectContext {
 
     func insertObject<A: NSManagedObject>() -> A where A: Managed {
         guard

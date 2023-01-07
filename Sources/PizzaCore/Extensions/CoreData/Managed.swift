@@ -1,11 +1,11 @@
 import CoreData
 
-protocol Managed: AnyObject, NSFetchRequestResult {
+public protocol Managed: AnyObject, NSFetchRequestResult {
     static var entityName: String { get }
     static var defaultSortDescriptors: [NSSortDescriptor] { get }
 }
 
-extension Managed {
+public extension Managed {
 
     static var defaultSortDescriptors: [NSSortDescriptor] {
         []
@@ -25,7 +25,7 @@ extension Managed {
 
 }
 
-extension Managed where Self: NSManagedObject {
+public extension Managed where Self: NSManagedObject {
 
     static var entityName: String {
         entity().name!
