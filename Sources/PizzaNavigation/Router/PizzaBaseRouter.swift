@@ -65,8 +65,8 @@ open class PizzaBaseRouter: PizzaRouter {
         )
     }
 
-    public func popModule(animated: Bool) {
-        navigationController?.popViewController(animated: animated)
+    public func popModule(animated: Bool, completion: PizzaEmptyClosure?) {
+        navigationController?.popViewController(animated: animated, completion)
     }
 
     public func popToRoot(animated: Bool) {

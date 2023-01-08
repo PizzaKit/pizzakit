@@ -2,6 +2,7 @@ import CoreData
 
 public extension NSManagedObjectContext {
 
+    // TODO: remove
     func insertObject<A: NSManagedObject>() -> A where A: Managed {
         guard
             let object = NSEntityDescription.insertNewObject(
@@ -33,6 +34,18 @@ public extension NSManagedObjectContext {
             block(self)
             self.saveOrRollback()
             completion?()
+        }
+    }
+
+    // TODO: change naming
+    func createObject<ManagedObject: NSManagedObject>(
+        block: @escaping PizzaReturnClosure<NSManagedObjectContext, ManagedObject?>,
+        completion: PizzaClosure<ManagedObject?>? = nil
+    ) {
+        perform {
+            let object = block(self)
+            self.saveOrRollback()
+            completion?(object)
         }
     }
 

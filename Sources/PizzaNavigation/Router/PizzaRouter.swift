@@ -24,7 +24,7 @@ public protocol PizzaRouter {
     /// Method for pushing new presentable inside topmost navigation
     func push(module: PizzaPresentable?, animated: Bool)
     /// Method for popping presentable from topmost navigation
-    func popModule(animated: Bool)
+    func popModule(animated: Bool, completion: PizzaEmptyClosure?)
     /// Method for popping up to root at topmost navigation
     func popToRoot(animated: Bool)
 
@@ -79,7 +79,7 @@ public extension PizzaRouter {
     }
 
     func popModule() {
-        popModule(animated: true)
+        popModule(animated: true, completion: nil)
     }
 
     func popToRoot() {
