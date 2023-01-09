@@ -6,8 +6,6 @@ open class PizzaCoreDataService: NSObject {
 
     // MARK: - Static Properties
 
-    public static var shared: PizzaCoreDataService!
-
     open var viewContext: NSManagedObjectContext {
         persistenContaner.viewContext.do {
             $0.automaticallyMergesChangesFromParent = true
