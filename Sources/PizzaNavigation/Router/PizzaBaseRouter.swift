@@ -18,6 +18,16 @@ open class PizzaBaseRouter: PizzaRouter {
         }
         return topController?.navigationController
     }
+    private var splitController: UISplitViewController? {
+        var topController = topViewController
+        if let topNavigation = topViewController as? UISplitViewController {
+            return topNavigation
+        }
+        while !(topController?.parent is UISplitViewController) {
+            topController = topController?.parent ?? topController?.presentingViewController
+        }
+        return topController?.parent as? UISplitViewController
+    }
 
     public init() {}
 
@@ -105,6 +115,18 @@ open class PizzaBaseRouter: PizzaRouter {
             )
     }
 
+    public func setSplitPrimary(module: PizzaPresentable?) {
+        guard let module else { return }
+        if #available(iOS 14.0, *) {
+            splitController?.setViewController(
+                module.toPresent(),
+                for: .primary
+            )
+        } else {
+            // TODO: error
+        }
+    }
+
     // MARK: - Public Methods
 
     open func getWindow() -> UIWindow? {
@@ -133,6 +155,16 @@ fileprivate extension UIApplication {
             let selected = tabController.selectedViewController
         {
             return topViewController(selected)
+        }
+
+        // TODO: error
+        if #available(iOS 14.0, *) {
+            if
+                let splitController = controller as? UISplitViewController,
+                let secondary = splitController.viewController(for: .secondary)
+            {
+                return topViewController(secondary)
+            }
         }
 
         if let presented = controller?.presentedViewController, !(presented is UISearchController) {

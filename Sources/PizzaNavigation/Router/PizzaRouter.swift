@@ -36,6 +36,8 @@ public protocol PizzaRouter {
     )
     /// Method for setting root for topmost navigation
     func setNavigationRoot(module: PizzaPresentable?)
+
+    func setSplitPrimary(module: PizzaPresentable?)
 }
 
 public extension PizzaRouter {
