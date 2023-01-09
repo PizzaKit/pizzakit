@@ -37,15 +37,26 @@ public extension NSManagedObjectContext {
         }
     }
 
+    enum CreationError: Error {
+        case errorInSaving, blockReturnsNil
+    }
+
     // TODO: change naming
     func createObject<ManagedObject: NSManagedObject>(
         block: @escaping PizzaReturnClosure<NSManagedObjectContext, ManagedObject?>,
-        completion: PizzaClosure<ManagedObject?>? = nil
+        completion: PizzaClosure<Result<ManagedObject, Error>>? = nil
     ) {
         perform {
             let object = block(self)
-            self.saveOrRollback()
-            completion?(object)
+            if let object {
+                if self.saveOrRollback() {
+                    completion?(.success(object))
+                } else {
+                    completion?(.failure(CreationError.errorInSaving))
+                }
+            } else {
+                completion?(.failure(CreationError.blockReturnsNil))
+            }
         }
     }
 
