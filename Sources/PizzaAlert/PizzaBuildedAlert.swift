@@ -1,8 +1,9 @@
 import UIKit
 import PizzaCore
+import PizzaNavigation
 
 /// Entity for showing alertController
-open class BuildedPizzaAlert {
+open class PizzaBuildedAlert {
 
     private let alertController: UIViewController
 
@@ -13,7 +14,8 @@ open class BuildedPizzaAlert {
     open func show() {
         let configController = PizzaAlertConfiguration.customControllerToPresentClosure?(())
         let rootController = UIApplication.keyWindow?.rootViewController
-        show(over: configController ?? rootController)
+        let topController = UIApplication.topViewController(rootController)
+        show(over: configController ?? topController)
     }
 
     open func show(over controller: UIViewController?) {

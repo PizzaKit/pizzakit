@@ -61,7 +61,7 @@ let package = Package(
         ),
         .target(
             name: "PizzaAlert",
-            dependencies: ["PizzaCore"]
+            dependencies: ["PizzaCore", "PizzaNavigation"]
         ),
         .target(
             name: "PizzaKit",

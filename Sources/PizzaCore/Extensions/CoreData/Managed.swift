@@ -43,14 +43,18 @@ public extension Managed where Self: NSManagedObject {
     @discardableResult
     static func findOrCreate(
         in context: NSManagedObjectContext,
-        matching predicate: NSPredicate,
+        matching predicate: NSPredicate?,
         configure: (Self) -> Void
     ) -> Self {
-        guard let object = findOrFetch(in: context, matching: predicate) else {
+        guard
+            let predicate,
+            let object = findOrFetch(in: context, matching: predicate)
+        else {
             let newObject: Self = context.insertObject()
             configure(newObject)
             return newObject
         }
+        configure(object)
         return object
     }
 

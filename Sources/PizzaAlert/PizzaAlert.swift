@@ -75,7 +75,7 @@ open class PizzaAlert {
         return self
     }
 
-    open func build() -> BuildedPizzaAlert {
+    open func build() -> PizzaBuildedAlert {
         assert(
             actions.filter { $0.isPreferred }.count <= 1,
             "multiple preferred actions is not allowed"

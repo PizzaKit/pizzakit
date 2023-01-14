@@ -25,7 +25,7 @@ public extension UIColor {
     }
 
     /// Property for getting/settings tintColor for all windows
-    static var tint: UIColor {
+    static var windowTint: UIColor {
         get {
             let value = UIApplication.allWindows.first?.tintColor
             guard let tint = value else { return .systemBlue }
@@ -37,6 +37,7 @@ public extension UIColor {
     }
 
     /// Property for getting hex string from current color
+    /// TODO: добавить два хекса чтобы цвета можно было бы создавать/сохранять так
     var hex: String {
         let colorRef = cgColor.components
         let r = colorRef?[0] ?? 0
@@ -91,17 +92,35 @@ public extension UIColor {
     // MARK: - Getters for custom system related colors
 
     static var systemColorfulColors: [UIColor] {
-        return [
-            .systemRed,
-            .systemOrange,
-            .systemYellow,
-            .systemGreen,
-            .systemTeal,
-            .systemBlue,
-            .systemIndigo,
-            .systemPink,
-            .systemPurple
-        ]
+        if #available(iOS 15.0, *) {
+            return [
+                .systemRed,
+                .systemOrange,
+                .systemYellow,
+                .systemGreen,
+                .systemCyan,
+                .systemBlue,
+                .systemIndigo,
+                .systemPink,
+                .systemPurple,
+                .systemBrown,
+                .systemTeal,
+                .systemMint
+            ]
+        } else {
+            return [
+                .systemRed,
+                .systemOrange,
+                .systemYellow,
+                .systemGreen,
+                .systemBlue,
+                .systemIndigo,
+                .systemPink,
+                .systemPurple,
+                .systemBrown,
+                .systemTeal
+            ]
+        }
     }
     static var footnoteColor: UIColor {
         UIColor(light: UIColor(hex: "6D6D72"), dark: UIColor(hex: "8E8E93"))
