@@ -1,17 +1,21 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.6
 import PackageDescription
 
 let package = Package(
     name: "PizzaKit",
     platforms: [
-        .iOS(.v13), 
-        .tvOS(.v13), 
+        .iOS(.v14),
+        .tvOS(.v14), 
         .watchOS(.v6)
     ],
     products: [
         .library(
             name: "PizzaKit",
             targets: ["PizzaKit"]
+        ),
+        .library(
+            name: "PizzaForm",
+            targets: ["PizzaForm"]
         )
     ],
     dependencies: [
@@ -30,6 +34,10 @@ let package = Package(
         .package(
             url: "https://github.com/alxrguz/ALPopup",
             from: "1.1.0"
+        ),
+        .package(
+            url: "https://github.com/ra1028/Carbon",
+            revision: "9e572593e02ce77e54932d46d130054a13e2a056"
         )
     ],
     targets: [
@@ -73,6 +81,10 @@ let package = Package(
                 "PizzaPopup",
                 "PizzaAlert"
             ]
+        ),
+        .target(
+            name: "PizzaForm",
+            dependencies: ["PizzaKit", "Carbon"]
         )
     ],
     swiftLanguageVersions: [.v5]
