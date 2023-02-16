@@ -1,5 +1,6 @@
 import UIKit
 
+/// Type erasure for Component
 public struct AnyComponent: Component {
 
     let box: any AnyComponentBox
@@ -35,7 +36,7 @@ public struct AnyComponent: Component {
 
 }
 
-public struct ComponentBox<Base: Component>: AnyComponentBox {
+struct ComponentBox<Base: Component>: AnyComponentBox {
 
     var base: Any {
         return baseComponent
@@ -53,14 +54,6 @@ public struct ComponentBox<Base: Component>: AnyComponentBox {
     func render(in renderTarget: Any, renderType: RenderType) {
         guard let renderTarget = renderTarget as? Base.RenderTarget else { return }
         return baseComponent.render(in: renderTarget, renderType: renderType)
-    }
-
-    func shouldRender(other component: ComponentBox<Base>, in renderTarget: Any) -> Bool {
-        guard
-            let renderTarget = renderTarget as? Base.RenderTarget,
-            let next = component.base as? Base
-        else { return true }
-        return baseComponent.shouldRender(other: next, in: renderTarget)
     }
 
     func layout(renderTarget: Any, in container: UIView) {
@@ -84,7 +77,6 @@ internal protocol AnyComponentBox {
 
     func createRenderTarget() -> Any
     func render(in renderTarget: Any, renderType: RenderType)
-    func shouldRender(other component: Self, in renderTarget: Any) -> Bool
     func layout(renderTarget: Any, in container: UIView)
     func renderTargetWillDisplay(_ renderTarget: Any)
     func renderTargetDidEndDiplay(_ renderTarget: Any)

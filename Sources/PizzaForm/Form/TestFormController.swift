@@ -1,6 +1,6 @@
 import UIKit
 import PizzaKit
-import Carbon
+//import Carbon
 import SnapKit
 
 public class TestFormController: UITableViewController {
@@ -29,6 +29,8 @@ public class TestFormController: UITableViewController {
                 }
             )
         )
+        navigationItem.title = "Settings"
+        tableView.layoutMargins = .zero
 
         updater.initialize(target: tableView)
         render()
@@ -59,8 +61,44 @@ public class TestFormController: UITableViewController {
             items.append(.init(component: settingsItem))
         }
 
+        var otherItems: [CellNode] = []
+
+        for i in 0..<50 {
+            otherItems.append(.init(component: SimpleListComponent(
+                id: "settings-\(i)",
+                iconName: "gear",
+                iconBackgroundColor: .systemGray,
+                title: "Другое"
+            )))
+        }
+
+        let header1Component = EmptyHeightComponent(height: 16)
+        let header2Component = TitleComponent(
+            text: state.showSecondSection ? "Показана" : "Не показана",
+            style: .init(
+                font: .systemFont(ofSize: 16),
+                insets: .init(
+                    top: 0,
+                    leading: 12,
+                    bottom: 6,
+                    trailing: 12
+                ),
+                textColor: .tertiaryLabel,
+                textAlignment: .left
+            )
+        )
+
         updater.performUpdates(target: tableView, data: [
-            .init(id: "section", cells: items)
+            .init(
+                id: "section-1",
+                header: .init(component: header1Component),
+                cells: items
+            ),
+            .init(
+                id: "section-2",
+                header: .init(component: header2Component),
+                cells: otherItems
+            )
         ])
     }
 

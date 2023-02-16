@@ -34,10 +34,6 @@ let package = Package(
         .package(
             url: "https://github.com/alxrguz/ALPopup",
             from: "1.1.0"
-        ),
-        .package(
-            url: "https://github.com/ra1028/Carbon",
-            revision: "9e572593e02ce77e54932d46d130054a13e2a056"
         )
     ],
     targets: [
@@ -84,7 +80,7 @@ let package = Package(
         ),
         .target(
             name: "PizzaForm",
-            dependencies: ["PizzaKit", "Carbon"]
+            dependencies: ["PizzaKit"]
         )
     ],
     swiftLanguageVersions: [.v5]

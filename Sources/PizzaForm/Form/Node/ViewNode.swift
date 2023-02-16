@@ -4,4 +4,8 @@ public struct ViewNode {
 
     public let component: any Component
 
+    init(component: any Component) {
+        self.component = component
+    }
+
 }

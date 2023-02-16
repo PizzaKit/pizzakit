@@ -1,3 +1,4 @@
+/// Entity for managing Target collection and perform updates
 public protocol Updater<Target> {
     associatedtype Target
 

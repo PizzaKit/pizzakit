@@ -1,9 +1,17 @@
 import UIKit
 
+/// Entity where component will be rendered
 public protocol ComponentRenderable: AnyObject {
+    /// View, which filled with component
     var renderTarget: Any? { get set }
+
+    /// Rendered component with erased type
     var renderComponent: AnyComponent? { get set }
+
+    /// Container that holds rendered component
     var componentContainerView: UIView { get }
+
+    /// Method for rendering component in current entity
     func render(component: any Component, renderType: RenderType)
 }
 
@@ -17,24 +25,28 @@ public extension ComponentRenderable where Self: UICollectionViewCell {
         return contentView
     }
 }
+public extension ComponentRenderable where Self: UITableViewHeaderFooterView {
+    var componentContainerView: UIView {
+        return contentView
+    }
+}
 
 public extension ComponentRenderable {
     func render(component: any Component, renderType: RenderType) {
         let anyComponent = AnyComponent(component)
-        if let renderTarget {
-            // уже создана вьюха где должен рендерится компонент
-            anyComponent.render(in: renderTarget, renderType: renderType)
-            self.renderComponent = anyComponent
-        } else {
-            // вьюха еще не создана - нужно создать и залейаутить
-            let renderTarget = anyComponent.createRenderTarget()
-            anyComponent.layout(renderTarget: renderTarget, in: componentContainerView)
-            anyComponent.render(in: renderTarget, renderType: renderType)
 
-            self.renderTarget = renderTarget
-            self.renderComponent = anyComponent
-        }
+        /// получаем render target или создаем новый
+        let currentRenderTarget = {
+            if let renderTarget {
+                return renderTarget
+            }
+            let newRenderTarget = anyComponent.createRenderTarget()
+            anyComponent.layout(renderTarget: newRenderTarget, in: componentContainerView)
+            return newRenderTarget
+        }()
+        anyComponent.render(in: currentRenderTarget, renderType: renderType)
 
-        // TODO: реализвать shouldRender
+        self.renderTarget = currentRenderTarget
+        self.renderComponent = anyComponent
     }
 }

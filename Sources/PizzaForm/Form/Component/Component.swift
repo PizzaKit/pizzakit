@@ -15,19 +15,24 @@ public enum RenderType {
 public protocol Component<RenderTarget> {
     associatedtype RenderTarget
 
+    /// Идентификатор для реюза ячеек (одинаковые компоненты будут реюзать одинаковые ячейки -
+    /// для того, чтобы редко создавать RenderTarget - только один раз)
     var reuseIdentifier: String { get }
 
     /// Создает `RenderTarget` для последующего заполнения. Это делается не каждый раз,
     /// а только при необходимости. Если уже такой `RenderTarget` был создан,
     /// он будет переиспользоваться
     func createRenderTarget() -> RenderTarget
+
+    /// Происходит layout созданного renderTarget-а в контейнере
+    func layout(renderTarget: RenderTarget, in container: UIView)
+
     /// Происходит заполнение ранее созданного или переиспользуемого RenderTarget-а
     /// с текущей моделью (компонентом).
     func render(in renderTarget: RenderTarget, renderType: RenderType)
-    /// TODO: не очень понятно для чего нужен - мб удалить?
-    func shouldRender(other component: Self, in renderTarget: RenderTarget) -> Bool
-    func layout(renderTarget: RenderTarget, in container: UIView)
+
     func renderTargetWillDisplay(_ renderTarget: RenderTarget)
+
     func renderTargetDidEndDiplay(_ renderTarget: RenderTarget)
 
     func shouldHighlight() -> Bool
@@ -36,9 +41,6 @@ public protocol Component<RenderTarget> {
 public extension Component {
     var reuseIdentifier: String {
         return String(reflecting: Self.self)
-    }
-    func shouldRender(other component: Self, in renderTarget: RenderTarget) -> Bool {
-        return true
     }
     func renderTargetWillDisplay(_ renderTarget: RenderTarget) {}
     func renderTargetDidEndDiplay(_ renderTarget: RenderTarget) {}
@@ -67,10 +69,9 @@ public extension Component where RenderTarget: UIView {
                     .trailing
                     .bottom
                     .equalToSuperview()
-                    .priority(999) // TODO: move to constants
+                    .priority(999)
             }
         }
-
     }
 
 }
