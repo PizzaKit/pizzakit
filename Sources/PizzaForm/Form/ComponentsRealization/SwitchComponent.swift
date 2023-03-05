@@ -22,10 +22,6 @@ public struct SwitchComponent: IdentifiableComponent {
         )
     }
 
-    public func shouldHighlight() -> Bool {
-        false
-    }
-
 }
 
 public class ViewWithSwitch: PizzaView {

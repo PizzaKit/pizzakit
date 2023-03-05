@@ -8,6 +8,14 @@ public enum RenderType {
     case hard, soft
 }
 
+public enum ComponentAccessoryType {
+    case arrow, check
+}
+
+public protocol ComponentWithAccessories {
+    var accessories: [ComponentAccessoryType] { get }
+}
+
 /// Модель, которая в себе содержит все поля, необходимые для заполнения RenderTarget.
 /// Так же модель (Component) ответственна за сравнение себя с новой моделью,
 /// добавлением RenderTarget к контейнеру и отслеживает методы ЖЦ RenderTarget
@@ -34,8 +42,6 @@ public protocol Component<RenderTarget> {
     func renderTargetWillDisplay(_ renderTarget: RenderTarget)
 
     func renderTargetDidEndDiplay(_ renderTarget: RenderTarget)
-
-    func shouldHighlight() -> Bool
 }
 
 public extension Component {
@@ -44,15 +50,16 @@ public extension Component {
     }
     func renderTargetWillDisplay(_ renderTarget: RenderTarget) {}
     func renderTargetDidEndDiplay(_ renderTarget: RenderTarget) {}
-
-    func shouldHighlight() -> Bool {
-        return true
-    }
 }
 
 public protocol IdentifiableComponent: Component {
     associatedtype ID: Hashable
     var id: ID { get }
+}
+
+public protocol SelectableComponent: Component {
+    var onSelect: PizzaEmptyClosure? { get }
+    var shouldDeselect: Bool { get }
 }
 
 public extension Component where RenderTarget: UIView {
@@ -62,13 +69,17 @@ public extension Component where RenderTarget: UIView {
             container.addSubview($0)
             $0.snp.makeConstraints { make in
                 make
-                    .leading
+//                    .leading
                     .top
                     .equalToSuperview()
+                make.leading.equalTo(container.layoutMarginsGuide.snp.leading)
                 make
-                    .trailing
                     .bottom
                     .equalToSuperview()
+                    .priority(999)
+                make
+                    .trailing
+                    .equalTo(container.layoutMarginsGuide.snp.trailing)
                     .priority(999)
             }
         }

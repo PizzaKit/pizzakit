@@ -9,16 +9,16 @@ public class FormTableViewCell: PizzaTableCell, ComponentRenderable {
     public override func commonInit() {
         super.commonInit()
 
-        selectionStyle = .none
-        accessoryType = .detailDisclosureButton
+//        selectionStyle = .none
+//        accessoryType = .detailDisclosureButton
 
-        separatorInset = .init(top: 0, left: 50, bottom: 0, right: 0) // TODO: change
+//        separatorInset = .init(top: 0, left: 50, bottom: 0, right: 0) // TODO: change
     }
 
-    public override func setHighlighted(_ highlighted: Bool, animated: Bool) {
-        if highlighted {
-            print("is highlighted")
-        }
-    }
+//    public override func setHighlighted(_ highlighted: Bool, animated: Bool) {
+//        if highlighted {
+//            print("is highlighted")
+//        }
+//    }
 
 }

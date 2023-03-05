@@ -95,12 +95,16 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
 
     public func tableView(
         _ tableView: UITableView,
-        shouldHighlightRowAt indexPath: IndexPath
-    ) -> Bool {
+        didSelectRowAt indexPath: IndexPath
+    ) {
         guard
-            let cellNode = dataSource.itemIdentifier(for: indexPath)
-        else { return false }
-        return cellNode.component.shouldHighlight()
+            let cellNode = dataSource.itemIdentifier(for: indexPath),
+            let selectableComponent = cellNode.component as? (any SelectableComponent)
+        else { return }
+        selectableComponent.onSelect?()
+        if selectableComponent.shouldDeselect {
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
     }
 
     public func tableView(

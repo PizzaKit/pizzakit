@@ -99,31 +99,32 @@ public extension UIImage {
         backgroundColor: UIColor,
         backgroundFontSize: CGFloat
     ) -> UIImage? {
-            let iconConfiguration = UIImage.SymbolConfiguration(pointSize: CGFloat(iconFontSize), weight: .regular)
-            let iconImage = UIImage(systemName: iconSystemName, withConfiguration: iconConfiguration)?.withTintColor(iconColor, renderingMode: .alwaysOriginal)
+        // TODO: добавить кеширование - а то дергается на каждый чих
+        let iconConfiguration = UIImage.SymbolConfiguration(pointSize: CGFloat(iconFontSize), weight: .regular)
+        let iconImage = UIImage(systemName: iconSystemName, withConfiguration: iconConfiguration)?.withTintColor(iconColor, renderingMode: .alwaysOriginal)
 
-            let backgroundConfiguration = UIImage.SymbolConfiguration(pointSize: CGFloat(backgroundFontSize), weight: .regular)
-            let backgroundImage = UIImage(systemName: backgroundSystemName, withConfiguration: backgroundConfiguration)!.withTintColor(backgroundColor, renderingMode: .alwaysOriginal)
+        let backgroundConfiguration = UIImage.SymbolConfiguration(pointSize: CGFloat(backgroundFontSize), weight: .regular)
+        let backgroundImage = UIImage(systemName: backgroundSystemName, withConfiguration: backgroundConfiguration)!.withTintColor(backgroundColor, renderingMode: .alwaysOriginal)
 
-            let size = backgroundImage.size
-            UIGraphicsBeginImageContextWithOptions(size, false, .zero)
+        let size = backgroundImage.size
+        UIGraphicsBeginImageContextWithOptions(size, false, .zero)
 
-            backgroundImage.draw(in: CGRect(origin: .zero, size: size))
+        backgroundImage.draw(in: CGRect(origin: .zero, size: size))
 
-            if let iconImage = iconImage {
-                let iconSize = iconImage.size
-                iconImage.draw(in: CGRect(
-                    origin: .init(
-                        x: (size.width - iconSize.width) / 2,
-                        y: (size.height - iconSize.height) / 2
-                    ),
-                    size: iconSize
-                ))
-            }
-
-            let settingsImage = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-            return settingsImage
+        if let iconImage = iconImage {
+            let iconSize = iconImage.size
+            iconImage.draw(in: CGRect(
+                origin: .init(
+                    x: (size.width - iconSize.width) / 2,
+                    y: (size.height - iconSize.height) / 2
+                ),
+                size: iconSize
+            ))
         }
+
+        let settingsImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return settingsImage
+    }
 
 }

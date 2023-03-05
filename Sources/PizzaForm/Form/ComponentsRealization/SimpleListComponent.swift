@@ -1,13 +1,16 @@
 import UIKit
 import PizzaKit
 
-public struct SimpleListComponent: IdentifiableComponent {
+public struct SimpleListComponent: IdentifiableComponent, SelectableComponent {
 
     public let id: String
 
     public let iconName: String
     public let iconBackgroundColor: UIColor
     public let title: String?
+
+    public let onSelect: PizzaEmptyClosure?
+    public var shouldDeselect: Bool { return false }
 
     public func createRenderTarget() -> SimpleListView {
         SimpleListView()
@@ -40,7 +43,7 @@ public class SimpleListView: PizzaView {
         iconImageView.do {
             addSubview($0)
             $0.snp.makeConstraints { make in
-                make.leading.equalTo(layoutMarginsGuide.snp.leading)
+                make.leading.equalToSuperview()
                 make.centerY.equalToSuperview()
             }
             $0.contentMode = .center
@@ -52,7 +55,7 @@ public class SimpleListView: PizzaView {
             $0.snp.makeConstraints { make in
                 make.leading.equalTo(iconImageView.snp.trailing).offset(6)
                 make.top.bottom.equalToSuperview().inset(12)
-                make.trailing.equalTo(layoutMarginsGuide.snp.trailing)
+                make.trailing.equalToSuperview()
             }
             $0.setContentHuggingPriority(.defaultLow, for: .horizontal)
         }
