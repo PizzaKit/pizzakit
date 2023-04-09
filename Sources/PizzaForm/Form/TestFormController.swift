@@ -119,88 +119,88 @@ public class TestFormController: UITableViewController {
     }
 
     private func render() {
-        var items: [CellNode] = []
-
-        let confidentialItem = SimpleListComponent(
-            id: "conf",
-            iconName: "hand.raised.fill",
-            iconBackgroundColor: .systemBlue,
-            title: "Конфиденциальность",
-            onSelect: nil
-        )
-        items.append(.init(component: confidentialItem))
-        items.append(.init(component: TitleValueComponent(id: "version", title: "Версия iOS", description: "16.1", needArrow: state.showSecondSection)))
-
-        if state.showSecondSection {
-            let settingsItem = SimpleListComponent(
-                id: "settings",
-                iconName: "gear",
-                iconBackgroundColor: .systemGray,
-                title: "Настройки",
-                onSelect: { [weak self] in
-                    let newController = TestChooseOneController(
-                        title: "Подключаться автоматичеки",
-                        items: [
-                            .init(
-                                id: "1",
-                                title: "Всегда"
-                            ),
-                            .init(
-                                id: "2",
-                                title: "Никогда"
-                            )
-                        ],
-                        selectedId: "1",
-                        onSelect: { newId in
-
-                        }
-                    )
-                    self?.navigationController?.pushViewController(newController, animated: true)
-                }
-            )
-            items.append(.init(component: settingsItem))
-        }
-
-        var otherItems: [CellNode] = []
-
-        for i in 0..<50 {
-            otherItems.append(.init(component: SimpleListComponent(
-                id: "settings-\(i)",
-                iconName: "gear",
-                iconBackgroundColor: .systemGray,
-                title: "Другое",
-                onSelect: nil
-            )))
-        }
-
-        let header1Component = EmptyHeightComponent(height: 16)
-        let header2Component = TitleComponent(
-            text: state.showSecondSection ? "Показана" : "Не показана",
-            style: .init(
-                font: .systemFont(ofSize: 16),
-                insets: .init(
-                    top: 0,
-                    leading: 12,
-                    bottom: 6,
-                    trailing: 12
-                ),
-                textColor: .tertiaryLabel,
-                textAlignment: .left
-            )
-        )
-
-        updater.performUpdates(target: tableView, data: [
-            .init(
-                id: "section-1",
-                header: .init(component: header1Component),
-                cells: items
-            ),
-            .init(
-                id: "section-2",
-                header: .init(component: header2Component),
-                cells: otherItems
-            )
-        ])
+//        var items: [CellNode] = []
+//
+//        let confidentialItem = SimpleListComponent(
+//            id: "conf",
+//            iconName: "hand.raised.fill",
+//            iconBackgroundColor: .systemBlue,
+//            title: "Конфиденциальность",
+//            onSelect: nil
+//        )
+//        items.append(.init(component: confidentialItem))
+//        items.append(.init(component: TitleValueComponent(id: "version", title: "Версия iOS", description: "16.1", needArrow: state.showSecondSection)))
+//
+//        if state.showSecondSection {
+//            let settingsItem = SimpleListComponent(
+//                id: "settings",
+//                iconName: "gear",
+//                iconBackgroundColor: .systemGray,
+//                title: "Настройки",
+//                onSelect: { [weak self] in
+//                    let newController = TestChooseOneController(
+//                        title: "Подключаться автоматичеки",
+//                        items: [
+//                            .init(
+//                                id: "1",
+//                                title: "Всегда"
+//                            ),
+//                            .init(
+//                                id: "2",
+//                                title: "Никогда"
+//                            )
+//                        ],
+//                        selectedId: "1",
+//                        onSelect: { newId in
+//
+//                        }
+//                    )
+//                    self?.navigationController?.pushViewController(newController, animated: true)
+//                }
+//            )
+//            items.append(.init(component: settingsItem))
+//        }
+//
+//        var otherItems: [CellNode] = []
+//
+//        for i in 0..<50 {
+//            otherItems.append(.init(component: SimpleListComponent(
+//                id: "settings-\(i)",
+//                iconName: "gear",
+//                iconBackgroundColor: .systemGray,
+//                title: "Другое",
+//                onSelect: nil
+//            )))
+//        }
+//
+//        let header1Component = EmptyHeightComponent(height: 16)
+//        let header2Component = TitleComponent(
+//            text: state.showSecondSection ? "Показана" : "Не показана",
+//            style: .init(
+//                font: .systemFont(ofSize: 16),
+//                insets: .init(
+//                    top: 0,
+//                    leading: 12,
+//                    bottom: 6,
+//                    trailing: 12
+//                ),
+//                textColor: .tertiaryLabel,
+//                textAlignment: .left
+//            )
+//        )
+//
+//        updater.performUpdates(target: tableView, data: [
+//            .init(
+//                id: "section-1",
+//                header: .init(component: header1Component),
+//                cells: items
+//            ),
+//            .init(
+//                id: "section-2",
+//                header: .init(component: header2Component),
+//                cells: otherItems
+//            )
+//        ])
     }
 
 }

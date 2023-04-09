@@ -10,6 +10,9 @@ open class PizzaBaseRouter: PizzaRouter {
     }
     private var navigationController: UINavigationController? {
         var topController = topViewController
+        if topController == nil {
+            return nil
+        }
         if let topNavigation = topViewController as? UINavigationController {
             return topNavigation
         }

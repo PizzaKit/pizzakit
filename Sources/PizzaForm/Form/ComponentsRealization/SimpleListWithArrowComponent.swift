@@ -1,7 +1,7 @@
 import UIKit
 import PizzaKit
 
-public struct SimpleListComponent: IdentifiableComponent, SelectableComponent {
+public struct SimpleListWithArrowComponent: IdentifiableComponent, SelectableComponent, ComponentWithAccessories {
 
     public let id: String
 
@@ -11,6 +11,24 @@ public struct SimpleListComponent: IdentifiableComponent, SelectableComponent {
 
     public let onSelect: PizzaEmptyClosure?
     public var shouldDeselect: Bool { return false }
+
+    public var accessories: [ComponentAccessoryType] {
+        [.arrow]
+    }
+
+    public init(
+        id: String,
+        iconName: String,
+        iconBackgroundColor: UIColor,
+        title: String?,
+        onSelect: PizzaEmptyClosure?
+    ) {
+        self.id = id
+        self.iconName = iconName
+        self.iconBackgroundColor = iconBackgroundColor
+        self.title = title
+        self.onSelect = onSelect
+    }
 
     public func createRenderTarget() -> SimpleListView {
         SimpleListView()
@@ -29,6 +47,10 @@ public struct SimpleListComponent: IdentifiableComponent, SelectableComponent {
             title: title
         )
     }
+
+    public static var separatorInsets: UIEdgeInsets {
+        .init(top: 0, left: 44, bottom: 0, right: 0)
+    }
     
 }
 
@@ -45,6 +67,7 @@ public class SimpleListView: PizzaView {
             $0.snp.makeConstraints { make in
                 make.leading.equalToSuperview()
                 make.centerY.equalToSuperview()
+                make.size.equalTo(29)
             }
             $0.contentMode = .center
             $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
@@ -53,7 +76,7 @@ public class SimpleListView: PizzaView {
         titleLabel.do {
             addSubview($0)
             $0.snp.makeConstraints { make in
-                make.leading.equalTo(iconImageView.snp.trailing).offset(6)
+                make.leading.equalTo(iconImageView.snp.trailing).offset(16)
                 make.top.bottom.equalToSuperview().inset(12)
                 make.trailing.equalToSuperview()
             }

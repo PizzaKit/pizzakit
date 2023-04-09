@@ -69,7 +69,6 @@ public extension Component where RenderTarget: UIView {
             container.addSubview($0)
             $0.snp.makeConstraints { make in
                 make
-//                    .leading
                     .top
                     .equalToSuperview()
                 make.leading.equalTo(container.layoutMarginsGuide.snp.leading)

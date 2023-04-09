@@ -2,19 +2,28 @@ import UIKit
 import PizzaCore
 import SnapKit
 
-public struct TitleComponent: Component {
+public struct TitleComponent: IdentifiableComponent {
 
     public struct Style {
+        public init(font: UIFont, insets: NSDirectionalEdgeInsets, textColor: UIColor, textAlignment: NSTextAlignment) {
+            self.font = font
+            self.insets = insets
+            self.textColor = textColor
+            self.textAlignment = textAlignment
+        }
+
         public let font: UIFont
         public let insets: NSDirectionalEdgeInsets
         public let textColor: UIColor
         public let textAlignment: NSTextAlignment
     }
 
+    public var id: String
     public let text: String?
     public let style: Style
 
-    init(text: String? = nil, style: Style) {
+    public init(id: String, text: String? = nil, style: Style) {
+        self.id = id
         self.text = text
         self.style = style
     }
@@ -28,14 +37,14 @@ public struct TitleComponent: Component {
             container.addSubview($0)
             $0.snp.makeConstraints { make in
                 make.leading
-                    .equalToSuperview()
+                    .equalTo(container.layoutMarginsGuide.snp.leading)
                     .inset(style.insets.leading)
                 make.top
                     .equalToSuperview()
                     .inset(style.insets.top)
                 make
                     .trailing
-                    .equalToSuperview()
+                    .equalTo(container.layoutMarginsGuide.snp.trailing)
                     .inset(style.insets.trailing)
                     .priority(999)
                 make
@@ -52,6 +61,7 @@ public struct TitleComponent: Component {
         renderTarget.textAlignment = style.textAlignment
         renderTarget.textColor = style.textColor
         renderTarget.text = text
+        renderTarget.numberOfLines = 0
     }
 
 }
