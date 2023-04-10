@@ -89,4 +89,15 @@ public extension UIView {
         ])
     }
 
+    func traverseAndFindClass<T: UIView>() -> T? {
+        var currentView = self
+        while let sv = currentView.superview {
+            if let result = sv as? T {
+                return result
+            }
+            currentView = sv
+        }
+        return nil
+    }
+
 }

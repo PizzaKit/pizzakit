@@ -2,6 +2,12 @@ import UIKit
 
 open class PizzaButton: UIButton {
 
+    open override var isHighlighted: Bool {
+        didSet {
+            alpha = isHighlighted ? 0.5 : 1
+        }
+    }
+
     // MARK: - Initialization
 
     public init() {
@@ -23,6 +29,8 @@ open class PizzaButton: UIButton {
 
     /// Method for initial configuration
     open func commonInit() {
+        adjustsImageWhenDisabled = false
+        adjustsImageWhenHighlighted = false
     }
 
 }

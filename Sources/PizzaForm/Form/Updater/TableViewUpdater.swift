@@ -68,6 +68,8 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
             animatingDifferences: dataSource.numberOfSections(in: target) != 0 && target.window != nil
         )
 
+        guard target.window != nil else { return }
+
         // update visible components
         renderVisibleComponents(in: target)
 

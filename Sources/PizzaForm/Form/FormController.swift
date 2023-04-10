@@ -19,6 +19,8 @@ open class FormTableController: UITableViewController, FormPresenterDelegate {
     private let updater = TableViewUpdater()
     private let onViewDidLoad: PizzaClosure<UITableViewController>?
 
+    private var pendingData: [Section]?
+
     // MARK: - Initialization
 
     public init(
@@ -45,12 +47,21 @@ open class FormTableController: UITableViewController, FormPresenterDelegate {
 
         updater.initialize(target: tableView)
         presenter.touch()
+
+        if let pendingData {
+            updater.performUpdates(target: tableView, data: pendingData)
+            self.pendingData = nil
+        }
     }
 
     // MARK: - FormPresenterDelegate
 
     public func render(sections: [Section]) {
-        updater.performUpdates(target: tableView, data: sections)
+        if isViewLoaded {
+            updater.performUpdates(target: tableView, data: sections)
+        } else {
+            pendingData = sections
+        }
     }
 
 }

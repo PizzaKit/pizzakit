@@ -36,15 +36,15 @@ public struct SimpleListWithArrowComponent: IdentifiableComponent, SelectableCom
 
     public func render(in renderTarget: SimpleListView, renderType: RenderType) {
         renderTarget.configure(
-            image: .generateSettingsIcon(
-                iconSystemName: iconName,
-                iconColor: .white,
-                iconFontSize: 16,
-                backgroundSystemName: "app.fill",
-                backgroundColor: iconBackgroundColor,
-                backgroundFontSize: 32
-            ),
             title: title
+        )
+        renderTarget.iconView.configure(
+            iconSystemName: iconName,
+            iconColor: .white,
+            iconFontSize: 16,
+            backgroundSystemName: "app.fill",
+            backgroundColor: iconBackgroundColor,
+            backgroundFontSize: 32
         )
     }
 
@@ -56,27 +56,28 @@ public struct SimpleListWithArrowComponent: IdentifiableComponent, SelectableCom
 
 public class SimpleListView: PizzaView {
 
-    private let iconImageView = UIImageView()
+//    private let iconImageView = UIImageView()
+    let iconView = SettingsIconView()
     private let titleLabel = UILabel()
 
     public override func commonInit() {
         super.commonInit()
 
-        iconImageView.do {
+        iconView.do {
             addSubview($0)
             $0.snp.makeConstraints { make in
                 make.leading.equalToSuperview()
                 make.centerY.equalToSuperview()
                 make.size.equalTo(29)
             }
-            $0.contentMode = .center
+//            $0.contentMode = .center
             $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         }
 
         titleLabel.do {
             addSubview($0)
             $0.snp.makeConstraints { make in
-                make.leading.equalTo(iconImageView.snp.trailing).offset(16)
+                make.leading.equalTo(iconView.snp.trailing).offset(16)
                 make.top.bottom.equalToSuperview().inset(12)
                 make.trailing.equalToSuperview()
             }
@@ -85,11 +86,60 @@ public class SimpleListView: PizzaView {
     }
 
     func configure(
-        image: UIImage?,
+//        image: UIImage?,
         title: String?
     ) {
-        iconImageView.image = image
+//        iconImageView.image = image
         titleLabel.text = title
+    }
+
+}
+
+final class SettingsIconView: PizzaView {
+
+    private let backgroundImageView = UIImageView()
+    private let foregroundImageView = UIImageView()
+
+    override func commonInit() {
+        super.commonInit()
+
+        backgroundImageView.do {
+            addSubview($0)
+            $0.snp.makeConstraints { make in
+                make.center.equalToSuperview()
+            }
+            $0.contentMode = .center
+        }
+
+        foregroundImageView.do {
+            addSubview($0)
+            $0.snp.makeConstraints { make in
+                make.center.equalToSuperview()
+            }
+            $0.contentMode = .center
+        }
+    }
+
+    func configure(
+        iconSystemName: String,
+        iconColor: UIColor,
+        iconFontSize: CGFloat,
+
+        backgroundSystemName: String,
+        backgroundColor: UIColor,
+        backgroundFontSize: CGFloat
+    ) {
+        backgroundImageView.image = UIImage(
+            systemName: backgroundSystemName,
+            withConfiguration: UIImage.SymbolConfiguration(pointSize: backgroundFontSize)
+        )
+        backgroundImageView.tintColor = backgroundColor
+
+        foregroundImageView.image = UIImage(
+            systemName: iconSystemName,
+            withConfiguration: UIImage.SymbolConfiguration(pointSize: iconFontSize)
+        )
+        foregroundImageView.tintColor = iconColor
     }
 
 }
