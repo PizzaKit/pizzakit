@@ -14,21 +14,21 @@ public struct TitleValueSelectableComponent: IdentifiableComponent, ComponentWit
         return style.needArrow ? [.arrow] : []
     }
 
-    public var shouldDeselect: Bool {
-        return false
-    }
+    public let shouldDeselect: Bool
 
     public init(
         id: String,
         title: String? = nil,
         description: String? = nil,
         style: TitleValueComponent.Style = .default,
+        shouldDeselect: Bool,
         onSelect: PizzaEmptyClosure?
     ) {
         self.id = id
         self.title = title
         self.description = description
         self.style = style
+        self.shouldDeselect = shouldDeselect
         self.onSelect = onSelect
     }
 

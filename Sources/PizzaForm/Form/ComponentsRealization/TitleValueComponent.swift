@@ -87,7 +87,7 @@ public class TitleValueView: PizzaView {
             $0.snp.makeConstraints { make in
                 make.trailing.equalToSuperview()
                 make.top.bottom.equalToSuperview().inset(12)
-                make.leading.greaterThanOrEqualTo(titleLabel.snp.leading).offset(12)
+                make.leading.greaterThanOrEqualTo(titleLabel.snp.trailing).offset(12)
             }
             $0.font = .systemFont(ofSize: 17)
             $0.textAlignment = .right

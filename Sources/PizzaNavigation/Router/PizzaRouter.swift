@@ -27,6 +27,8 @@ public protocol PizzaRouter {
     func popModule(animated: Bool, completion: PizzaEmptyClosure?)
     /// Method for popping up to root at topmost navigation
     func popToRoot(animated: Bool)
+    /// Method for dismissing all popups and popping up to root
+    func dismissAndPopToRoot()
 
     /// Method for settings root presentable
     func setRoot(

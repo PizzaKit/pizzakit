@@ -9,16 +9,10 @@ public class FormTableViewCell: PizzaTableCell, ComponentRenderable {
     public override func commonInit() {
         super.commonInit()
 
-//        selectionStyle = .none
-//        accessoryType = .detailDisclosureButton
-
-//        separatorInset = .init(top: 0, left: 50, bottom: 0, right: 0) // TODO: change
+        let customBackgroundView = UIView().do {
+            $0.backgroundColor = .systemGray5
+        }
+        selectedBackgroundView = customBackgroundView
     }
-
-//    public override func setHighlighted(_ highlighted: Bool, animated: Bool) {
-//        if highlighted {
-//            print("is highlighted")
-//        }
-//    }
 
 }

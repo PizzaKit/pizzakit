@@ -8,9 +8,9 @@ public struct SimpleListWithArrowComponent: IdentifiableComponent, SelectableCom
     public let iconName: String
     public let iconBackgroundColor: UIColor
     public let title: String?
+    public let shouldDeselect: Bool
 
     public let onSelect: PizzaEmptyClosure?
-    public var shouldDeselect: Bool { return false }
 
     public var accessories: [ComponentAccessoryType] {
         [.arrow]
@@ -21,12 +21,14 @@ public struct SimpleListWithArrowComponent: IdentifiableComponent, SelectableCom
         iconName: String,
         iconBackgroundColor: UIColor,
         title: String?,
+        shouldDeselect: Bool,
         onSelect: PizzaEmptyClosure?
     ) {
         self.id = id
         self.iconName = iconName
         self.iconBackgroundColor = iconBackgroundColor
         self.title = title
+        self.shouldDeselect = shouldDeselect
         self.onSelect = onSelect
     }
 

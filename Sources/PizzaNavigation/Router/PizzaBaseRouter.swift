@@ -76,6 +76,12 @@ open class PizzaBaseRouter: PizzaRouter {
         navigationController?.popToRootViewController(animated: animated)
     }
 
+    public func dismissAndPopToRoot() {
+        root()?.toPresent().dismiss(animated: true, completion: {
+            self.navigationController?.popToRootViewController(animated: true)
+        })
+    }
+
     public func setRoot(
         module: PizzaPresentable?,
         animated: Bool,
