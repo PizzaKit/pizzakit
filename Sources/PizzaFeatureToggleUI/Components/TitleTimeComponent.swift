@@ -1,46 +1,17 @@
 import UIKit
 import SnapKit
 import PizzaKit
+import PizzaForm
+import Combine
 
-public struct TitleValueComponent: IdentifiableComponent, ComponentWithAccessories {
-
-    public struct Style {
-        public init(
-            titleColor: UIColor,
-            valueColor: UIColor,
-            needArrow: Bool,
-            numberOfLines: Int
-        ) {
-            self.titleColor = titleColor
-            self.valueColor = valueColor
-            self.needArrow = needArrow
-            self.numberOfLines = numberOfLines
-        }
-
-        public let titleColor: UIColor
-        public let valueColor: UIColor
-        public let needArrow: Bool
-        public let numberOfLines: Int
-
-        public static let `default` = Style(
-            titleColor: .label,
-            valueColor: .secondaryLabel,
-            needArrow: false,
-            numberOfLines: 1
-        )
-
-        public static let defaultArrow = Style(
-            titleColor: .label,
-            valueColor: .secondaryLabel,
-            needArrow: true,
-            numberOfLines: 1
-        )
-    }
+public struct TitleTimeComponent: IdentifiableComponent, ComponentWithAccessories, SelectableComponent {
 
     public let id: String
     public let title: String?
-    public let description: String?
-    public let style: Style
+    public let onGetString: PizzaReturnClosure<Date, String>?
+    public let style: TitleValueComponent.Style
+    public let onSelect: PizzaEmptyClosure?
+    public var shouldDeselect: Bool { true }
 
     public var accessories: [ComponentAccessoryType] {
         return style.needArrow ? [.arrow] : []
@@ -48,34 +19,40 @@ public struct TitleValueComponent: IdentifiableComponent, ComponentWithAccessori
 
     public init(
         id: String,
-        title: String? = nil,
-        description: String? = nil,
-        style: Style = .default
+        title: String?,
+        onGetString: PizzaReturnClosure<Date, String>?,
+        style: TitleValueComponent.Style,
+        onSelect: PizzaEmptyClosure?
     ) {
         self.id = id
         self.title = title
-        self.description = description
+        self.onGetString = onGetString
         self.style = style
+        self.onSelect = onSelect
     }
 
-    public func render(in renderTarget: TitleValueView, renderType: RenderType) {
+    public func render(in renderTarget: TitleTimeComponentView, renderType: RenderType) {
         renderTarget.configure(
             title: title,
-            description: description,
-            style: style
+            style: style,
+            onGetString: onGetString
         )
     }
 
-    public func createRenderTarget() -> TitleValueView {
-        return TitleValueView()
+    public func createRenderTarget() -> TitleTimeComponentView {
+        return TitleTimeComponentView()
     }
 
 }
 
-public class TitleValueView: PizzaView {
+public class TitleTimeComponentView: PizzaView {
 
     private let titleLabel = UILabel()
     private let descriptionLabel = UILabel()
+
+    private var bag = Set<AnyCancellable>()
+
+    private var onGetString: PizzaReturnClosure<Date, String>?
 
     public override func commonInit() {
         super.commonInit()
@@ -108,13 +85,23 @@ public class TitleValueView: PizzaView {
         snp.makeConstraints { make in
             make.height.greaterThanOrEqualTo(44)
         }
+
+        Timer
+            .publish(every: 1, on: .main, in: .common)
+            .autoconnect()
+            .sink { [weak self] currentDate in
+                self?.descriptionLabel.text = self?.onGetString?(currentDate)
+            }
+            .store(in: &bag)
     }
 
     func configure(
         title: String?,
-        description: String?,
-        style: TitleValueComponent.Style
+        style: TitleValueComponent.Style,
+        onGetString: PizzaReturnClosure<Date, String>?
     ) {
+        self.onGetString = onGetString
+
         titleLabel.textColor = style.titleColor
         descriptionLabel.textColor = style.valueColor
 
@@ -122,7 +109,7 @@ public class TitleValueView: PizzaView {
         descriptionLabel.numberOfLines = style.numberOfLines
 
         titleLabel.text = title
-        descriptionLabel.text = description
+        descriptionLabel.text = onGetString?(Date())
     }
 
 }

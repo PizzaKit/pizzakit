@@ -68,7 +68,7 @@ public class ViewWithSwitch: PizzaView {
                 make.trailing.equalTo(switchView.snp.leading).offset(-10)
             }
             $0.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-            $0.font = .systemFont(ofSize: 18)
+            $0.font = .systemFont(ofSize: 17)
             $0.textColor = .label
             $0.textAlignment = .natural
             $0.numberOfLines = 0

@@ -3,6 +3,7 @@ import UIKit
 import Combine
 
 public protocol FormPresenterDelegate: AnyObject {
+    func modify(controller: PizzaClosure<FormTableController>)
     func render(sections: [Section])
 }
 
@@ -19,7 +20,7 @@ open class FormTableController: UITableViewController, FormPresenterDelegate {
     private let updater = TableViewUpdater()
     private let onViewDidLoad: PizzaClosure<UITableViewController>?
 
-    private var pendingData: [Section]?
+    private var prevData: [Section] = []
 
     // MARK: - Initialization
 
@@ -48,20 +49,32 @@ open class FormTableController: UITableViewController, FormPresenterDelegate {
         updater.initialize(target: tableView)
         presenter.touch()
 
-        if let pendingData {
-            updater.performUpdates(target: tableView, data: pendingData)
-            self.pendingData = nil
-        }
+        updater.performUpdates(target: tableView, data: prevData)
     }
+
+//    open override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//
+//        updater.performUpdates(target: tableView, data: prevData)
+//    }
+//
+//    open override func viewDidAppear(_ animated: Bool) {
+//        super.viewDidAppear(animated)
+//
+//        updater.performUpdates(target: tableView, data: prevData)
+//    }
 
     // MARK: - FormPresenterDelegate
 
     public func render(sections: [Section]) {
         if isViewLoaded {
             updater.performUpdates(target: tableView, data: sections)
-        } else {
-            pendingData = sections
         }
+        prevData = sections
+    }
+
+    public func modify(controller: (FormTableController) -> Void) {
+        controller(self)
     }
 
 }
