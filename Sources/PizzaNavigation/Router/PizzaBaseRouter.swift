@@ -107,6 +107,8 @@ open class PizzaBaseRouter: PizzaRouter {
     }
 
     public func setNavigationRoot(module: PizzaPresentable?) {
+        // TODO: при handle(deeplink) вдруг произойдет, что не засеттится
+        // дефолтный таббар контроллер - подумать как обойти это
         navigationController?
             .setViewControllers(
                 [module?.toPresent()].compactMap { $0 },

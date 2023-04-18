@@ -10,11 +10,6 @@ import SFSafeSymbols
 
 public class FeatureTogglesListPresenter: FormPresenter {
 
-    private enum Constants {
-        static let preferReferencedTimeKey = "feature_toggle_ui_preferReferencedTime"
-        static let isExpanded = "feature_toggle_ui_is_expanded"
-    }
-
     struct State {
         struct FeatureToggle {
             let key: String
@@ -45,12 +40,8 @@ public class FeatureTogglesListPresenter: FormPresenter {
         self.router = router
         self.state = .init(
             items: [],
-            preferReferencedTime: UserDefaults.standard.bool(
-                forKey: Constants.preferReferencedTimeKey
-            ),
-            isExpanded: UserDefaults.standard.bool(
-                forKey: Constants.isExpanded
-            )
+            preferReferencedTime: UserDefaults.standard.preferReferencedTimeKey,
+            isExpanded: UserDefaults.standard.isExpanded
         )
 
     }
@@ -167,10 +158,7 @@ public class FeatureTogglesListPresenter: FormPresenter {
         let onSelect: PizzaEmptyClosure = { [weak self] in
             guard let self else { return }
             self.state.preferReferencedTime.toggle()
-            UserDefaults.standard.set(
-                self.state.preferReferencedTime,
-                forKey: Constants.preferReferencedTimeKey
-            )
+            UserDefaults.standard.preferReferencedTimeKey = self.state.preferReferencedTime
         }
         if state.preferReferencedTime {
             return .init(
@@ -239,11 +227,22 @@ public class FeatureTogglesListPresenter: FormPresenter {
 
     private func toggleExpanded() {
         state.isExpanded.toggle()
-        UserDefaults.standard.set(
-            state.isExpanded,
-            forKey: Constants.isExpanded
-        )
+        UserDefaults.standard.isExpanded = state.isExpanded
         updateMenu()
+    }
+
+}
+
+private extension UserDefaults {
+
+    var preferReferencedTimeKey: Bool {
+        get { UserDefaults.standard.bool(forKey: #function) }
+        set { UserDefaults.standard.set(true, forKey: #function) }
+    }
+
+    var isExpanded: Bool {
+        get { UserDefaults.standard.bool(forKey: #function) }
+        set { UserDefaults.standard.set(true, forKey: #function) }
     }
 
 }

@@ -11,14 +11,17 @@ public protocol PizzaFeatureToggleService {
 
     var lastFetchDate: Date? { get }
     var reloadPublisher: AnyPublisher<Void, Never> { get }
+    var initialLoadingFromNetworkPublisher: AnyPublisher<Bool, Never> { get }
     var allToggles: [PizzaAnyFeatureToggle] { get }
 
     /// Method for initial fetching remoteConfig
     /// - Parameter fetchInterval: fetch interval in which publisher will be returned
-    /// - Returns: publisher that will be fired maximum at fetchInterval seconds or earlier
+    /// - Returns: publisher that will be fired maximum at fetchInterval seconds
+    /// or earlier. True means that toggles was fetched and activated. False -
+    /// toggles will be activated later
     func tryFetchAndActivate(
         fetchInterval: TimeInterval
-    ) -> AnyPublisher<Void, Never>
+    ) -> AnyPublisher<Bool, Never>
 
     // Typed Values
 
@@ -70,6 +73,9 @@ public class PizzaFeatureToggleServiceImpl: PizzaFeatureToggleService {
     public var reloadPublisher: AnyPublisher<Void, Never> {
         reloadSubject.eraseToAnyPublisher()
     }
+    public var initialLoadingFromNetworkPublisher: AnyPublisher<Bool, Never> {
+        initialLoadingFromNetworkSubject.eraseToAnyPublisher()
+    }
     public var lastFetchDate: Date? {
         remoteConfig.lastFetchTime
     }
@@ -78,6 +84,7 @@ public class PizzaFeatureToggleServiceImpl: PizzaFeatureToggleService {
 
     private var bag = Set<AnyCancellable>()
     private let reloadSubject = PassthroughSubject<Void, Never>()
+    private let initialLoadingFromNetworkSubject = CurrentValueSubject<Bool, Never>(false)
 
     /// ToggleService initialization
     /// - Parameter fetchInterval: nil for default
@@ -116,8 +123,8 @@ public class PizzaFeatureToggleServiceImpl: PizzaFeatureToggleService {
 
     public func tryFetchAndActivate(
         fetchInterval: TimeInterval
-    ) -> AnyPublisher<Void, Never> {
-        let responsePublisher = PassthroughSubject<Void, Never>()
+    ) -> AnyPublisher<Bool, Never> {
+        let responsePublisher = PassthroughSubject<Bool, Never>()
 
         let timer = Timer.publish(
             every: fetchInterval,
@@ -129,7 +136,7 @@ public class PizzaFeatureToggleServiceImpl: PizzaFeatureToggleService {
         timer.sink { _ in
             timer.upstream.connect().cancel()
 
-            responsePublisher.send(())
+            responsePublisher.send(false)
             responsePublisher.send(completion: .finished)
         }
         .store(in: &bag)
@@ -142,9 +149,10 @@ public class PizzaFeatureToggleServiceImpl: PizzaFeatureToggleService {
             let diff = end - start
             print("Feature toggle fetched with \(diff) seconds")
 
+            self?.initialLoadingFromNetworkSubject.send(true)
             self?.reloadSubject.send(())
 
-            responsePublisher.send(())
+            responsePublisher.send(true)
             responsePublisher.send(completion: .finished)
 
             self?.startObserving()
