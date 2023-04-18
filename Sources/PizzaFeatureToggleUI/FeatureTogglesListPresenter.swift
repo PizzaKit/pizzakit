@@ -237,12 +237,12 @@ private extension UserDefaults {
 
     var preferReferencedTimeKey: Bool {
         get { UserDefaults.standard.bool(forKey: #function) }
-        set { UserDefaults.standard.set(true, forKey: #function) }
+        set { UserDefaults.standard.set(newValue, forKey: #function) }
     }
 
     var isExpanded: Bool {
         get { UserDefaults.standard.bool(forKey: #function) }
-        set { UserDefaults.standard.set(true, forKey: #function) }
+        set { UserDefaults.standard.set(newValue, forKey: #function) }
     }
 
 }
