@@ -33,6 +33,23 @@ open class PizzaRouterCoordinator<Deeplink, Session>: PizzaCoordinator {
         return false
     }
 
+    /// Method for checking if passed coordinator exists in children recursively
+    open func checkDependencyExistsRecursively<T: PizzaRouterCoordinator<Deeplink, Session>>(
+        ofType coordinatorType: T.Type
+    ) -> Bool {
+        var hasInChildren = false
+        for child in children {
+            if
+                child.checkDependencyExistsRecursivelyWithCheckOfSelf(
+                    ofType: coordinatorType
+                )
+            {
+                return true
+            }
+        }
+        return false
+    }
+
     /// Method for checking if passed coordinator exists in children
     open func checkDependencyExists<T: PizzaRouterCoordinator<Deeplink, Session>>(
         ofType coordinatorType: T.Type
@@ -77,6 +94,22 @@ open class PizzaRouterCoordinator<Deeplink, Session>: PizzaCoordinator {
 
     private func removeDependency(_ coordinator: PizzaRouterCoordinator<Deeplink, Session>?) {
         children.removeAll(where: { $0 === coordinator })
+    }
+
+    private func checkDependencyExistsRecursivelyWithCheckOfSelf<T: PizzaRouterCoordinator<Deeplink, Session>>(
+        ofType coordinatorType: T.Type
+    ) -> Bool {
+        var hasInChildren = false
+        for child in children {
+            let isExist = child.checkDependencyExistsRecursively(ofType: coordinatorType)
+            if isExist {
+                return true
+            }
+        }
+        if type(of: self) == coordinatorType {
+            return true
+        }
+        return false
     }
 
 }

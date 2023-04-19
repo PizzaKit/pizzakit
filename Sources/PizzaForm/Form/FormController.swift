@@ -52,12 +52,6 @@ open class FormTableController: UITableViewController, FormPresenterDelegate {
         updater.performUpdates(target: tableView, data: prevData)
     }
 
-//    open override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//
-//        updater.performUpdates(target: tableView, data: prevData)
-//    }
-//
     open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 

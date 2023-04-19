@@ -97,6 +97,7 @@ public class PizzaFeatureToggleServiceImpl: PizzaFeatureToggleService {
         if let fetchInterval {
             settings.minimumFetchInterval = fetchInterval
         }
+        settings.fetchTimeout = 10 // seconds to wait response from server, then fail
         remoteConfig.configSettings = settings
         self.allToggles = toggles
 

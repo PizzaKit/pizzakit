@@ -45,13 +45,7 @@ public class FeatureTogglePresenter: FormPresenter {
         let anyValue = featureToggleService
             .getAnyValue(anyFeatureToggle: featureToggle)
 
-        let override = featureToggleService.getAnyOverride(
-            forAnyFeatureToggle: featureToggle
-        ) ?? .init(
-            value: featureToggle.defaultAnyValue,
-            valueType: featureToggle.valueType,
-            isOverrideEnabled: false
-        )
+        let override = getCurrentOverride()
         cells.append(
             .init(
                 component: SwitchComponent(
@@ -75,7 +69,13 @@ public class FeatureTogglePresenter: FormPresenter {
                         ? .accentArrow
                         : .defaultArrow,
                     shouldDeselect: true,
-                    onSelect: {}
+                    onSelect: { [weak self] in
+                        guard let self else { return }
+                        self.router.edit(
+                            anyFeatureToggle: self.featureToggle,
+                            anyFeatureToggleOverrideValue: self.getCurrentOverride()
+                        )
+                    }
                 )
             )
         )
@@ -122,9 +122,10 @@ public class FeatureTogglePresenter: FormPresenter {
     private func changeOverride(
         isOn: Bool
     ) {
+        let currentOverrider = getCurrentOverride()
         let newOverride = PizzaAnyFeatureToggleOverrideValue(
-            value: featureToggle.defaultAnyValue,
-            valueType: featureToggle.valueType,
+            value: currentOverrider.value,
+            valueType: currentOverrider.valueType,
             isOverrideEnabled: isOn
         )
         featureToggleService.setAnyOverride(
@@ -133,6 +134,16 @@ public class FeatureTogglePresenter: FormPresenter {
         )
 
         render()
+    }
+
+    private func getCurrentOverride() -> PizzaAnyFeatureToggleOverrideValue {
+        featureToggleService.getAnyOverride(
+            forAnyFeatureToggle: featureToggle
+        ) ?? PizzaAnyFeatureToggleOverrideValue(
+            value: featureToggle.defaultAnyValue,
+            valueType: featureToggle.valueType,
+            isOverrideEnabled: false
+        )
     }
 
 }

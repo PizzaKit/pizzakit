@@ -10,7 +10,11 @@ public class FormTableViewCell: PizzaTableCell, ComponentRenderable {
         super.commonInit()
 
         let customBackgroundView = UIView().do {
-            $0.backgroundColor = .systemGray5
+            $0.backgroundColor = UIColor(dynamicProvider: { trait in
+                trait.userInterfaceLevel == .elevated
+                    ? .systemGray4
+                    : .systemGray5
+            })
         }
         selectedBackgroundView = customBackgroundView
     }
