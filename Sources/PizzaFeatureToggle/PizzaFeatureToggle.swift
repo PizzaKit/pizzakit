@@ -1,6 +1,6 @@
 import FirebaseRemoteConfig
 import Foundation
-import PizzaKit
+import PizzaServices
 
 /// Фича тоггл описывается классом `PizzaFeatureToggle<T>` и протоколом `PizzaAnyFeatureToggle`.
 /// Идея в том, что есть generic класс нужно использовать в коде, а вся работа внутри
