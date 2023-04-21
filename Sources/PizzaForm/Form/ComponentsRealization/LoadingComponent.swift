@@ -1,5 +1,5 @@
 import UIKit
-import PizzaKit
+import PizzaDesign
 import SnapKit
 
 public struct LoadingComponent: IdentifiableComponent {

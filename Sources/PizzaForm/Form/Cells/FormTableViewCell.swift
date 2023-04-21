@@ -1,5 +1,5 @@
 import UIKit
-import PizzaKit
+import PizzaDesign
 
 public class FormTableViewCell: PizzaTableCell, ComponentRenderable {
 

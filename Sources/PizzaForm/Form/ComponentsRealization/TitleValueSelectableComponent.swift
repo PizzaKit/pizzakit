@@ -1,6 +1,7 @@
 import UIKit
 import SnapKit
-import PizzaKit
+import PizzaDesign
+import PizzaCore
 
 public struct TitleValueSelectableComponent: IdentifiableComponent, ComponentWithAccessories, SelectableComponent {
 

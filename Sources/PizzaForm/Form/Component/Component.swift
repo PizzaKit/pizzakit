@@ -1,6 +1,6 @@
 import SnapKit
 import UIKit
-import PizzaKit
+import PizzaCore
 
 /// Отражает тип заполнения. Soft если элемент видим на экране и необходимо его
 /// обновить с анимацией, hard в остальных случаях.

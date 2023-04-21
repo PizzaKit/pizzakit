@@ -14,10 +14,6 @@ let package = Package(
             targets: ["PizzaKit"]
         ),
         .library(
-            name: "PizzaForm",
-            targets: ["PizzaForm"]
-        ),
-        .library(
             name: "PizzaFeatureToggle",
             targets: ["PizzaFeatureToggle"]
         ),
@@ -27,6 +23,7 @@ let package = Package(
         )
     ],
     dependencies: [
+        // design
         .package(
             url: "https://github.com/kean/Nuke",
             from: "11.3.1"
@@ -40,20 +37,34 @@ let package = Package(
             from: "5.1.1"
         ),
         .package(
-            url: "https://github.com/alxrguz/ALPopup",
-            from: "1.1.0"
-        ),
-        .package(
-            url: "https://github.com/firebase/firebase-ios-sdk",
-            from: "10.8.0"
-        ),
-        .package(
             url: "https://github.com/SFSafeSymbols/SFSafeSymbols",
             from: "4.1.1"
         ),
         .package(
             url: "https://github.com/ivanvorobei/SPIndicator",
             from: "1.6.4"
+        ),
+
+        // popup
+        .package(
+            url: "https://github.com/huri000/SwiftEntryKit",
+            from: "2.0.0"
+        ),
+
+        // services
+        .package(
+            url: "https://github.com/sindresorhus/Defaults",
+            from: "7.1.0"
+        ),
+        .package(
+            url: "https://github.com/evgenyneu/keychain-swift",
+            from: "20.0.0"
+        ),
+
+        // feature toggle
+        .package(
+            url: "https://github.com/firebase/firebase-ios-sdk",
+            from: "10.8.0"
         )
     ],
     targets: [
@@ -79,42 +90,51 @@ let package = Package(
         ),
         .target(
             name: "PizzaServices",
-            dependencies: ["PizzaCore"]
+            dependencies: [
+                "PizzaCore",
+                .product(name: "KeychainSwift", package: "keychain-swift"),
+                .product(name: "Defaults", package: "Defaults")
+            ]
         ),
         .target(
             name: "PizzaPopup",
-            dependencies: ["PizzaDesign", "ALPopup"]
+            dependencies: [
+                "PizzaDesign",
+                "PizzaNavigation",
+                .product(name: "SwiftEntryKit", package: "SwiftEntryKit")
+            ]
         ),
         .target(
             name: "PizzaAlert",
-            dependencies: ["PizzaCore", "PizzaNavigation"]
-        ),
-        .target(
-            name: "PizzaKit",
             dependencies: [
-                "PizzaCore",
-                "PizzaDesign",
-                "PizzaNavigation",
-                "PizzaServices",
-                "PizzaPopup",
-                "PizzaAlert"
+                "PizzaDesign", 
+                "PizzaNavigation"
             ]
         ),
         .target(
             name: "PizzaForm",
-            dependencies: ["PizzaKit"]
+            dependencies: ["PizzaDesign"]
+        ),
+        .target(
+            name: "PizzaKit",
+            dependencies: [
+                "PizzaServices",
+                "PizzaPopup",
+                "PizzaAlert",
+                "PizzaForm",
+            ]
         ),
         .target(
             name: "PizzaFeatureToggle",
             dependencies: [
-                "PizzaKit", 
+                "PizzaServices", 
                 .product(name: "FirebaseRemoteConfig", package: "firebase-ios-sdk")
             ]
         ),
         .target(
             name: "PizzaFeatureToggleUI",
             dependencies: [
-                "PizzaForm",
+                "PizzaKit",
                 "PizzaFeatureToggle",
             ]
         )

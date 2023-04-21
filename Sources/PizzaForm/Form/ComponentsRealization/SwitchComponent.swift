@@ -1,6 +1,7 @@
-import PizzaKit
+import PizzaDesign
 import UIKit
 import SnapKit
+import PizzaCore
 
 public struct SwitchComponent: IdentifiableComponent {
     public init(

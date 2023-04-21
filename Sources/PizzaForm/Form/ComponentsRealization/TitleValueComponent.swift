@@ -1,6 +1,6 @@
 import UIKit
 import SnapKit
-import PizzaKit
+import PizzaDesign
 
 public struct TitleValueComponent: IdentifiableComponent, ComponentWithAccessories {
 

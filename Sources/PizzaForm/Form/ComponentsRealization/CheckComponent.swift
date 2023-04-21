@@ -1,6 +1,7 @@
 import UIKit
 import SnapKit
-import PizzaKit
+import PizzaCore
+import PizzaDesign
 
 public struct CheckComponent: IdentifiableComponent, ComponentWithAccessories, SelectableComponent {
 

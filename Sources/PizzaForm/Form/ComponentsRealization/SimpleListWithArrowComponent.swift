@@ -1,5 +1,6 @@
 import UIKit
-import PizzaKit
+import PizzaDesign
+import PizzaCore
 
 public struct SimpleListWithArrowComponent: IdentifiableComponent, SelectableComponent, ComponentWithAccessories {
 
