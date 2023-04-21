@@ -1,6 +1,6 @@
 import Foundation
 import FirebaseRemoteConfig
-import PizzaKit
+import PizzaServices
 import Combine
 
 public enum PizzaFeatureToggleTypeRegister {
