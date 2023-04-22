@@ -1,5 +1,4 @@
 import PizzaKit
-import PizzaFeatureToggle
 import UIKit
 
 public protocol FeatureToggleValuePresenter: AnyObject {

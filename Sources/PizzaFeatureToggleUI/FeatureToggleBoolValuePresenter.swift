@@ -1,6 +1,4 @@
 import PizzaKit
-import PizzaFeatureToggle
-import PizzaForm
 import UIKit
 
 public class FeatureToggleBoolValuePresenter: FeatureToggleValuePresenter, FormPresenter {

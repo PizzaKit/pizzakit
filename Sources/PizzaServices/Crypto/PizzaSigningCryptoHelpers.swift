@@ -1,7 +1,8 @@
 import CryptoKit
 import Foundation
+import PizzaCore
 
-public enum PizzaCryptoHelpers {
+public enum PizzaSigningCryptoHelpers {
 
     public enum LifeTime {
         case oneDay(Date)

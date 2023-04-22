@@ -52,11 +52,26 @@ public struct PizzaAnyFeatureToggleValue {
     public let anyValue: PizzaFeatureToggleValueType
     public let valueType: PizzaFeatureToggleValueType.Type
     public let responseType: PizzaFeatureToggleResponseType
+
+    public init(
+        anyValue: PizzaFeatureToggleValueType,
+        valueType: PizzaFeatureToggleValueType.Type,
+        responseType: PizzaFeatureToggleResponseType
+    ) {
+        self.anyValue = anyValue
+        self.valueType = valueType
+        self.responseType = responseType
+    }
 }
 
 public struct PizzaFeatureToggleValue<T: PizzaFeatureToggleValueType> {
     public let value: T
     public let responseType: PizzaFeatureToggleResponseType
+
+    public init(value: T, responseType: PizzaFeatureToggleResponseType) {
+        self.value = value
+        self.responseType = responseType
+    }
 }
 
 public struct PizzaAnyFeatureToggleOverrideValue: Codable {
@@ -104,12 +119,17 @@ public struct PizzaFeatureToggleOverrideValue<T: PizzaFeatureToggleValueType> {
     public let value: T
     public let isOverrideEnabled: Bool
 
-    var anyValue: PizzaAnyFeatureToggleOverrideValue {
+    public var anyValue: PizzaAnyFeatureToggleOverrideValue {
         .init(
             value: value,
             valueType: T.self,
             isOverrideEnabled: isOverrideEnabled
         )
+    }
+
+    public init(value: T, isOverrideEnabled: Bool) {
+        self.value = value
+        self.isOverrideEnabled = isOverrideEnabled
     }
 }
 

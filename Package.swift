@@ -14,8 +14,12 @@ let package = Package(
             targets: ["PizzaKit"]
         ),
         .library(
-            name: "PizzaFeatureToggle",
-            targets: ["PizzaFeatureToggle"]
+            name: "PizzaFirebaseFeatureToggle",
+            targets: ["PizzaFirebaseFeatureToggle"]
+        ),
+        .library(
+            name: "PizzaFirebasePushNotification",
+            targets: ["PizzaFirebasePushNotification"]
         ),
         .library(
             name: "PizzaFeatureToggleUI",
@@ -59,6 +63,10 @@ let package = Package(
         .package(
             url: "https://github.com/evgenyneu/keychain-swift",
             from: "20.0.0"
+        ), 
+        .package(
+            url: "https://github.com/Alecrim/Reachability",
+            from: "1.2.1"
         ),
 
         // feature toggle
@@ -93,7 +101,8 @@ let package = Package(
             dependencies: [
                 "PizzaCore",
                 .product(name: "KeychainSwift", package: "keychain-swift"),
-                .product(name: "Defaults", package: "Defaults")
+                .product(name: "Defaults", package: "Defaults"),
+                .product(name: "Reachability", package: "Reachability")
             ]
         ),
         .target(
@@ -125,17 +134,23 @@ let package = Package(
             ]
         ),
         .target(
-            name: "PizzaFeatureToggle",
+            name: "PizzaFirebaseFeatureToggle",
             dependencies: [
                 "PizzaServices", 
                 .product(name: "FirebaseRemoteConfig", package: "firebase-ios-sdk")
             ]
         ),
         .target(
+            name: "PizzaFirebasePushNotification",
+            dependencies: [
+                "PizzaServices", 
+                .product(name: "FirebaseMessaging", package: "firebase-ios-sdk")
+            ]
+        ),
+        .target(
             name: "PizzaFeatureToggleUI",
             dependencies: [
-                "PizzaKit",
-                "PizzaFeatureToggle",
+                "PizzaKit"
             ]
         )
     ],

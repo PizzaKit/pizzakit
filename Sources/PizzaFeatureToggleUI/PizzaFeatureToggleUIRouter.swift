@@ -1,4 +1,4 @@
-import PizzaFeatureToggle
+import PizzaKit
 
 public protocol PizzaFeatureToggleUIRouter {
     func open(anyFeatureToggle: PizzaAnyFeatureToggle)
