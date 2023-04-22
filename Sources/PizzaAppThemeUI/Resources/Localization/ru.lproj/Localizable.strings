@@ -1,0 +1,12 @@
+"apptheme.pres.title" = "Внешний вид";
+
+"apptheme.pres.switch.header" = "ТЕМА";
+"apptheme.pres.switch.text" = "Автоматически";
+"apptheme.pres.switch.footer" = "Тема приложения будет подстраиваться под системную тему";
+
+"apptheme.pres.select.light" = "Светлая";
+"apptheme.pres.select.dark" = "Темная";
+"apptheme.pres.select.footer" = "Данная тема будет принудительно использоваться внутри приложения";
+
+"apptheme.pres.color.header" = "ЦВЕТА";
+"apptheme.pres.color.footer" = "Выберете акцентный цвет, который вам нравится";

@@ -2,6 +2,7 @@ import FirebaseMessaging
 import Firebase
 import PizzaServices
 import Combine
+import Defaults
 
 // TODO: переписать на параллельные подписки (сейчас последовательные)
 // TODO: возможно менять состояние топиков перед подпиской, а потом если ошибка, актуализировать
@@ -35,12 +36,12 @@ public class PizzaFirebasePushNotificationTopicsManager {
 
     public init(allTopics: [String]) {
         self.allTopics = Set(allTopics)
-        self.subscribedTopicsSubject = .init(Set(UserDefaults.standard.subscribedTopics))
+        self.subscribedTopicsSubject = .init(Set(Defaults[.subscribedTopics]))
 
         self.subscribedTopicsSubject
             .receive(on: DispatchQueue.main)
             .sink { newTopics in
-                UserDefaults.standard.subscribedTopics = Array(newTopics)
+                Defaults[.subscribedTopics] = Array(newTopics)
                 PizzaLogger.log(
                     label: "push_topics",
                     level: .info,
@@ -57,12 +58,12 @@ public class PizzaFirebasePushNotificationTopicsManager {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] output in
                 guard let self else { return }
-                if !UserDefaults.standard.wasFirstTopicsSubscription {
+                if !Defaults[.wasFirstTopicsSubscription] {
                     self.subscribeAllPublisher()
                         .sink(
                             receiveCompletion: { _ in },
                             receiveValue: { _ in
-                                UserDefaults.standard.wasFirstTopicsSubscription = true
+                                Defaults[.wasFirstTopicsSubscription] = true
                             }
                         )
                         .store(in: &self.bag)
@@ -198,18 +199,7 @@ public class PizzaFirebasePushNotificationTopicsManager {
 
 }
 
-private extension UserDefaults {
-
-    var subscribedTopics: [String] {
-        get { (try? UserDefaults.standard.get(objectType: [String].self, forKey: #function)) ?? [] }
-        set {
-            try? UserDefaults.standard.set(object: newValue, forKey: #function)
-        }
-    }
-
-    var wasFirstTopicsSubscription: Bool {
-        get { UserDefaults.standard.bool(forKey: #function) }
-        set { UserDefaults.standard.setValue(newValue, forKey: #function) }
-    }
-
+fileprivate extension Defaults.Keys {
+    static let subscribedTopics = Defaults.Key<[String]>("push_firebase_subscribed_topics", default: [])
+    static let wasFirstTopicsSubscription = Defaults.Key<Bool>("push_firebase_wasFirstTopicsSubscription", default: false)
 }

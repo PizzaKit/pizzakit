@@ -1,6 +1,7 @@
 import FirebaseRemoteConfig
 import Foundation
 import PizzaServices
+import Defaults
 
 /// Фича тоггл описывается классом `PizzaFeatureToggle<T>` и протоколом `PizzaAnyFeatureToggle`.
 /// Идея в том, что есть generic класс нужно использовать в коде, а вся работа внутри
@@ -74,7 +75,7 @@ public struct PizzaFeatureToggleValue<T: PizzaFeatureToggleValueType> {
     }
 }
 
-public struct PizzaAnyFeatureToggleOverrideValue: Codable {
+public struct PizzaAnyFeatureToggleOverrideValue: Codable, Defaults.Serializable {
 
     enum CodableError: Error {
         case noValueType

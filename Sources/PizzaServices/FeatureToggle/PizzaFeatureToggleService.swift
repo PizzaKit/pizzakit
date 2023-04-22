@@ -9,7 +9,12 @@ public enum PizzaFeatureToggleTypeRegister {
 public protocol PizzaFeatureToggleService {
 
     var lastFetchDate: Date? { get }
+
+    /// PasstroughSubject - вызывается только при reload-е
     var reloadPublisher: AnyPublisher<Void, Never> { get }
+
+    /// Под капотом CurrentValueSubject - поэтому при подписке сразу вызывается.
+    /// Bool отражает загружены ли тогглы или нет
     var initialLoadingFromNetworkPublisher: AnyPublisher<Bool, Never> { get }
     var allToggles: [PizzaAnyFeatureToggle] { get }
 

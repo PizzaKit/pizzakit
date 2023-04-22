@@ -42,12 +42,16 @@ public struct SimpleListWithArrowComponent: IdentifiableComponent, SelectableCom
             title: title
         )
         renderTarget.iconView.configure(
-            iconSystemName: iconName,
-            iconColor: .white,
-            iconFontSize: 16,
-            backgroundSystemName: "app.fill",
-            backgroundColor: iconBackgroundColor,
-            backgroundFontSize: 32
+            icon: .init(
+                iconSystemName: iconName,
+                iconColor: .white,
+                iconFontSize: 16
+            ),
+            background: .init(
+                iconSystemName: "app.fill",
+                iconColor: iconBackgroundColor,
+                iconFontSize: 32
+            )
         )
     }
 
@@ -59,8 +63,7 @@ public struct SimpleListWithArrowComponent: IdentifiableComponent, SelectableCom
 
 public class SimpleListView: PizzaView {
 
-//    private let iconImageView = UIImageView()
-    let iconView = SettingsIconView()
+    public let iconView = SettingsIconView()
     private let titleLabel = UILabel()
 
     public override func commonInit() {
@@ -73,7 +76,6 @@ public class SimpleListView: PizzaView {
                 make.centerY.equalToSuperview()
                 make.size.equalTo(29)
             }
-//            $0.contentMode = .center
             $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         }
 
@@ -88,22 +90,32 @@ public class SimpleListView: PizzaView {
         }
     }
 
-    func configure(
-//        image: UIImage?,
+    public func configure(
         title: String?
     ) {
-//        iconImageView.image = image
         titleLabel.text = title
     }
 
 }
 
-final class SettingsIconView: PizzaView {
+public class SettingsIconView: PizzaView {
+
+    public struct IconStyle {
+        public let iconSystemName: String
+        public let iconColor: UIColor
+        public let iconFontSize: CGFloat
+
+        public init(iconSystemName: String, iconColor: UIColor, iconFontSize: CGFloat) {
+            self.iconSystemName = iconSystemName
+            self.iconColor = iconColor
+            self.iconFontSize = iconFontSize
+        }
+    }
 
     private let backgroundImageView = UIImageView()
     private let foregroundImageView = UIImageView()
 
-    override func commonInit() {
+    public override func commonInit() {
         super.commonInit()
 
         backgroundImageView.do {
@@ -123,26 +135,26 @@ final class SettingsIconView: PizzaView {
         }
     }
 
-    func configure(
-        iconSystemName: String,
-        iconColor: UIColor,
-        iconFontSize: CGFloat,
-
-        backgroundSystemName: String,
-        backgroundColor: UIColor,
-        backgroundFontSize: CGFloat
+    public func configure(
+        icon: IconStyle?,
+        background: IconStyle
     ) {
-        backgroundImageView.image = UIImage(
-            systemName: backgroundSystemName,
-            withConfiguration: UIImage.SymbolConfiguration(pointSize: backgroundFontSize)
-        )
-        backgroundImageView.tintColor = backgroundColor
+        if let icon {
+            foregroundImageView.image = UIImage(
+                systemName: icon.iconSystemName,
+                withConfiguration: UIImage.SymbolConfiguration(pointSize: icon.iconFontSize)
+            )
+            foregroundImageView.tintColor = icon.iconColor
+        }
+        foregroundImageView.isHidden = icon == nil
 
-        foregroundImageView.image = UIImage(
-            systemName: iconSystemName,
-            withConfiguration: UIImage.SymbolConfiguration(pointSize: iconFontSize)
+        backgroundImageView.image = UIImage(
+            systemName: background.iconSystemName,
+            withConfiguration: UIImage.SymbolConfiguration(pointSize: background.iconFontSize)
         )
-        foregroundImageView.tintColor = iconColor
+        backgroundImageView.tintColor = background.iconColor
+
+
     }
 
 }

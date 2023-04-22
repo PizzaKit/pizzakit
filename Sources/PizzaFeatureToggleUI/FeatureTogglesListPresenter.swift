@@ -5,6 +5,7 @@ import UIKit
 import SPIndicator
 import Combine
 import SFSafeSymbols
+import Defaults
 
 public class FeatureTogglesListPresenter: FormPresenter {
 
@@ -38,8 +39,8 @@ public class FeatureTogglesListPresenter: FormPresenter {
         self.router = router
         self.state = .init(
             items: [],
-            preferReferencedTime: UserDefaults.standard.preferReferencedTimeKey,
-            isExpanded: UserDefaults.standard.isExpanded
+            preferReferencedTime: Defaults[.preferReferencedTimeKey],
+            isExpanded: Defaults[.isExpanded]
         )
 
     }
@@ -156,7 +157,7 @@ public class FeatureTogglesListPresenter: FormPresenter {
         let onSelect: PizzaEmptyClosure = { [weak self] in
             guard let self else { return }
             self.state.preferReferencedTime.toggle()
-            UserDefaults.standard.preferReferencedTimeKey = self.state.preferReferencedTime
+            Defaults[.preferReferencedTimeKey] = self.state.preferReferencedTime
         }
         if state.preferReferencedTime {
             return .init(
@@ -225,22 +226,13 @@ public class FeatureTogglesListPresenter: FormPresenter {
 
     private func toggleExpanded() {
         state.isExpanded.toggle()
-        UserDefaults.standard.isExpanded = state.isExpanded
+        Defaults[.isExpanded] = state.isExpanded
         updateMenu()
     }
 
 }
 
-private extension UserDefaults {
-
-    var preferReferencedTimeKey: Bool {
-        get { UserDefaults.standard.bool(forKey: #function) }
-        set { UserDefaults.standard.set(newValue, forKey: #function) }
-    }
-
-    var isExpanded: Bool {
-        get { UserDefaults.standard.bool(forKey: #function) }
-        set { UserDefaults.standard.set(newValue, forKey: #function) }
-    }
-
+fileprivate extension Defaults.Keys {
+    static let preferReferencedTimeKey = Defaults.Key("ft_prefReferencedTimeKey", default: false)
+    static let isExpanded = Defaults.Key("ft_isExpanded", default: false)
 }

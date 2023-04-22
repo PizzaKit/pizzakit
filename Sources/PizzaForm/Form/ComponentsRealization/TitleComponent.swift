@@ -65,3 +65,32 @@ public struct TitleComponent: IdentifiableComponent {
     }
 
 }
+
+public extension TitleComponent.Style {
+    static var defaultHeader: TitleComponent.Style {
+        .init(
+            font: .systemFont(ofSize: 13),
+            insets: .init(
+                top: 20,
+                leading: 0,
+                bottom: 8,
+                trailing: 0
+            ),
+            textColor: .secondaryLabel,
+            textAlignment: .left
+        )
+    }
+    static var defaultFooter: TitleComponent.Style {
+        .init(
+            font: .systemFont(ofSize: 13),
+            insets: .init(
+                top: 8,
+                leading: 0,
+                bottom: 20,
+                trailing: 0
+            ),
+            textColor: .secondaryLabel,
+            textAlignment: .left
+        )
+    }
+}

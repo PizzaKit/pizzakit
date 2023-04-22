@@ -3,6 +3,7 @@ import PackageDescription
 
 let package = Package(
     name: "PizzaKit",
+    defaultLocalization: "en",
     platforms: [
         .iOS(.v15),
         .tvOS(.v15), 
@@ -24,6 +25,10 @@ let package = Package(
         .library(
             name: "PizzaFeatureToggleUI",
             targets: ["PizzaFeatureToggleUI"]
+        ),
+        .library(
+            name: "PizzaAppThemeUI",
+            targets: ["PizzaAppThemeUI"]
         )
     ],
     dependencies: [
@@ -151,6 +156,15 @@ let package = Package(
             name: "PizzaFeatureToggleUI",
             dependencies: [
                 "PizzaKit"
+            ]
+        ),
+        .target(
+            name: "PizzaAppThemeUI",
+            dependencies: [
+                "PizzaKit"
+            ],
+            resources: [
+                .process("Resources")
             ]
         )
     ],

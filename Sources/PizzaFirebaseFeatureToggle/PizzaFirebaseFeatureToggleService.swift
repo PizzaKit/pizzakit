@@ -2,8 +2,15 @@ import PizzaServices
 import FirebaseRemoteConfig
 import Combine
 import Foundation
+import Defaults
 
 public class PizzaFirebaseFeatureToggleService: PizzaFeatureToggleService {
+
+    // MARK: - Constants
+
+    private enum Constants {
+        static let overridePrefix = "pizza_firebase_feature_toggle_override_"
+    }
 
     // MARK: - Properties
 
@@ -47,12 +54,28 @@ public class PizzaFirebaseFeatureToggleService: PizzaFeatureToggleService {
         }
         remoteConfig.setDefaults(allDefaults)
 
-        // print to console
+        // log values
         reloadSubject
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: { [weak self] _ in
                 self?.printCurrentToggles()
             })
+            .store(in: &bag)
+        let startTime = Date().timeIntervalSince1970
+        initialLoadingFromNetworkPublisher
+            .receive(on: DispatchQueue.main)
+            .filter { $0 }
+            .sink { _ in
+                let endTime = Date().timeIntervalSince1970
+                let diffInSeconds = endTime - startTime
+                let round = Double(Int(diffInSeconds * 100)) / 100
+
+                PizzaLogger.log(
+                    label: "feature_toggle",
+                    level: .info,
+                    message: "Feature toggles was received from server with \(round) seconds"
+                )
+            }
             .store(in: &bag)
 
         // fill types
@@ -123,12 +146,11 @@ public class PizzaFirebaseFeatureToggleService: PizzaFeatureToggleService {
                 responseType: .fromRemoteConfig
             )
         case .fromOverride:
-            let override = try? UserDefaults.standard.get(
-                objectType: PizzaAnyFeatureToggleOverrideValue.self,
-                forKey: "pizza_feature_toggle_override_\(featureToggle.key)"
+            let key = Defaults.Key<PizzaAnyFeatureToggleOverrideValue?>(
+                Constants.overridePrefix + featureToggle.key
             )
             guard
-                let override,
+                let override = Defaults[key],
                 let overrideValue = override.value as? T
             else { return nil }
             return .init(
@@ -148,12 +170,11 @@ public class PizzaFirebaseFeatureToggleService: PizzaFeatureToggleService {
             )
         }
 
-        let override = try? UserDefaults.standard.get(
-            objectType: PizzaAnyFeatureToggleOverrideValue.self,
-            forKey: "pizza_feature_toggle_override_\(featureToggle.key)"
+        let key = Defaults.Key<PizzaAnyFeatureToggleOverrideValue?>(
+            Constants.overridePrefix + featureToggle.key
         )
         if
-            let override,
+            let override = Defaults[key],
             override.isOverrideEnabled,
             let overrideValue = override.value as? T
         {
@@ -201,11 +222,10 @@ public class PizzaFirebaseFeatureToggleService: PizzaFeatureToggleService {
                 responseType: .fromRemoteConfig
             )
         case .fromOverride:
-            let override = try? UserDefaults.standard.get(
-                objectType: PizzaAnyFeatureToggleOverrideValue.self,
-                forKey: "pizza_feature_toggle_override_\(anyFeatureToggle.key)"
+            let key = Defaults.Key<PizzaAnyFeatureToggleOverrideValue?>(
+                Constants.overridePrefix + anyFeatureToggle.key
             )
-            guard let override else { return nil }
+            guard let override = Defaults[key] else { return nil }
             return .init(
                 anyValue: override.value,
                 valueType: anyFeatureToggle.valueType,
@@ -225,12 +245,11 @@ public class PizzaFirebaseFeatureToggleService: PizzaFeatureToggleService {
             )
         }
 
-        let override = try? UserDefaults.standard.get(
-            objectType: PizzaAnyFeatureToggleOverrideValue.self,
-            forKey: "pizza_feature_toggle_override_\(anyFeatureToggle.key)"
+        let key = Defaults.Key<PizzaAnyFeatureToggleOverrideValue?>(
+            Constants.overridePrefix + anyFeatureToggle.key
         )
         if
-            let override,
+            let override = Defaults[key],
             override.isOverrideEnabled
         {
             return .init(
@@ -257,10 +276,10 @@ public class PizzaFirebaseFeatureToggleService: PizzaFeatureToggleService {
         forFeatureToggle featureToggle: PizzaFeatureToggle<T>,
         overrideValue: PizzaFeatureToggleOverrideValue<T>
     ) {
-        try? UserDefaults.standard.set(
-            object: overrideValue.anyValue,
-            forKey: "pizza_feature_toggle_override_\(featureToggle.key)"
+        let key = Defaults.Key<PizzaAnyFeatureToggleOverrideValue?>(
+            Constants.overridePrefix + featureToggle.key
         )
+        Defaults[key] = overrideValue.anyValue
         reloadSubject.send(())
     }
 
@@ -268,20 +287,20 @@ public class PizzaFirebaseFeatureToggleService: PizzaFeatureToggleService {
         forAnyFeatureToggle anyFeatureToggle: PizzaAnyFeatureToggle,
         anyOverrideValue: PizzaAnyFeatureToggleOverrideValue
     ) {
-        try? UserDefaults.standard.set(
-            object: anyOverrideValue,
-            forKey: "pizza_feature_toggle_override_\(anyFeatureToggle.key)"
+        let key = Defaults.Key<PizzaAnyFeatureToggleOverrideValue?>(
+            Constants.overridePrefix + anyFeatureToggle.key
         )
+        Defaults[key] = anyOverrideValue
         reloadSubject.send(())
     }
 
     public func getAnyOverride(
         forAnyFeatureToggle anyFeatureToggle: PizzaAnyFeatureToggle
     ) -> PizzaAnyFeatureToggleOverrideValue? {
-        try? UserDefaults.standard.get(
-            objectType: PizzaAnyFeatureToggleOverrideValue.self,
-            forKey: "pizza_feature_toggle_override_\(anyFeatureToggle.key)"
+        let key = Defaults.Key<PizzaAnyFeatureToggleOverrideValue?>(
+            Constants.overridePrefix + anyFeatureToggle.key
         )
+        return Defaults[key]
     }
 
     // MARK: - Private Methods
@@ -298,11 +317,18 @@ public class PizzaFirebaseFeatureToggleService: PizzaFeatureToggleService {
     }
 
     private func printCurrentToggles() {
-        print("Current feature toggles:")
+        var payload: [String: Any] = [:]
         for toggle in allToggles {
-            let anyValue = getAnyValue(anyFeatureToggle: toggle)
-            print("- \(toggle.key): \(anyValue.anyValue) (receivedType: \(anyValue.responseType.rawValue))")
+            let toggleValue = getAnyValue(anyFeatureToggle: toggle)
+            payload[toggle.key] = toggleValue.anyValue
+            payload[toggle.key + "_source"] = toggleValue.responseType.rawValue
         }
+        PizzaLogger.log(
+            label: "feature_toggle",
+            level: .info,
+            message: "Feature toggles updated",
+            payload: payload
+        )
     }
     
 }
