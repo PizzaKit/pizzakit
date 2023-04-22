@@ -56,6 +56,7 @@ class ToggleComponentView: PizzaView {
                 make.height.equalTo(20)
             }
             $0.layer.cornerRadius = 2
+            $0.layer.cornerCurve = .continuous
             $0.clipsToBounds = true
         }
 
@@ -80,9 +81,7 @@ class ToggleComponentView: PizzaView {
                 make.leading.equalTo(coloredView.snp.trailing).offset(8)
                 make.top.bottom.equalToSuperview().inset(12)
             }
-            $0.font = .systemFont(ofSize: 17)
-            $0.textColor = .label
-            $0.textAlignment = .left
+            UIStyle<UILabel>.bodyLabel(alignment: .left).apply(for: $0)
             $0.numberOfLines = 0
             $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
             $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
@@ -95,9 +94,7 @@ class ToggleComponentView: PizzaView {
                 make.top.bottom.equalToSuperview().inset(12)
                 make.leading.greaterThanOrEqualTo(titleLabel.snp.trailing).offset(12)
             }
-            $0.font = .systemFont(ofSize: 17)
-            $0.textColor = .secondaryLabel
-            $0.textAlignment = .right
+            UIStyle<UILabel>.bodyLabelSecondary(alignment: .right).apply(for: $0)
             $0.numberOfLines = 0
             $0.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
             $0.setContentHuggingPriority(.defaultLow, for: .horizontal)

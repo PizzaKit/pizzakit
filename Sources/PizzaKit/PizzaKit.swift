@@ -4,4 +4,4 @@
 @_exported import PizzaServices
 @_exported import PizzaPopup
 @_exported import PizzaAlert
-@_exported import PizzaForm
+@_exported import PizzaComponents

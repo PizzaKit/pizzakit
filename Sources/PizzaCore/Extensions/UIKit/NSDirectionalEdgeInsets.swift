@@ -31,4 +31,14 @@ public extension NSDirectionalEdgeInsets {
         )
     }
 
+    func convertToUIEdgeInsets() -> UIEdgeInsets {
+        let direction = UIApplication.shared.userInterfaceLayoutDirection
+        return .init(
+            top: top,
+            left: direction == .leftToRight ? leading : trailing,
+            bottom: bottom,
+            right: direction == .leftToRight ? trailing : leading
+        )
+    }
+
 }

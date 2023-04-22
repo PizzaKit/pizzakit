@@ -29,6 +29,10 @@ let package = Package(
         .library(
             name: "PizzaAppThemeUI",
             targets: ["PizzaAppThemeUI"]
+        ),
+        .library(
+            name: "PizzaDesignSystemUI",
+            targets: ["PizzaDesignSystemUI"]
         )
     ],
     dependencies: [
@@ -126,7 +130,7 @@ let package = Package(
             ]
         ),
         .target(
-            name: "PizzaForm",
+            name: "PizzaComponents",
             dependencies: ["PizzaDesign"]
         ),
         .target(
@@ -135,7 +139,7 @@ let package = Package(
                 "PizzaServices",
                 "PizzaPopup",
                 "PizzaAlert",
-                "PizzaForm",
+                "PizzaComponents",
             ]
         ),
         .target(
@@ -165,6 +169,12 @@ let package = Package(
             ],
             resources: [
                 .process("Resources")
+            ]
+        ),
+        .target(
+            name: "PizzaDesignSystemUI",
+            dependencies: [
+                "PizzaKit"
             ]
         )
     ],

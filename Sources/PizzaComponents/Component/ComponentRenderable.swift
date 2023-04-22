@@ -13,27 +13,29 @@ public protocol ComponentRenderable: AnyObject {
 
     /// Method for rendering component in current entity
     func render(component: any Component, renderType: RenderType)
+
+    /// Method for making any postprocess configurations
+    func postRenderConfiguration(component: any Component, renderType: RenderType)
 }
 
-public protocol ComponentRenderableAccessories {
-    func setup(accessories: [ComponentAccessoryType])
+public extension ComponentRenderable {
+    func postRenderConfiguration(component: any Component, renderType: RenderType) {}
 }
+
+//public protocol ComponentRenderableAccessories {
+//    func setup(accessories: [ComponentAccessoryType])
+//}
 
 public extension ComponentRenderable where Self: UITableViewCell {
     var componentContainerView: UIView {
         return contentView
     }
 }
-extension UITableViewCell: ComponentRenderableAccessories {
-    public func setup(accessories: [ComponentAccessoryType]) {
-        self.accessoryType = .none
-        if accessories.contains(.arrow) {
-            self.accessoryType = .disclosureIndicator
-        } else if accessories.contains(.check) {
-            self.accessoryType = .checkmark
-        }
-    }
-}
+//extension UITableViewCell: ComponentRenderableAccessories {
+//    public func setup(accessories: [ComponentAccessoryType]) {
+//
+//    }
+//}
 public extension ComponentRenderable where Self: UICollectionViewCell {
     var componentContainerView: UIView {
         return contentView
@@ -59,14 +61,16 @@ public extension ComponentRenderable {
             return newRenderTarget
         }()
         anyComponent.render(in: currentRenderTarget, renderType: renderType)
-        if
-            let accessoriesComponent = component as? ComponentWithAccessories,
-            let accessoriesRenderable = self as? ComponentRenderableAccessories
-        {
-            accessoriesRenderable.setup(accessories: accessoriesComponent.accessories)
-        }
+//        if
+//            let accessoriesComponent = component as? ComponentWithAccessories,
+//            let accessoriesRenderable = self as? ComponentRenderableAccessories
+//        {
+//            accessoriesRenderable.setup(accessories: accessoriesComponent.accessories)
+//        }
 
         self.renderTarget = currentRenderTarget
         self.renderComponent = anyComponent
+
+        postRenderConfiguration(component: component, renderType: renderType)
     }
 }

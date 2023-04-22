@@ -1,13 +1,13 @@
 import PizzaKit
 import UIKit
 
-public class FeatureToggleBoolValuePresenter: FeatureToggleValuePresenter, FormPresenter {
+public class FeatureToggleBoolValuePresenter: FeatureToggleValuePresenter, ComponentPresenter {
 
     struct State {
         var value: Bool
     }
 
-    public weak var delegate: FormPresenterDelegate?
+    public weak var delegate: ComponentPresenterDelegate?
 
     public var onNeedSaveValue: PizzaClosure<PizzaFeatureToggleValueType>?
 
@@ -28,33 +28,29 @@ public class FeatureToggleBoolValuePresenter: FeatureToggleValuePresenter, FormP
     }
 
     public func createController() -> UIViewController {
-        FormTableController(
-            presenter: self,
-            onViewDidLoad: {
-                $0.navigationItem.title = "Edit overrided value"
-            }
-        )
+        ComponentTableController(presenter: self)
     }
 
     public func touch() {
+        delegate?.controller.do {
+            $0.navigationItem.title = "Edit overrided value"
+        }
         render()
     }
 
     private func render() {
         delegate?.render(sections: [
-            Section(
+            ComponentSection(
                 id: "section",
                 cells: [
-                    .init(
-                        component: SwitchComponent(
-                            id: "switch_component",
-                            text: "Value",
-                            value: state.value,
-                            isEnabled: true,
-                            onChanged: { [weak self] isOn in
-                                self?.state.value = isOn
-                            }
-                        )
+                    SwitchComponent(
+                        id: "switch_component",
+                        text: "Value",
+                        value: state.value,
+                        isEnabled: true,
+                        onChanged: { [weak self] isOn in
+                            self?.state.value = isOn
+                        }
                     )
                 ]
             )

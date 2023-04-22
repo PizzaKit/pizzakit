@@ -1,6 +1,6 @@
 /// элемент для diffablDataSource. Содержит в себе компонент, который будет рендерится
 /// в ячейку
-public struct CellNode: Hashable {
+public struct ComponentNode: Hashable {
 
     public let id: AnyHashable
     public let component: any Component
@@ -9,7 +9,7 @@ public struct CellNode: Hashable {
         hasher.combine(id)
     }
 
-    public static func == (lhs: CellNode, rhs: CellNode) -> Bool {
+    public static func == (lhs: ComponentNode, rhs: ComponentNode) -> Bool {
         lhs.id == rhs.id
     }
 
@@ -29,8 +29,8 @@ public struct CellNode: Hashable {
 
 }
 
-extension CellNode: CustomStringConvertible {
+extension ComponentNode: CustomStringConvertible {
     public var description: String {
-        "(Cell node with id: \(id) component: \(component)"
+        "(Component node with id: \(id) component: \(component)"
     }
 }

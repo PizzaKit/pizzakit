@@ -1,12 +1,13 @@
 import PizzaKit
 import Foundation
 import Combine
+import UIKit
 
-public class FeatureTogglePresenter: FormPresenter {
+public class FeatureTogglePresenter: ComponentPresenter {
 
     struct State {}
 
-    public weak var delegate: FormPresenterDelegate?
+    public weak var delegate: ComponentPresenterDelegate?
     private let featureToggleService: PizzaFeatureToggleService
     private let router: PizzaFeatureToggleUIRouter
     private let featureToggle: PizzaAnyFeatureToggle
@@ -26,6 +27,10 @@ public class FeatureTogglePresenter: FormPresenter {
     }
 
     public func touch() {
+        delegate?.controller.do {
+            $0.navigationItem.title = featureToggle.key
+            $0.navigationItem.largeTitleDisplayMode = .never
+        }
         featureToggleService
             .reloadPublisher
             .receive(on: DispatchQueue.main)
@@ -38,34 +43,32 @@ public class FeatureTogglePresenter: FormPresenter {
     }
 
     private func render() {
-        var cells: [CellNode] = []
+        var cells: [any IdentifiableComponent] = []
 
         let anyValue = featureToggleService
             .getAnyValue(anyFeatureToggle: featureToggle)
 
         let override = getCurrentOverride()
         cells.append(
-            .init(
-                component: SwitchComponent(
-                    id: "switch",
-                    text: "Turn on override",
-                    value: anyValue.responseType == .fromOverride,
-                    isEnabled: true,
-                    onChanged: { [weak self] isOn in
-                        self?.changeOverride(isOn: isOn)
-                    }
-                )
+            SwitchComponent(
+                id: "switch",
+                text: "Turn on override",
+                value: anyValue.responseType == .fromOverride,
+                isEnabled: true,
+                onChanged: { [weak self] isOn in
+                    self?.changeOverride(isOn: isOn)
+                }
             )
         )
         cells.append(
-            .init(
-                component: TitleValueSelectableComponent(
-                    id: "override_value",
-                    title: "Override value",
-                    description: override.value.description,
-                    style: anyValue.responseType == .fromOverride
-                        ? .accentArrow
-                        : .defaultArrow,
+            ListComponent(
+                id: "override_value",
+                title: "Override value",
+                value: override.value.description,
+                titleStyle: anyValue.responseType == .fromOverride
+                    ? .bodyTint(alignment: .left)
+                    : .bodyLabel(alignment: .left),
+                selectableContext: .init(
                     shouldDeselect: true,
                     onSelect: { [weak self] in
                         guard let self else { return }
@@ -83,30 +86,28 @@ public class FeatureTogglePresenter: FormPresenter {
             responseType: .fromRemoteConfig
         )
         cells.append(
-            .init(
-                component: TitleValueComponent(
-                    id: "remote_config_value",
-                    title: "Remote config value",
-                    description: remoteConfigValue?.anyValue.description ?? "<none>",
-                    style: anyValue.responseType == .fromRemoteConfig ? .accent : .default
-                )
+            ListComponent(
+                id: "remote_config_value",
+                title: "Remote config value",
+                value: remoteConfigValue?.anyValue.description,
+                titleStyle: anyValue.responseType == .fromRemoteConfig
+                    ? .bodyTint(alignment: .left)
+                    : .bodyLabel(alignment: .left)
             )
         )
         cells.append(
-            .init(
-                component: TitleValueComponent(
-                    id: "default_value",
-                    title: "Default value",
-                    description: featureToggle.defaultAnyValue.description,
-                    style: anyValue.responseType == .default
-                        ? .accent
-                        : .default
-                )
+            ListComponent(
+                id: "default_value",
+                title: "Default value",
+                value: featureToggle.defaultAnyValue.description,
+                titleStyle: anyValue.responseType == .default
+                    ? .bodyTint(alignment: .left)
+                    : .bodyLabel(alignment: .left)
             )
         )
 
         delegate?.render(sections: [
-            Section(
+            ComponentSection(
                 id: "override_section",
                 cells: cells
             )
@@ -146,17 +147,12 @@ public class FeatureTogglePresenter: FormPresenter {
 
 }
 
-extension TitleValueComponent.Style {
-    public static let accent = TitleValueComponent.Style(
-        titleColor: .tintColor,
-        valueColor: .secondaryLabel,
-        needArrow: false,
-        numberOfLines: 1
-    )
-    public static let accentArrow = TitleValueComponent.Style(
-        titleColor: .tintColor,
-        valueColor: .secondaryLabel,
-        needArrow: true,
-        numberOfLines: 1
-    )
+extension UIStyle where Control == UILabel {
+    static func bodyTint(alignment: NSTextAlignment) -> UILabelStyle {
+        .init(
+            font: .systemFont(ofSize: 17),
+            color: .tintColor,
+            alignment: alignment
+        )
+    }
 }

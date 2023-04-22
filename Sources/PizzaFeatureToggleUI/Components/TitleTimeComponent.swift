@@ -3,37 +3,37 @@ import SnapKit
 import PizzaKit
 import Combine
 
-public struct TitleTimeComponent: IdentifiableComponent, ComponentWithAccessories, SelectableComponent {
+public struct TitleTimeComponent: IdentifiableComponent, SelectableComponent {
 
     public let id: String
     public let title: String?
+    public let titleStyle: UILabelStyle
+    public let valueStyle: UILabelStyle
     public let onGetString: PizzaReturnClosure<Date, String>?
-    public let style: TitleValueComponent.Style
     public let onSelect: PizzaEmptyClosure?
     public var shouldDeselect: Bool { true }
-
-    public var accessories: [ComponentAccessoryType] {
-        return style.needArrow ? [.arrow] : []
-    }
 
     public init(
         id: String,
         title: String?,
+        titleStyle: UILabelStyle = .bodyLabel(alignment: .left),
+        valueStyle: UILabelStyle = .bodyLabelSecondary(alignment: .right),
         onGetString: PizzaReturnClosure<Date, String>?,
-        style: TitleValueComponent.Style,
         onSelect: PizzaEmptyClosure?
     ) {
         self.id = id
         self.title = title
+        self.titleStyle = titleStyle
+        self.valueStyle = valueStyle
         self.onGetString = onGetString
-        self.style = style
         self.onSelect = onSelect
     }
 
     public func render(in renderTarget: TitleTimeComponentView, renderType: RenderType) {
         renderTarget.configure(
             title: title,
-            style: style,
+            titleStyle: titleStyle,
+            valueStyle: valueStyle,
             onGetString: onGetString
         )
     }
@@ -62,8 +62,7 @@ public class TitleTimeComponentView: PizzaView {
                 make.leading.equalToSuperview()
                 make.top.bottom.equalToSuperview().inset(12)
             }
-            $0.font = .systemFont(ofSize: 17)
-            $0.textAlignment = .left
+            $0.numberOfLines = 1
             $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
             $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         }
@@ -75,8 +74,7 @@ public class TitleTimeComponentView: PizzaView {
                 make.top.bottom.equalToSuperview().inset(12)
                 make.leading.greaterThanOrEqualTo(titleLabel.snp.trailing).offset(12)
             }
-            $0.font = .systemFont(ofSize: 17)
-            $0.textAlignment = .right
+            $0.numberOfLines = 1
             $0.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
             $0.setContentHuggingPriority(.defaultLow, for: .horizontal)
         }
@@ -96,16 +94,14 @@ public class TitleTimeComponentView: PizzaView {
 
     func configure(
         title: String?,
-        style: TitleValueComponent.Style,
+        titleStyle: UILabelStyle,
+        valueStyle: UILabelStyle,
         onGetString: PizzaReturnClosure<Date, String>?
     ) {
         self.onGetString = onGetString
 
-        titleLabel.textColor = style.titleColor
-        descriptionLabel.textColor = style.valueColor
-
-        titleLabel.numberOfLines = style.numberOfLines
-        descriptionLabel.numberOfLines = style.numberOfLines
+        titleStyle.apply(for: titleLabel)
+        valueStyle.apply(for: descriptionLabel)
 
         titleLabel.text = title
         descriptionLabel.text = onGetString?(Date())

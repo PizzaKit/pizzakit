@@ -16,6 +16,10 @@ public protocol ComponentWithAccessories {
     var accessories: [ComponentAccessoryType] { get }
 }
 
+public protocol ComponentWithSeparator {
+    var separatorInsets: NSDirectionalEdgeInsets { get }
+}
+
 /// Модель, которая в себе содержит все поля, необходимые для заполнения RenderTarget.
 /// Так же модель (Component) ответственна за сравнение себя с новой моделью,
 /// добавлением RenderTarget к контейнеру и отслеживает методы ЖЦ RenderTarget

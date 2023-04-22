@@ -7,7 +7,7 @@ import Combine
 import SFSafeSymbols
 import Defaults
 
-public class FeatureTogglesListPresenter: FormPresenter {
+public class FeatureTogglesListPresenter: ComponentPresenter {
 
     struct State {
         struct FeatureToggle {
@@ -23,7 +23,7 @@ public class FeatureTogglesListPresenter: FormPresenter {
         var isExpanded: Bool
     }
 
-    public weak var delegate: FormPresenterDelegate?
+    public weak var delegate: ComponentPresenterDelegate?
     private let featureToggleService: PizzaFeatureToggleService
     private let router: PizzaFeatureToggleUIRouter
     private var state: State {
@@ -46,6 +46,10 @@ public class FeatureTogglesListPresenter: FormPresenter {
     }
 
     public func touch() {
+        delegate?.controller.do {
+            $0.navigationItem.title = "Firebase RC"
+            $0.navigationItem.largeTitleDisplayMode = .never
+        }
         featureToggleService
             .reloadPublisher
             .receive(on: DispatchQueue.main)
@@ -62,43 +66,44 @@ public class FeatureTogglesListPresenter: FormPresenter {
     }
 
     private func render() {
-        let togglesCells: [CellNode] = state.items.map { item in
-            .init(
-                component: ToggleComponent(
-                    id: item.key,
-                    color: item.color,
-                    colorText: item.colorText,
-                    title: item.key,
-                    value: item.value,
-                    isExpanded: state.isExpanded,
-                    onSelect: { [weak self] in
-                        self?.router.open(anyFeatureToggle: item.anyFeatureToggle)
-                    }
+        let togglesCells: [any IdentifiableComponent] = state.items.map { item in
+            ToggleComponent(
+                id: item.key,
+                color: item.color,
+                colorText: item.colorText,
+                title: item.key,
+                value: item.value,
+                isExpanded: state.isExpanded,
+                onSelect: { [weak self] in
+                    self?.router.open(anyFeatureToggle: item.anyFeatureToggle)
+                }
+            )
+        }
+
+        var infoCells: [any IdentifiableComponent] = [getTimeCell()]
+        if let installationId = state.installationId {
+            infoCells.append(
+                ListComponent(
+                    id: "installation_id",
+                    title: "Installation id",
+                    value: installationId,
+                    selectableContext: .init(
+                        shouldDeselect: true,
+                        onSelect: {
+                            UIPasteboard.general.string = installationId
+                            SPIndicator.present(title: "Copied", preset: .done)
+                        }
+                    )
                 )
             )
         }
 
-        var infoCells: [CellNode] = [getTimeCell()]
-        if let installationId = state.installationId {
-            infoCells.append(.init(component: TitleValueSelectableComponent(
-                id: "installation_id",
-                title: "Installation id",
-                description: installationId,
-                style: .default,
-                shouldDeselect: true,
-                onSelect: {
-                    UIPasteboard.general.string = installationId
-                    SPIndicator.present(title: "Copied", preset: .done)
-                }
-            )))
-        }
-
         delegate?.render(sections: [
-            Section(
+            ComponentSection(
                 id: "firebase_info",
                 cells: infoCells
             ),
-            Section(
+            ComponentSection(
                 id: "all_toggles",
                 cells: togglesCells
             )
@@ -144,15 +149,14 @@ public class FeatureTogglesListPresenter: FormPresenter {
         return Int(end.timeIntervalSince1970 - start.timeIntervalSince1970)
     }
 
-    private func getTimeCell() -> CellNode {
+    private func getTimeCell() -> any IdentifiableComponent {
         let title = "Last fetch time"
         guard let date = featureToggleService.lastFetchDate else {
-            return .init(component: TitleValueComponent(
+            return ListComponent(
                 id: "last_fetch_time_never",
                 title: title,
-                description: "never",
-                style: .default
-            ))
+                value: "never"
+            )
         }
         let onSelect: PizzaEmptyClosure = { [weak self] in
             guard let self else { return }
@@ -160,35 +164,31 @@ public class FeatureTogglesListPresenter: FormPresenter {
             Defaults[.preferReferencedTimeKey] = self.state.preferReferencedTime
         }
         if state.preferReferencedTime {
-            return .init(
-                component: TitleTimeComponent(
-                    id: "last_fetch_time_reference",
-                    title: title,
-                    onGetString: { [weak self] currentDate in
-                        let timeSecondsDiff = self?.getSecondsDifferenceFromTwoDates(
-                            start: date,
-                            end: currentDate
-                        ) ?? 0
-                        if timeSecondsDiff >= 60 {
-                            return "\(Int(timeSecondsDiff / 60)) minutes ago"
-                        }
-                        return "\(timeSecondsDiff) seconds ago"
-                    },
-                    style: .default,
-                    onSelect: onSelect
-                )
+            return TitleTimeComponent(
+                id: "last_fetch_time_reference",
+                title: title,
+                onGetString: { [weak self] currentDate in
+                    let timeSecondsDiff = self?.getSecondsDifferenceFromTwoDates(
+                        start: date,
+                        end: currentDate
+                    ) ?? 0
+                    if timeSecondsDiff >= 60 {
+                        return "\(Int(timeSecondsDiff / 60)) minutes ago"
+                    }
+                    return "\(timeSecondsDiff) seconds ago"
+                },
+                onSelect: onSelect
             )
         }
         let dateTimeFormatter = DateFormatter()
         dateTimeFormatter.timeStyle = .medium
         dateTimeFormatter.dateStyle = .short
         let dateString = dateTimeFormatter.string(from: date)
-        return .init(
-            component: TitleValueSelectableComponent(
-                id: "last_fetch_time_date",
-                title: title,
-                description: dateString,
-                style: .default,
+        return ListComponent(
+            id: "last_fetch_time_date",
+            title: title,
+            value: dateString,
+            selectableContext: .init(
                 shouldDeselect: true,
                 onSelect: onSelect
             )
@@ -196,7 +196,7 @@ public class FeatureTogglesListPresenter: FormPresenter {
     }
 
     private func updateMenu() {
-        delegate?.modify {
+        delegate?.controller.do {
             $0.navigationItem.rightBarButtonItem = .init(
                 image: UIImage(
                     systemSymbol: .paintbrush,
