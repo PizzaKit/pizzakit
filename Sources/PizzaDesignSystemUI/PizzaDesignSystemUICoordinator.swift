@@ -5,6 +5,7 @@ public protocol PizzaDesignSystemUICoordinatable: AnyObject {
     func openComponents()
     func openLabelStyles()
     func openColors()
+    func openButtons()
 }
 
 public class PizzaDesignSystemUICoordinator<Deeplink, Session>: PizzaRouterCoordinator<Deeplink, Session>, PizzaDesignSystemUICoordinatable {
@@ -35,6 +36,12 @@ public class PizzaDesignSystemUICoordinator<Deeplink, Session>: PizzaRouterCoord
 
     public func openColors() {
         let presenter = ColorsPresenter()
+        let controller = ComponentTableController(presenter: presenter)
+        router.push(module: controller)
+    }
+
+    public func openButtons() {
+        let presenter = ButtonsPresenter()
         let controller = ComponentTableController(presenter: presenter)
         router.push(module: controller)
     }

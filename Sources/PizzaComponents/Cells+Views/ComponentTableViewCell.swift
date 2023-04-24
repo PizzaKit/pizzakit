@@ -38,7 +38,7 @@ public class ComponentTableViewCell: PizzaTableCell, ComponentRenderable {
         if let separatorComponent = component as? ComponentWithSeparator {
             separatorInset = separatorComponent.separatorInsets.convertToUIEdgeInsets()
         } else {
-            separatorInset = .zero
+            separatorInset = .init(top: 0, left: 10000, bottom: 0, right: 0)
         }
     }
 

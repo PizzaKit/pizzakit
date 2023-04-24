@@ -75,6 +75,23 @@ class MenuPresenter: ComponentPresenter {
                             }
                         ),
                         trailingContent: .arrow
+                    ),
+                    ListComponent(
+                        id: "buttons",
+                        icon: .system(
+                            .init(
+                                sfSymbol: .rectangleCompressVertical,
+                                backgroundColor: .systemRed
+                            )
+                        ),
+                        title: "Buttons",
+                        selectableContext: .init(
+                            shouldDeselect: false,
+                            onSelect: { [weak self] in
+                                self?.coordinator?.openButtons()
+                            }
+                        ),
+                        trailingContent: .arrow
                     )
                 ]
             )
