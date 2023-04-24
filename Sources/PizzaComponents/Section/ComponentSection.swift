@@ -1,4 +1,4 @@
-public struct ComponentSection: Hashable { // TODO: rename to ComponentSection
+public struct ComponentSection: Hashable {
     public static func == (lhs: ComponentSection, rhs: ComponentSection) -> Bool {
         return lhs.id == rhs.id
             && lhs.headerNode?.id == rhs.headerNode?.id

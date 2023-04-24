@@ -37,10 +37,10 @@ struct ToggleComponent: IdentifiableComponent, SelectableComponent, ComponentWit
 
 class ToggleComponentView: PizzaView {
 
-    private let titleLabel = UILabel()
-    private let descriptionLabel = UILabel()
+    private let titleLabel = PizzaLabel()
+    private let descriptionLabel = PizzaLabel()
     private let coloredView = UIView()
-    private let coloredLabel = UILabel()
+    private let coloredLabel = PizzaLabel()
 
     private var coloredViewWidthConstraint: Constraint?
 
@@ -81,7 +81,7 @@ class ToggleComponentView: PizzaView {
                 make.leading.equalTo(coloredView.snp.trailing).offset(8)
                 make.top.bottom.equalToSuperview().inset(12)
             }
-            UIStyle<UILabel>.bodyLabel(alignment: .left).apply(for: $0)
+            $0.style = .allStyles.bodyLabel(alignment: .left)
             $0.numberOfLines = 0
             $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
             $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
@@ -94,7 +94,7 @@ class ToggleComponentView: PizzaView {
                 make.top.bottom.equalToSuperview().inset(12)
                 make.leading.greaterThanOrEqualTo(titleLabel.snp.trailing).offset(12)
             }
-            UIStyle<UILabel>.bodyLabelSecondary(alignment: .right).apply(for: $0)
+            $0.style = .allStyles.bodyLabel(alignment: .right)
             $0.numberOfLines = 0
             $0.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
             $0.setContentHuggingPriority(.defaultLow, for: .horizontal)

@@ -37,7 +37,6 @@ public extension UIColor {
     }
 
     /// Property for getting hex string from current color
-    /// TODO: добавить два хекса чтобы цвета можно было бы создавать/сохранять так
     var hex: String {
         let colorRef = cgColor.components
         let r = colorRef?[0] ?? 0

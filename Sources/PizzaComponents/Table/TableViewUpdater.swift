@@ -40,19 +40,19 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
         // cells
         let allCellIdentifiers = sections.flatMap { $0.cellsNode }.map { $0.component.reuseIdentifier }
         allCellIdentifiers.forEach {
-            target.register(FormTableViewCell.self, forCellReuseIdentifier: $0)
+            target.register(ComponentTableViewCell.self, forCellReuseIdentifier: $0)
         }
 
         // headers
         let allHeaderIdentifiers = sections.compactMap { $0.headerNode?.component.reuseIdentifier }
         allHeaderIdentifiers.forEach {
-            target.register(FormTableReusableView.self, forHeaderFooterViewReuseIdentifier: $0)
+            target.register(ComponentTableReusableView.self, forHeaderFooterViewReuseIdentifier: $0)
         }
 
         // footers
         let allFooterIdentifiers = sections.compactMap { $0.footerNode?.component.reuseIdentifier }
         allFooterIdentifiers.forEach {
-            target.register(FormTableReusableView.self, forHeaderFooterViewReuseIdentifier: $0)
+            target.register(ComponentTableReusableView.self, forHeaderFooterViewReuseIdentifier: $0)
         }
 
         // ------------
@@ -161,7 +161,7 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
             else {
                 return nil
             }
-            let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerComponent.reuseIdentifier) as! FormTableReusableView
+            let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerComponent.reuseIdentifier) as! ComponentTableReusableView
             view.render(component: headerComponent, renderType: .hard)
             return view
         } else {
@@ -180,7 +180,7 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
             else {
                 return nil
             }
-            let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: footerComponent.reuseIdentifier) as! FormTableReusableView
+            let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: footerComponent.reuseIdentifier) as! ComponentTableReusableView
             view.render(component: footerComponent, renderType: .hard)
             return view
         } else {

@@ -33,6 +33,10 @@ let package = Package(
         .library(
             name: "PizzaDesignSystemUI",
             targets: ["PizzaDesignSystemUI"]
+        ),
+        .library(
+            name: "PizzaNativeDesignSystem",
+            targets: ["PizzaNativeDesignSystem"]
         )
     ],
     dependencies: [
@@ -173,6 +177,12 @@ let package = Package(
         ),
         .target(
             name: "PizzaDesignSystemUI",
+            dependencies: [
+                "PizzaKit"
+            ]
+        ),
+        .target(
+            name: "PizzaNativeDesignSystem",
             dependencies: [
                 "PizzaKit"
             ]

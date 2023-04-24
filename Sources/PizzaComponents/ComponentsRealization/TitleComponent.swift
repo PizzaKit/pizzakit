@@ -7,15 +7,13 @@ public struct TitleComponent: IdentifiableComponent {
 
     public var id: String
     public let text: String?
-    public let style: UIStyle<UILabel>
+    public let style: UIStyle<PizzaLabel>
     public let insets: NSDirectionalEdgeInsets
 
     public init(
         id: String,
         text: String?,
-        style: UIStyle<UILabel> = .rubric2Secondary(
-            alignment: .left
-        ),
+        style: UIStyle<PizzaLabel> = .allStyles.rubric2SecondaryLabel(alignment: .left),
         insets: NSDirectionalEdgeInsets
     ) {
         self.id = id
@@ -59,7 +57,7 @@ public extension NSDirectionalEdgeInsets {
 
 public class TitleComponentView: PizzaView {
 
-    private let titleLabel = UILabel()
+    private let titleLabel = PizzaLabel()
 
     public override func commonInit() {
         super.commonInit()
@@ -75,11 +73,11 @@ public class TitleComponentView: PizzaView {
 
     public func configure(
         text: String?,
-        style: UIStyle<UILabel>,
+        style: UIStyle<PizzaLabel>,
         insets: NSDirectionalEdgeInsets
     ) {
-        style.apply(for: titleLabel)
         titleLabel.text = text
+        titleLabel.style = style
 
         titleLabel.snp.updateConstraints { make in
             make.edges.equalToSuperview().inset(insets)

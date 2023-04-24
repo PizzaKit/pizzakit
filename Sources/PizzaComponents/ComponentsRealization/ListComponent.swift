@@ -22,8 +22,8 @@ public struct ListComponent: IdentifiableComponent, SelectableComponent, Compone
     public let icon: ComponentIcon?
     public let title: String?
     public let value: String?
-    public let titleStyle: UILabelStyle
-    public let valueStyle: UILabelStyle
+    public let titleStyle: UIStyle<PizzaLabel>
+    public let valueStyle: UIStyle<PizzaLabel>
     public let selectableContext: SelectableContext?
     public let trailingContent: TrailingContent?
 
@@ -53,8 +53,8 @@ public struct ListComponent: IdentifiableComponent, SelectableComponent, Compone
         icon: ComponentIcon? = nil,
         title: String? = nil,
         value: String? = nil,
-        titleStyle: UILabelStyle = .bodyLabel(alignment: .left),
-        valueStyle: UILabelStyle = .bodyLabelSecondary(alignment: .right),
+        titleStyle: UIStyle<PizzaLabel> = .allStyles.bodyLabel(alignment: .left),
+        valueStyle: UIStyle<PizzaLabel> = .allStyles.bodyLabel(alignment: .left),
         selectableContext: SelectableContext? = nil,
         trailingContent: TrailingContent? = nil
     ) {
@@ -88,8 +88,8 @@ public struct ListComponent: IdentifiableComponent, SelectableComponent, Compone
 public class ListComponentView: PizzaView {
 
     private let iconView = ComponentIconView()
-    private let titleLabel = UILabel()
-    private let descriptionLabel = UILabel()
+    private let titleLabel = PizzaLabel()
+    private let descriptionLabel = PizzaLabel()
 
     public override func commonInit() {
         super.commonInit()
@@ -135,8 +135,8 @@ public class ListComponentView: PizzaView {
         icon: ComponentIcon?,
         title: String?,
         value: String?,
-        titleStyle: UILabelStyle,
-        valueStyle: UILabelStyle,
+        titleStyle: UIStyle<PizzaLabel>,
+        valueStyle: UIStyle<PizzaLabel>,
         animated: Bool
     ) {
         if let icon {
@@ -145,16 +145,16 @@ public class ListComponentView: PizzaView {
         iconView.isHidden = icon == nil
 
         titleLabel.text = title
-        titleStyle.apply(for: titleLabel)
+        titleLabel.style = titleStyle
 
         descriptionLabel.text = value
-        valueStyle.apply(for: descriptionLabel)
+        descriptionLabel.style = valueStyle
 
         titleLabel.snp.updateConstraints { make in
             make.leading.equalToSuperview().offset(icon == nil ? 0 : 44)
         }
         UIView.animateIfNeeded(
-            duration: .designSystem.animationDuration,
+            duration: .animationConstants.standardDuration,
             needAnimate: animated,
             animationBlock: {
                 self.layoutIfNeeded()

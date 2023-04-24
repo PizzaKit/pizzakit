@@ -7,8 +7,8 @@ public struct TitleTimeComponent: IdentifiableComponent, SelectableComponent {
 
     public let id: String
     public let title: String?
-    public let titleStyle: UILabelStyle
-    public let valueStyle: UILabelStyle
+    public let titleStyle: UIStyle<PizzaLabel>
+    public let valueStyle: UIStyle<PizzaLabel>
     public let onGetString: PizzaReturnClosure<Date, String>?
     public let onSelect: PizzaEmptyClosure?
     public var shouldDeselect: Bool { true }
@@ -16,8 +16,8 @@ public struct TitleTimeComponent: IdentifiableComponent, SelectableComponent {
     public init(
         id: String,
         title: String?,
-        titleStyle: UILabelStyle = .bodyLabel(alignment: .left),
-        valueStyle: UILabelStyle = .bodyLabelSecondary(alignment: .right),
+        titleStyle: UIStyle<PizzaLabel> = .allStyles.bodyLabel(alignment: .left),
+        valueStyle: UIStyle<PizzaLabel> = .allStyles.bodySecondaryLabel(alignment: .right),
         onGetString: PizzaReturnClosure<Date, String>?,
         onSelect: PizzaEmptyClosure?
     ) {
@@ -46,8 +46,8 @@ public struct TitleTimeComponent: IdentifiableComponent, SelectableComponent {
 
 public class TitleTimeComponentView: PizzaView {
 
-    private let titleLabel = UILabel()
-    private let descriptionLabel = UILabel()
+    private let titleLabel = PizzaLabel()
+    private let descriptionLabel = PizzaLabel()
 
     private var bag = Set<AnyCancellable>()
 
@@ -94,14 +94,14 @@ public class TitleTimeComponentView: PizzaView {
 
     func configure(
         title: String?,
-        titleStyle: UILabelStyle,
-        valueStyle: UILabelStyle,
+        titleStyle: UIStyle<PizzaLabel>,
+        valueStyle: UIStyle<PizzaLabel>,
         onGetString: PizzaReturnClosure<Date, String>?
     ) {
         self.onGetString = onGetString
 
-        titleStyle.apply(for: titleLabel)
-        valueStyle.apply(for: descriptionLabel)
+        titleLabel.style = titleStyle
+        descriptionLabel.style = valueStyle
 
         titleLabel.text = title
         descriptionLabel.text = onGetString?(Date())

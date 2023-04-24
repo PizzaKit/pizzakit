@@ -2,16 +2,14 @@ import PizzaKit
 import SFSafeSymbols
 import UIKit
 
-public class PizzaDesignSystemPresenter: ComponentPresenter {
+class ComponentsPresenter: ComponentPresenter {
 
-    public weak var delegate: ComponentPresenterDelegate?
+    weak var delegate: ComponentPresenterDelegate?
 
-    public init() {}
-
-    public func touch() {
+    func touch() {
         delegate?.controller.do {
             $0.navigationItem.largeTitleDisplayMode = .never
-            $0.navigationItem.title = "Design system"
+            $0.navigationItem.title = "Components"
             $0.scrollView.keyboardDismissMode = .onDrag
         }
         delegate?.render(
@@ -241,7 +239,9 @@ public class PizzaDesignSystemPresenter: ComponentPresenter {
                         TextFieldComponent(
                             id: "text_field",
                             text: nil,
-                            style: .body(alignment: .left, placeholder: "Placeholder"),
+                            style: .allStyles.standardTextField(
+                                placeholder: "Placeholder"
+                            ),
                             onTextChanged: nil,
                             onTextBeginEditing: nil,
                             onTextEndEditing: nil,

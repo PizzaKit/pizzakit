@@ -66,8 +66,8 @@ public class FeatureTogglePresenter: ComponentPresenter {
                 title: "Override value",
                 value: override.value.description,
                 titleStyle: anyValue.responseType == .fromOverride
-                    ? .bodyTint(alignment: .left)
-                    : .bodyLabel(alignment: .left),
+                    ? .allStyles.bodyTint(alignment: .left)
+                    : .allStyles.bodyLabel(alignment: .left),
                 selectableContext: .init(
                     shouldDeselect: true,
                     onSelect: { [weak self] in
@@ -91,8 +91,8 @@ public class FeatureTogglePresenter: ComponentPresenter {
                 title: "Remote config value",
                 value: remoteConfigValue?.anyValue.description,
                 titleStyle: anyValue.responseType == .fromRemoteConfig
-                    ? .bodyTint(alignment: .left)
-                    : .bodyLabel(alignment: .left)
+                    ? .allStyles.bodyTint(alignment: .left)
+                    : .allStyles.bodyLabel(alignment: .left)
             )
         )
         cells.append(
@@ -101,8 +101,8 @@ public class FeatureTogglePresenter: ComponentPresenter {
                 title: "Default value",
                 value: featureToggle.defaultAnyValue.description,
                 titleStyle: anyValue.responseType == .default
-                    ? .bodyTint(alignment: .left)
-                    : .bodyLabel(alignment: .left)
+                    ? .allStyles.bodyTint(alignment: .left)
+                    : .allStyles.bodyLabel(alignment: .left)
             )
         )
 
@@ -145,14 +145,4 @@ public class FeatureTogglePresenter: ComponentPresenter {
         )
     }
 
-}
-
-extension UIStyle where Control == UILabel {
-    static func bodyTint(alignment: NSTextAlignment) -> UILabelStyle {
-        .init(
-            font: .systemFont(ofSize: 17),
-            color: .tintColor,
-            alignment: alignment
-        )
-    }
 }

@@ -26,7 +26,7 @@ public struct SwitchComponent: IdentifiableComponent, ComponentWithSeparator {
     public let id: String
     public let icon: ComponentIcon?
     public let text: String
-    public let textStyle: UIStyle<UILabel>
+    public let textStyle: UIStyle<PizzaLabel>
     public let value: Bool
     public let style: Style
     public let isEnabled: Bool
@@ -42,7 +42,7 @@ public struct SwitchComponent: IdentifiableComponent, ComponentWithSeparator {
         id: String,
         icon: ComponentIcon? = nil,
         text: String,
-        textStyle: UIStyle<UILabel> = .bodyLabel(alignment: .left),
+        textStyle: UIStyle<PizzaLabel> = .allStyles.bodyLabel(alignment: .left),
         value: Bool,
         style: Style = .default,
         isEnabled: Bool = true,
@@ -81,7 +81,7 @@ public class SwitchComponentView: PizzaView {
 
     private let iconView = ComponentIconView()
     private let switchView = UISwitch()
-    private let titleLabel = UILabel()
+    private let titleLabel = PizzaLabel()
 
     private lazy var tapGestureRecognizer = UITapGestureRecognizer(
         target: self,
@@ -136,14 +136,13 @@ public class SwitchComponentView: PizzaView {
     func configure(
         icon: ComponentIcon?,
         text: String,
-        textStyle: UIStyle<UILabel>,
+        textStyle: UIStyle<PizzaLabel>,
         isOn: Bool,
         style: SwitchComponent.Style,
         isEnabled: Bool,
         animated: Bool,
         onChanged: @escaping PizzaClosure<Bool>
     ) {
-        // TODO support style
         self.onChanged = onChanged
 
         tapGestureRecognizer.isEnabled = style.allowPressOnWholeCell && isEnabled
@@ -155,7 +154,7 @@ public class SwitchComponentView: PizzaView {
         iconView.isHidden = icon == nil
 
         titleLabel.text = text
-        textStyle.apply(for: titleLabel)
+        titleLabel.style = textStyle
 
         switchView.setOn(isOn, animated: animated)
         switchView.isEnabled = isEnabled

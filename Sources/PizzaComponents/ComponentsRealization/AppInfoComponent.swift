@@ -39,7 +39,7 @@ public struct AppInfoComponent: IdentifiableComponent {
 public class AppInfoComponentView: PizzaView {
 
     private let appIconImageView = UIImageView()
-    private let appInfoLabel = UILabel()
+    private let appInfoLabel = PizzaLabel()
 
     public var onPressedMultipleTimes: PizzaEmptyClosure?
 
@@ -74,7 +74,7 @@ public class AppInfoComponentView: PizzaView {
                 make.leading.trailing.equalToSuperview().inset(16)
                 make.bottom.equalToSuperview().offset(-30)
             }
-            UIStyle<UILabel>.bodyLabelSecondary(alignment: .center).apply(for: $0)
+            $0.style = .allStyles.bodySecondaryLabel(alignment: .center)
             $0.numberOfLines = 0
         }
     }

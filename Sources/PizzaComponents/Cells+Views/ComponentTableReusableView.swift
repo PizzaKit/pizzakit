@@ -1,6 +1,6 @@
 import UIKit
 
-class FormTableReusableView: UITableViewHeaderFooterView, ComponentRenderable {
+class ComponentTableReusableView: UITableViewHeaderFooterView, ComponentRenderable {
 
     public var renderTarget: Any?
     public var renderComponent: AnyComponent?

@@ -1,11 +1,11 @@
 import UIKit
 
 public protocol UIStyleProtocol {
-    associatedtype Control: UIView
+    associatedtype Control: UIResponder
     func apply(for: Control)
 }
 
-open class UIStyle<Control: UIView>: UIStyleProtocol {
+open class UIStyle<Control: UIResponder>: UIStyleProtocol {
     public init() {}
     open func apply(for: Control) {}
 }

@@ -1,7 +1,7 @@
 import UIKit
 import PizzaDesign
 
-public class FormTableViewCell: PizzaTableCell, ComponentRenderable {
+public class ComponentTableViewCell: PizzaTableCell, ComponentRenderable {
 
     public var renderTarget: Any?
     public var renderComponent: AnyComponent?

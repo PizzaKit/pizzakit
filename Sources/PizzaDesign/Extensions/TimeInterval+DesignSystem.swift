@@ -2,8 +2,8 @@ import UIKit
 
 public extension TimeInterval {
 
-    static var designSystem: PizzaDesignSystem {
-        PizzaDesignSystem.current
+    public static var animationConstants: PizzaAnimationConstants {
+        PizzaDesignSystemStore.currentDesignSystem.animationConstants
     }
 
 }
