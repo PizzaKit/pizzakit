@@ -2,8 +2,8 @@
 
 "apptheme.pres.switch.header" = "外觀";
 "apptheme.pres.switch.text" = "系統";
-"apptheme.pres.switch.footer" = ""如果你選擇「系統」，WhatsX 將會自動根據你裝置
-的系統設定調整外觀。"";
+"apptheme.pres.switch.footer" = "如果你選擇「系統」，WhatsX 將會自動根據你裝置
+的系統設定調整外觀";
 
 "apptheme.pres.select.light" = "淺色";
 "apptheme.pres.select.dark" = "深色";

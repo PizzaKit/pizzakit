@@ -2,11 +2,11 @@
 
 "apptheme.pres.switch.header" = "ASPETTO";
 "apptheme.pres.switch.text" = "Sistema";
-"apptheme.pres.switch.footer" = "Se hai selezionato "Sistema", modificheremo l'aspetto di WhatsX in base alle impostazioni di sistema del tuo dispositivo.";
+"apptheme.pres.switch.footer" = "Se hai selezionato \"Sistema\", modificheremo l'aspetto di WhatsX in base alle impostazioni di sistema del tuo dispositivo.";
 
 "apptheme.pres.select.light" = "Chiaro";
 "apptheme.pres.select.dark" = "Scuro";
-"apptheme.pres.select.footer" = "Se hai selezionato "Sistema", modificheremo l'aspetto di WhatsX in base alle impostazioni di sistema del tuo dispositivo.";
+"apptheme.pres.select.footer" = "Se hai selezionato \"Sistema\", modificheremo l'aspetto di WhatsX in base alle impostazioni di sistema del tuo dispositivo.";
 
 "apptheme.pres.color.header" = "COLORE";
 "apptheme.pres.color.footer" = "Scegli quello che preferisci.";
