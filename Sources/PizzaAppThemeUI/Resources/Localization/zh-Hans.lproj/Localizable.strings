@@ -1,12 +1,12 @@
-"apptheme.pres.title" = "Appearance";
+"apptheme.pres.title" = "主题";
 
-"apptheme.pres.switch.header" = "THEME";
-"apptheme.pres.switch.text" = "Automatic";
-"apptheme.pres.switch.footer" = "App theme will match system theme";
+"apptheme.pres.switch.header" = "外观";
+"apptheme.pres.switch.text" = "系统";
+"apptheme.pres.switch.footer" = "如果选择“系统”，WhatsX 会根据你设备的系统设置 自动调整外观。";
 
-"apptheme.pres.select.light" = "Light";
-"apptheme.pres.select.dark" = "Dark";
-"apptheme.pres.select.footer" = "Current theme will override system theme inside application";
+"apptheme.pres.select.light" = "浅色";
+"apptheme.pres.select.dark" = "深色";
+"apptheme.pres.select.footer" = "如果选择“系统”, WhatsX 会根据你设备的系统设置 自动调整外观。";
 
-"apptheme.pres.color.header" = "COLOR";
-"apptheme.pres.color.footer" = "Choose any accent color, that will be applied to whole app";
+"apptheme.pres.color.header" = "顏色";
+"apptheme.pres.color.footer" = "挑選你喜愛的顏色。";

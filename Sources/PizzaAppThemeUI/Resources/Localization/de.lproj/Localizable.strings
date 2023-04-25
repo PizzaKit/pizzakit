@@ -1,12 +1,12 @@
-"apptheme.pres.title" = "Appearance";
+"apptheme.pres.title" = "Design";
 
-"apptheme.pres.switch.header" = "THEME";
-"apptheme.pres.switch.text" = "Automatic";
-"apptheme.pres.switch.footer" = "App theme will match system theme";
+"apptheme.pres.switch.header" = "ERSCHEINUNGSBILD";
+"apptheme.pres.switch.text" = "System";
+"apptheme.pres.switch.footer" = "Wenn „System“ ausgewählt ist, wird die Darstellung im WhatsX automatisch an die Systemeinstellungen deines Geräts angepasst.";
 
-"apptheme.pres.select.light" = "Light";
-"apptheme.pres.select.dark" = "Dark";
-"apptheme.pres.select.footer" = "Current theme will override system theme inside application";
+"apptheme.pres.select.light" = "Hell";
+"apptheme.pres.select.dark" = "Dunkel";
+"apptheme.pres.select.footer" = "Wenn „System“ ausgewählt ist, wird die Darstellung im WhatsX automatisch an die Systemeinstellungen deines Geräts angepasst.";
 
-"apptheme.pres.color.header" = "COLOR";
-"apptheme.pres.color.footer" = "Choose any accent color, that will be applied to whole app";
+"apptheme.pres.color.header" = "FABRE";
+"apptheme.pres.color.footer" = "Wähle das, das dir am besten gefällt.";

@@ -1,12 +1,12 @@
-"apptheme.pres.title" = "Appearance";
+"apptheme.pres.title" = "Тема";
 
-"apptheme.pres.switch.header" = "THEME";
-"apptheme.pres.switch.text" = "Automatic";
-"apptheme.pres.switch.footer" = "App theme will match system theme";
+"apptheme.pres.switch.header" = "ВИГЛЯД";
+"apptheme.pres.switch.text" = "Авто";
+"apptheme.pres.switch.footer" = "При увімкненому варіанті «Система» зовнішній вигляд WhatsX автоматично підлаштовується під налаштування системи";
 
-"apptheme.pres.select.light" = "Light";
-"apptheme.pres.select.dark" = "Dark";
-"apptheme.pres.select.footer" = "Current theme will override system theme inside application";
+"apptheme.pres.select.light" = "Свiтлий";
+"apptheme.pres.select.dark" = "Темний";
+"apptheme.pres.select.footer" = "Якщо вибрано «Авто», WhatsX автоматично налаштує ваш зовнішній вигляд відповідно до системних налаштувань пристрою.";
 
-"apptheme.pres.color.header" = "COLOR";
-"apptheme.pres.color.footer" = "Choose any accent color, that will be applied to whole app";
+"apptheme.pres.color.header" = "КОЛІР";
+"apptheme.pres.color.footer" = "Виберете, якою вам подобається.";

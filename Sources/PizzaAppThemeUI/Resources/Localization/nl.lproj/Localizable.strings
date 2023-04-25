@@ -1,12 +1,12 @@
-"apptheme.pres.title" = "Appearance";
+"apptheme.pres.title" = "Thema";
 
-"apptheme.pres.switch.header" = "THEME";
-"apptheme.pres.switch.text" = "Automatic";
-"apptheme.pres.switch.footer" = "App theme will match system theme";
+"apptheme.pres.switch.header" = "WEERGAVE";
+"apptheme.pres.switch.text" = "Systeem";
+"apptheme.pres.switch.footer" = "Als Systeem wordt geselecteerd, past WhatsX de vormgeving automatisch aan op basis van de systeeminstellingen van je apparaat.";
 
-"apptheme.pres.select.light" = "Light";
-"apptheme.pres.select.dark" = "Dark";
-"apptheme.pres.select.footer" = "Current theme will override system theme inside application";
+"apptheme.pres.select.light" = "Licht";
+"apptheme.pres.select.dark" = "Donker";
+"apptheme.pres.select.footer" = "Als Systeem wordt geselecteerd, past WhatsX de vormgeving automatisch aan op basis van de systeeminstellingen van je apparaat.";
 
-"apptheme.pres.color.header" = "COLOR";
-"apptheme.pres.color.footer" = "Choose any accent color, that will be applied to whole app";
+"apptheme.pres.color.header" = "KLEUR";
+"apptheme.pres.color.footer" = "Kies je favoriet.";
