@@ -84,6 +84,7 @@ public class PizzaFirebaseFeatureToggleService: PizzaFeatureToggleService {
 
     // MARK: - Methods
 
+    @discardableResult
     public func tryFetchAndActivate(
         fetchInterval: TimeInterval
     ) -> AnyPublisher<Bool, Never> {

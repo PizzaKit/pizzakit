@@ -1,15 +1,15 @@
 import PizzaKit
 import UIKit
 
-public class FeatureToggleBoolValuePresenter: FeatureToggleValuePresenter, ComponentPresenter {
+class ToggleBoolValuePresenter: FeatureToggleValuePresenter, ComponentPresenter {
 
     struct State {
         var value: Bool
     }
 
-    public weak var delegate: ComponentPresenterDelegate?
+    weak var delegate: ComponentPresenterDelegate?
 
-    public var onNeedSaveValue: PizzaClosure<PizzaFeatureToggleValueType>?
+    var onNeedSaveValue: PizzaClosure<PizzaFeatureToggleValueType>?
 
     private var state: State {
         didSet {
@@ -18,7 +18,7 @@ public class FeatureToggleBoolValuePresenter: FeatureToggleValuePresenter, Compo
         }
     }
 
-    public required init(
+    required init(
         anyFeatureToggle: PizzaAnyFeatureToggle,
         anyFeatureToggleOverrideValue: PizzaAnyFeatureToggleOverrideValue
     ) {
@@ -27,11 +27,11 @@ public class FeatureToggleBoolValuePresenter: FeatureToggleValuePresenter, Compo
         )
     }
 
-    public func createController() -> UIViewController {
+    func createController() -> UIViewController {
         ComponentTableController(presenter: self)
     }
 
-    public func touch() {
+    func touch() {
         delegate?.controller.do {
             $0.navigationItem.title = "Edit overrided value"
         }

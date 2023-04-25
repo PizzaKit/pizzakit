@@ -23,6 +23,7 @@ public protocol PizzaFeatureToggleService {
     /// - Returns: publisher that will be fired maximum at fetchInterval seconds
     /// or earlier. True means that toggles was fetched and activated. False -
     /// toggles will be activated later
+    @discardableResult
     func tryFetchAndActivate(
         fetchInterval: TimeInterval
     ) -> AnyPublisher<Bool, Never>

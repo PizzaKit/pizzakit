@@ -7,7 +7,7 @@ import Combine
 import SFSafeSymbols
 import Defaults
 
-public class FeatureTogglesListPresenter: ComponentPresenter {
+class TogglesListPresenter: ComponentPresenter {
 
     struct State {
         struct FeatureToggle {
@@ -23,20 +23,20 @@ public class FeatureTogglesListPresenter: ComponentPresenter {
         var isExpanded: Bool
     }
 
-    public weak var delegate: ComponentPresenterDelegate?
+    weak var delegate: ComponentPresenterDelegate?
     private let featureToggleService: PizzaFeatureToggleService
-    private let router: PizzaFeatureToggleUIRouter
+    private weak var coordinator: PizzaFeatureToggleUICoordinatable?
     private var state: State {
         didSet { render() }
     }
     private var bag = Set<AnyCancellable>()
 
-    public init(
+    init(
         featureToggleService: PizzaFeatureToggleService,
-        router: PizzaFeatureToggleUIRouter
+        coordinator: PizzaFeatureToggleUICoordinatable
     ) {
         self.featureToggleService = featureToggleService
-        self.router = router
+        self.coordinator = coordinator
         self.state = .init(
             items: [],
             preferReferencedTime: Defaults[.preferReferencedTimeKey],
@@ -45,7 +45,7 @@ public class FeatureTogglesListPresenter: ComponentPresenter {
 
     }
 
-    public func touch() {
+    func touch() {
         delegate?.controller.do {
             $0.navigationItem.title = "Firebase RC"
             $0.navigationItem.largeTitleDisplayMode = .never
@@ -75,7 +75,7 @@ public class FeatureTogglesListPresenter: ComponentPresenter {
                 value: item.value,
                 isExpanded: state.isExpanded,
                 onSelect: { [weak self] in
-                    self?.router.open(anyFeatureToggle: item.anyFeatureToggle)
+                    self?.coordinator?.open(anyFeatureToggle: item.anyFeatureToggle)
                 }
             )
         }

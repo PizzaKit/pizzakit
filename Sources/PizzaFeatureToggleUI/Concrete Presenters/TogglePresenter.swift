@@ -3,30 +3,25 @@ import Foundation
 import Combine
 import UIKit
 
-public class FeatureTogglePresenter: ComponentPresenter {
+class TogglePresenter: ComponentPresenter {
 
-    struct State {}
-
-    public weak var delegate: ComponentPresenterDelegate?
+    weak var delegate: ComponentPresenterDelegate?
     private let featureToggleService: PizzaFeatureToggleService
-    private let router: PizzaFeatureToggleUIRouter
+    private weak var coordinator: PizzaFeatureToggleUICoordinatable?
     private let featureToggle: PizzaAnyFeatureToggle
-    private var state: State = .init() {
-        didSet { render() }
-    }
     private var bag = Set<AnyCancellable>()
 
-    public init(
+    init(
         featureToggleService: PizzaFeatureToggleService,
-        router: PizzaFeatureToggleUIRouter,
+        coordinator: PizzaFeatureToggleUICoordinatable,
         featureToggle: PizzaAnyFeatureToggle
     ) {
         self.featureToggleService = featureToggleService
-        self.router = router
+        self.coordinator = coordinator
         self.featureToggle = featureToggle
     }
 
-    public func touch() {
+    func touch() {
         delegate?.controller.do {
             $0.navigationItem.title = featureToggle.key
             $0.navigationItem.largeTitleDisplayMode = .never
@@ -72,7 +67,7 @@ public class FeatureTogglePresenter: ComponentPresenter {
                     shouldDeselect: true,
                     onSelect: { [weak self] in
                         guard let self else { return }
-                        self.router.edit(
+                        self.coordinator?.edit(
                             anyFeatureToggle: self.featureToggle,
                             anyFeatureToggleOverrideValue: self.getCurrentOverride()
                         )

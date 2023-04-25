@@ -11,7 +11,7 @@ public class FeatureToggleValuePresenterFactory {
     public static let defaultFactories: [Pair] = [
         .init(
             toggleValueType: Bool.self,
-            presenterType: FeatureToggleBoolValuePresenter.self
+            presenterType: ToggleBoolValuePresenter.self
         )
     ]
 
