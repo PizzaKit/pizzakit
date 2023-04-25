@@ -72,7 +72,8 @@ class TogglePresenter: ComponentPresenter {
                             anyFeatureToggleOverrideValue: self.getCurrentOverride()
                         )
                     }
-                )
+                ),
+                trailingContent: .arrow
             )
         )
 

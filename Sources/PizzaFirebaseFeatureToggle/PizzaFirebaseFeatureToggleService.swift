@@ -4,6 +4,8 @@ import Combine
 import Foundation
 import Defaults
 
+extension RemoteConfigValue: PizzaFeatureToggleRemoteValue {}
+
 public class PizzaFirebaseFeatureToggleService: PizzaFeatureToggleService {
 
     // MARK: - Constants
@@ -139,7 +141,7 @@ public class PizzaFirebaseFeatureToggleService: PizzaFeatureToggleService {
         case .fromRemoteConfig:
             let remoteConfigValue = remoteConfig.configValue(forKey: featureToggle.key)
             guard
-                let value = T.extractFrom(remoteConfigValue: remoteConfigValue),
+                let value = T.extractFrom(remoteValue: remoteConfigValue),
                 remoteConfigValue.source == .remote
             else { return nil }
             return PizzaFeatureToggleValue<T>(
@@ -188,7 +190,7 @@ public class PizzaFirebaseFeatureToggleService: PizzaFeatureToggleService {
         let remoteConfigValue = remoteConfig.configValue(forKey: featureToggle.key)
         return .init(
             value: .extractFrom(
-                remoteConfigValue: remoteConfigValue
+                remoteValue: remoteConfigValue
             ) ?? featureToggle.defaultValue,
             responseType: remoteConfigValue.source == .remote
                 ? .fromRemoteConfig
@@ -214,7 +216,7 @@ public class PizzaFirebaseFeatureToggleService: PizzaFeatureToggleService {
             )
             guard
                 let value = anyFeatureToggle.valueType
-                    .extractFrom(remoteConfigValue: remoteConfigValue),
+                    .extractFrom(remoteValue: remoteConfigValue),
                 remoteConfigValue.source == .remote
             else { return nil }
             return .init(
@@ -264,7 +266,7 @@ public class PizzaFirebaseFeatureToggleService: PizzaFeatureToggleService {
             .configValue(forKey: anyFeatureToggle.key)
         return .init(
             anyValue: anyFeatureToggle.valueType.extractFrom(
-                remoteConfigValue: remoteConfigValue
+                remoteValue: remoteConfigValue
             ) ?? anyFeatureToggle.defaultAnyValue,
             valueType: anyFeatureToggle.valueType,
             responseType: remoteConfigValue.source == .remote

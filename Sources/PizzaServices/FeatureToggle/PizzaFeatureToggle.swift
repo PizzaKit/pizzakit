@@ -1,4 +1,3 @@
-import FirebaseRemoteConfig
 import Foundation
 import PizzaServices
 import Defaults
@@ -137,8 +136,10 @@ public struct PizzaFeatureToggleOverrideValue<T: PizzaFeatureToggleValueType> {
 public protocol PizzaFeatureToggleJSONValueType: PizzaFeatureToggleValueType {}
 
 public extension PizzaFeatureToggleJSONValueType {
-    static func extractFrom(remoteConfigValue: RemoteConfigValue) -> Self? {
-        guard let string = remoteConfigValue.stringValue else {
+    static func extractFrom(
+        remoteValue: PizzaFeatureToggleRemoteValue
+    ) -> Self? {
+        guard let string = remoteValue.stringValue else {
             return nil
         }
         return .from(string: string)
@@ -148,14 +149,26 @@ public extension PizzaFeatureToggleJSONValueType {
     }
 }
 
+public protocol PizzaFeatureToggleRemoteValue {
+    var stringValue: String? { get }
+    var numberValue: NSNumber { get }
+    var dataValue: Data { get }
+    var boolValue: Bool { get }
+    var jsonValue: Any? { get }
+}
+
 public protocol PizzaFeatureToggleValueType: Codable, CustomStringConvertible {
-    static func extractFrom(remoteConfigValue: RemoteConfigValue) -> Self?
+    static func extractFrom(
+        remoteValue: PizzaFeatureToggleRemoteValue
+    ) -> Self?
     var nsObjectValue: NSObject { get }
 }
 
 extension String: PizzaFeatureToggleValueType {
-    public static func extractFrom(remoteConfigValue: RemoteConfigValue) -> String? {
-        remoteConfigValue.stringValue
+    public static func extractFrom(
+        remoteValue: PizzaFeatureToggleRemoteValue
+    ) -> String? {
+        remoteValue.stringValue
     }
     public var nsObjectValue: NSObject {
         NSString(string: self)
@@ -163,8 +176,10 @@ extension String: PizzaFeatureToggleValueType {
 }
 
 extension Int: PizzaFeatureToggleValueType {
-    public static func extractFrom(remoteConfigValue: RemoteConfigValue) -> Int? {
-        remoteConfigValue.numberValue.intValue
+    public static func extractFrom(
+        remoteValue: PizzaFeatureToggleRemoteValue
+    ) -> Int? {
+        remoteValue.numberValue.intValue
     }
     public var nsObjectValue: NSObject {
         NSNumber(integerLiteral: self)
@@ -172,8 +187,10 @@ extension Int: PizzaFeatureToggleValueType {
 }
 
 extension Bool: PizzaFeatureToggleValueType {
-    public static func extractFrom(remoteConfigValue: RemoteConfigValue) -> Bool? {
-        remoteConfigValue.boolValue
+    public static func extractFrom(
+        remoteValue: PizzaFeatureToggleRemoteValue
+    ) -> Bool? {
+        remoteValue.boolValue
     }
     public var nsObjectValue: NSObject {
         NSNumber(booleanLiteral: self)
