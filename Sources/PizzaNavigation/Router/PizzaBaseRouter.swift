@@ -26,15 +26,15 @@ open class PizzaBaseRouter: PizzaRouter {
 
     // MARK: - PRouter
 
-    public func top() -> PizzaPresentable? {
+    open func top() -> PizzaPresentable? {
         topViewController
     }
 
-    public func root() -> PizzaPresentable? {
+    open func root() -> PizzaPresentable? {
         getWindow()?.rootViewController as? PizzaPresentable
     }
 
-    public func present(
+    open func present(
         module: PizzaPresentable?,
         animated: Bool,
         completion: PizzaEmptyClosure?
@@ -47,7 +47,7 @@ open class PizzaBaseRouter: PizzaRouter {
         )
     }
 
-    public func dismiss(
+    open func dismiss(
         animated: Bool,
         completion: PizzaEmptyClosure?
     ) {
@@ -57,7 +57,7 @@ open class PizzaBaseRouter: PizzaRouter {
         )
     }
 
-    public func push(
+    open func push(
         module: PizzaPresentable?,
         animated: Bool
     ) {
@@ -68,21 +68,21 @@ open class PizzaBaseRouter: PizzaRouter {
         )
     }
 
-    public func popModule(animated: Bool, completion: PizzaEmptyClosure?) {
+    open func popModule(animated: Bool, completion: PizzaEmptyClosure?) {
         navigationController?.popViewController(animated: animated, completion)
     }
 
-    public func popToRoot(animated: Bool) {
+    open func popToRoot(animated: Bool) {
         navigationController?.popToRootViewController(animated: animated)
     }
 
-    public func dismissAndPopToRoot() {
+    open func dismissAndPopToRoot() {
         root()?.toPresent().dismiss(animated: true, completion: {
             self.navigationController?.popToRootViewController(animated: true)
         })
     }
 
-    public func setRoot(
+    open func setRoot(
         module: PizzaPresentable?,
         animated: Bool,
         completion: PizzaEmptyClosure?
@@ -106,7 +106,7 @@ open class PizzaBaseRouter: PizzaRouter {
         keyWindow?.makeKeyAndVisible()
     }
 
-    public func setNavigationRoot(module: PizzaPresentable?) {
+    open func setNavigationRoot(module: PizzaPresentable?) {
         // TODO: при handle(deeplink) вдруг произойдет, что не засеттится
         // дефолтный таббар контроллер - подумать как обойти это
         navigationController?

@@ -62,10 +62,11 @@ open class PizzaRouterCoordinator<Deeplink, Session>: PizzaCoordinator {
     /// Method for adding dependency
     @discardableResult
     open func addDependency<T: PizzaRouterCoordinator<Deeplink, Session>>(
-        coordinator: T
+        coordinator: T,
+        customRouter: PizzaRouter? = nil
     ) -> T {
         let newCoordinator = coordinator
-        newCoordinator.fill(router: router)
+        newCoordinator.fill(router: customRouter ?? router)
         newCoordinator.fill(session: session)
         newCoordinator.parent = self
         newCoordinator.onFinish = { [weak self, weak newCoordinator] in
