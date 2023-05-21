@@ -34,6 +34,18 @@ public struct AnyComponent: Component {
         box.renderTargetDidEndDiplay(renderTarget)
     }
 
+    public func renderTargetSetHighlight(
+        _ renderTarget: Any,
+        isHighlight: Bool,
+        animated: Bool
+    ) {
+        box.renderTargetSetHighlight(
+            renderTarget,
+            isHighlight: isHighlight,
+            animated: true
+        )
+    }
+
 }
 
 struct ComponentBox<Base: Component>: AnyComponentBox {
@@ -70,6 +82,19 @@ struct ComponentBox<Base: Component>: AnyComponentBox {
         guard let renderTarget = renderTarget as? Base.RenderTarget else { return }
         return baseComponent.renderTargetDidEndDiplay(renderTarget)
     }
+
+    func renderTargetSetHighlight(
+        _ renderTarget: Any,
+        isHighlight: Bool,
+        animated: Bool
+    ) {
+        guard let renderTarget = renderTarget as? Base.RenderTarget else { return }
+        return baseComponent.renderTargetSetHighlight(
+            renderTarget,
+            isHighlight: isHighlight,
+            animated: animated
+        )
+    }
 }
 
 internal protocol AnyComponentBox {
@@ -80,4 +105,9 @@ internal protocol AnyComponentBox {
     func layout(renderTarget: Any, in container: UIView)
     func renderTargetWillDisplay(_ renderTarget: Any)
     func renderTargetDidEndDiplay(_ renderTarget: Any)
+    func renderTargetSetHighlight(
+        _ renderTarget: Any,
+        isHighlight: Bool,
+        animated: Bool
+    )
 }

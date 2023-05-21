@@ -17,8 +17,6 @@ public class ComponentTableViewCell: PizzaTableCell, ComponentRenderable {
             })
         }
         selectedBackgroundView = customBackgroundView
-
-
     }
 
     public func postRenderConfiguration(component: any Component, renderType: RenderType) {
@@ -40,6 +38,15 @@ public class ComponentTableViewCell: PizzaTableCell, ComponentRenderable {
         } else {
             separatorInset = .init(top: 0, left: 10000, bottom: 0, right: 0)
         }
+    }
+
+    public override func setHighlighted(_ highlighted: Bool, animated: Bool) {
+        guard let renderTarget else { return }
+        renderComponent?.renderTargetSetHighlight(
+            renderTarget,
+            isHighlight: highlighted,
+            animated: animated
+        )
     }
 
 }

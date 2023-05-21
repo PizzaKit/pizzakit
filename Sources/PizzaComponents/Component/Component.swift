@@ -46,6 +46,12 @@ public protocol Component<RenderTarget> {
     func renderTargetWillDisplay(_ renderTarget: RenderTarget)
 
     func renderTargetDidEndDiplay(_ renderTarget: RenderTarget)
+
+    func renderTargetSetHighlight(
+        _ renderTarget: RenderTarget,
+        isHighlight: Bool,
+        animated: Bool
+    )
 }
 
 public extension Component {
@@ -54,6 +60,11 @@ public extension Component {
     }
     func renderTargetWillDisplay(_ renderTarget: RenderTarget) {}
     func renderTargetDidEndDiplay(_ renderTarget: RenderTarget) {}
+    func renderTargetSetHighlight(
+        _ renderTarget: RenderTarget,
+        isHighlight: Bool,
+        animated: Bool
+    ) {}
 }
 
 public protocol IdentifiableComponent: Component {
