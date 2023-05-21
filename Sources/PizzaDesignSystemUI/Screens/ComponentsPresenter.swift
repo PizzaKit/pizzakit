@@ -64,7 +64,7 @@ class ComponentsPresenter: ComponentPresenter {
                         ),
                         SwitchComponent(
                             id: "switch_2",
-                            icon: .system(
+                            icon: .systemSquareRounded(
                                 .init(
                                     sfSymbol: .paintpalette,
                                     backgroundColor: .systemGreen
@@ -78,7 +78,7 @@ class ComponentsPresenter: ComponentPresenter {
                         ),
                         SwitchComponent(
                             id: "switch_3",
-                            icon: .system(
+                            icon: .systemSquareRounded(
                                 .init(
                                     sfSymbol: .globe,
                                     backgroundColor: .systemCyan
@@ -125,7 +125,7 @@ class ComponentsPresenter: ComponentPresenter {
                         ),
                         ListComponent(
                             id: "list_3",
-                            icon: .system(
+                            icon: .systemSquareRounded(
                                 .init(
                                     sfSymbol: .appBadge,
                                     backgroundColor: .systemBlue
@@ -138,7 +138,7 @@ class ComponentsPresenter: ComponentPresenter {
                         ),
                         ListComponent(
                             id: "list_4",
-                            icon: .system(
+                            icon: .systemSquareRounded(
                                 .init(
                                     sfSymbol: .folder,
                                     backgroundColor: .systemOrange
@@ -151,7 +151,7 @@ class ComponentsPresenter: ComponentPresenter {
                         ),
                         ListComponent(
                             id: "list_5",
-                            icon: .system(
+                            icon: .systemSquareRounded(
                                 .init(
                                     sfSymbol: .externaldrive,
                                     backgroundColor: .systemCyan
@@ -164,7 +164,7 @@ class ComponentsPresenter: ComponentPresenter {
                         ),
                         ListComponent(
                             id: "list_6",
-                            icon: .system(
+                            icon: .systemSquareRounded(
                                 .init(
                                     sfSymbol: .book,
                                     backgroundColor: .systemIndigo
@@ -177,7 +177,7 @@ class ComponentsPresenter: ComponentPresenter {
                         ),
                         ListComponent(
                             id: "list_7",
-                            icon: .system(
+                            icon: .systemSquareRounded(
                                 .init(
                                     sfSymbol: .figureWave,
                                     backgroundColor: .systemRed
@@ -190,7 +190,7 @@ class ComponentsPresenter: ComponentPresenter {
                         ),
                         ListComponent(
                             id: "list_8",
-                            icon: .system(
+                            icon: .systemSquareRounded(
                                 .init(
                                     sfSymbol: .shift,
                                     backgroundColor: .systemGray

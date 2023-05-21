@@ -23,12 +23,7 @@ class ColorsPresenter: ComponentPresenter {
                 cells: [
                     ListComponent(
                         id: "color_text_1",
-                        icon: .system(
-                            .init(
-                                sfSymbol: nil,
-                                backgroundColor: .palette.label
-                            )
-                        ),
+                        icon: .background(color: .palette.label),
                         title: "Label",
                         titleStyle: CustomLabelStyle(
                             color: .palette.label,
@@ -37,12 +32,7 @@ class ColorsPresenter: ComponentPresenter {
                     ),
                     ListComponent(
                         id: "color_text_2",
-                        icon: .system(
-                            .init(
-                                sfSymbol: nil,
-                                backgroundColor: .palette.labelSecondary
-                            )
-                        ),
+                        icon: .background(color: .palette.labelSecondary),
                         title: "Label secondary",
                         titleStyle: CustomLabelStyle(
                             color: .palette.labelSecondary,
@@ -51,12 +41,7 @@ class ColorsPresenter: ComponentPresenter {
                     ),
                     ListComponent(
                         id: "color_text_3",
-                        icon: .system(
-                            .init(
-                                sfSymbol: nil,
-                                backgroundColor: .palette.labelTertiary
-                            )
-                        ),
+                        icon: .background(color: .palette.labelTertiary),
                         title: "Label tertiary",
                         titleStyle: CustomLabelStyle(
                             color: .palette.labelTertiary,
@@ -65,12 +50,7 @@ class ColorsPresenter: ComponentPresenter {
                     ),
                     ListComponent(
                         id: "color_text_4",
-                        icon: .system(
-                            .init(
-                                sfSymbol: nil,
-                                backgroundColor: .palette.labelError
-                            )
-                        ),
+                        icon: .background(color: .palette.labelError),
                         title: "Label error",
                         titleStyle: CustomLabelStyle(
                             color: .palette.labelError,
@@ -89,22 +69,12 @@ class ColorsPresenter: ComponentPresenter {
                 cells: [
                     ListComponent(
                         id: "color_background_1",
-                        icon: .system(
-                            .init(
-                                sfSymbol: nil,
-                                backgroundColor: .palette.background
-                            )
-                        ),
+                        icon: .background(color: .palette.background),
                         title: "Background"
                     ),
                     ListComponent(
                         id: "color_background_2",
-                        icon: .system(
-                            .init(
-                                sfSymbol: nil,
-                                backgroundColor: .palette.backgroundSecondary
-                            )
-                        ),
+                        icon: .background(color: .palette.backgroundSecondary),
                         title: "Background secondary"
                     )
                 ]

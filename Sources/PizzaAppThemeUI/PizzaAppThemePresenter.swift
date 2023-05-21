@@ -108,7 +108,7 @@ public class PizzaAppThemePresenter: ComponentPresenter {
             colorComponents.append(
                 ListComponent(
                     id: color.hex,
-                    icon: .system(.init(sfSymbol: nil, backgroundColor: color)),
+                    icon: .background(color: color),
                     title: PizzaAppThemeUIColorsNameHelper.colorNames[index],
                     selectableContext: .init(
                         shouldDeselect: true,

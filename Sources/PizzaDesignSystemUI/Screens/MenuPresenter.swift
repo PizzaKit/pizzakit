@@ -27,7 +27,7 @@ class MenuPresenter: ComponentPresenter {
                 cells: [
                     ListComponent(
                         id: "components",
-                        icon: .system(
+                        icon: .systemSquareRounded(
                             .init(
                                 sfSymbol: .cube,
                                 backgroundColor: .systemBlue
@@ -44,7 +44,7 @@ class MenuPresenter: ComponentPresenter {
                     ),
                     ListComponent(
                         id: "label_styles",
-                        icon: .system(
+                        icon: .systemSquareRounded(
                             .init(
                                 sfSymbol: .characterCursorIbeam,
                                 backgroundColor: .systemGreen
@@ -61,7 +61,7 @@ class MenuPresenter: ComponentPresenter {
                     ),
                     ListComponent(
                         id: "colors",
-                        icon: .system(
+                        icon: .systemSquareRounded(
                             .init(
                                 sfSymbol: .paintbrush,
                                 backgroundColor: .systemOrange
@@ -78,7 +78,7 @@ class MenuPresenter: ComponentPresenter {
                     ),
                     ListComponent(
                         id: "buttons",
-                        icon: .system(
+                        icon: .systemSquareRounded(
                             .init(
                                 sfSymbol: .rectangleCompressVertical,
                                 backgroundColor: .systemRed

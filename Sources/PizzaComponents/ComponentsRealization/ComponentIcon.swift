@@ -4,18 +4,25 @@ import PizzaDesign
 
 public enum ComponentIcon {
 
-    public struct System {
-        public let sfSymbol: SFSymbol?
-        public let backgroundColor: UIColor
+    public struct SystemSquareRounded {
+        public let sfSymbol: SFSymbol
+        public let tintColor: UIColor
+        public let backgroundColor: UIColor?
 
-        public init(sfSymbol: SFSymbol?, backgroundColor: UIColor) {
+        public init(
+            sfSymbol: SFSymbol,
+            tintColor: UIColor = .white,
+            backgroundColor: UIColor? = nil
+        ) {
             self.sfSymbol = sfSymbol
+            self.tintColor = tintColor
             self.backgroundColor = backgroundColor
         }
     }
 
+    case systemSquareRounded(SystemSquareRounded)
+    case background(color: UIColor)
     case custom(UIImage)
-    case system(System)
 
 }
 
@@ -45,22 +52,27 @@ public class ComponentSystemIconView: PizzaView {
     }
 
     public func configure(
-        systemIcon: ComponentIcon.System
+        sfSymbol: SFSymbol?,
+        tintColor: UIColor?,
+        backgroundColor: UIColor?
     ) {
-        if let sfSymbol = systemIcon.sfSymbol {
+        if let sfSymbol {
             foregroundImageView.image = UIImage(
                 systemName: sfSymbol.rawValue,
-                withConfiguration: UIImage.SymbolConfiguration(pointSize: 16)
+                withConfiguration: UIImage.SymbolConfiguration(
+                    pointSize: backgroundColor == nil ? 22 : 16
+                )
             )
-            foregroundImageView.tintColor = .white
+            foregroundImageView.tintColor = tintColor
         }
-        foregroundImageView.isHidden = systemIcon.sfSymbol == nil
+        foregroundImageView.isHidden = sfSymbol == nil
 
+        backgroundImageView.isHidden = backgroundColor == nil
         backgroundImageView.image = UIImage(
             systemName: "app.fill",
             withConfiguration: UIImage.SymbolConfiguration(pointSize: 32)
         )
-        backgroundImageView.tintColor = systemIcon.backgroundColor
+        backgroundImageView.tintColor = backgroundColor
     }
 
 }
@@ -89,18 +101,27 @@ public class ComponentIconView: PizzaView {
         }
     }
 
-    public func configure(
-        icon: ComponentIcon
-    ) {
+    public func configure(icon: ComponentIcon) {
         switch icon {
         case .custom(let uIImage):
             imageView.image = uIImage
 
             systemIconView.isHidden = true
             imageView.isHidden = false
-        case .system(let system):
-            systemIconView.configure(systemIcon: system)
-
+        case .systemSquareRounded(let payload):
+            systemIconView.configure(
+                sfSymbol: payload.sfSymbol,
+                tintColor: payload.tintColor,
+                backgroundColor: payload.backgroundColor
+            )
+            systemIconView.isHidden = false
+            imageView.isHidden = true
+        case .background(let backgroundColor):
+            systemIconView.configure(
+                sfSymbol: nil,
+                tintColor: nil,
+                backgroundColor: backgroundColor
+            )
             systemIconView.isHidden = false
             imageView.isHidden = true
         }
