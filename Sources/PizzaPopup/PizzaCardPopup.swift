@@ -121,6 +121,7 @@ public struct PizzaCardPopupInfoStyle {
     }
 
     public let contentToViewInsets: UIEdgeInsets
+    /// Если картинка будет иметь тип `.customView` размер не будет выставляться
     public let imageSize: CGSize?
     public let imageToTitleOffset: CGFloat
     public let titleToDescriptionOffset: CGFloat
@@ -214,9 +215,6 @@ public class PizzaCardPopupView: PizzaView {
             // image
             switch info.image {
             case .customView(let view):
-                view.snp.makeConstraints { make in
-                    make.size.equalTo(style.imageSize ?? .init(side: 96))
-                }
                 stack.addArrangedSubview(view)
             case .image(let image):
                 let imageView = UIImageView(image: image)
