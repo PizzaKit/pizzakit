@@ -16,8 +16,8 @@ public struct TitleTimeComponent: IdentifiableComponent, SelectableComponent {
     public init(
         id: String,
         title: String?,
-        titleStyle: UIStyle<PizzaLabel> = .allStyles.bodyLabel(alignment: .left),
-        valueStyle: UIStyle<PizzaLabel> = .allStyles.bodySecondaryLabel(alignment: .right),
+        titleStyle: UIStyle<PizzaLabel> = .allStyles.body(color: .palette.label, alignment: .left),
+        valueStyle: UIStyle<PizzaLabel> = .allStyles.body(color: .palette.labelSecondary, alignment: .right),
         onGetString: PizzaReturnClosure<Date, String>?,
         onSelect: PizzaEmptyClosure?
     ) {

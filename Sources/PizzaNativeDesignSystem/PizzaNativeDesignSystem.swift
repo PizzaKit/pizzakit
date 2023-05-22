@@ -26,57 +26,132 @@ public struct PizzaNativePalette: PizzaPalette {
 
 public struct PizzaNativeLabelStyles: PizzaLabelStyles {
 
-    public func bodyLabel(alignment: NSTextAlignment) -> UIStyle<PizzaLabel> {
+    public func largeTitle(
+        color: UIColor,
+        alignment: NSTextAlignment
+    ) -> UIStyle<PizzaLabel> {
         UILabelNativeStyle(
-            font: .systemFont(ofSize: 17).roundedIfNeeded,
-            color: .palette.label,
+            font: .systemFont(ofSize: 34, weight: .regular).roundedIfNeeded,
+            color: color,
             alignment: alignment,
-            lineHeight: 22
+            lineHeight: 41
         )
     }
 
-    public func bodyTint(alignment: NSTextAlignment) -> UIStyle<PizzaLabel> {
+    public func title1(
+        color: UIColor,
+        alignment: NSTextAlignment
+    ) -> UIStyle<PizzaLabel> {
         UILabelNativeStyle(
-            font: .systemFont(ofSize: 17).roundedIfNeeded,
-            color: .tintColor,
+            font: .systemFont(ofSize: 28, weight: .regular).roundedIfNeeded,
+            color: color,
             alignment: alignment,
-            lineHeight: 22
+            lineHeight: 34
+        )
+    }
+    public func title2(
+        color: UIColor,
+        alignment: NSTextAlignment
+    ) -> UIStyle<PizzaLabel> {
+        UILabelNativeStyle(
+            font: .systemFont(ofSize: 22, weight: .bold).roundedIfNeeded,
+            color: color,
+            alignment: alignment,
+            lineHeight: 28
+        )
+    }
+    public func title3(
+        color: UIColor,
+        alignment: NSTextAlignment
+    ) -> UIStyle<PizzaLabel> {
+        UILabelNativeStyle(
+            font: .systemFont(ofSize: 20, weight: .regular).roundedIfNeeded,
+            color: color,
+            alignment: alignment,
+            lineHeight: 25
         )
     }
 
-    public func bodyLabelSemibold(alignment: NSTextAlignment) -> UIStyle<PizzaLabel> {
+    public func headline(
+        color: UIColor,
+        alignment: NSTextAlignment
+    ) -> UIStyle<PizzaLabel> {
         UILabelNativeStyle(
             font: .systemFont(ofSize: 17, weight: .semibold).roundedIfNeeded,
-            color: .palette.label,
+            color: color,
             alignment: alignment,
             lineHeight: 22
         )
     }
 
-    public func bodySecondaryLabel(alignment: NSTextAlignment) -> UIStyle<PizzaLabel> {
+    public func body(
+        color: UIColor,
+        alignment: NSTextAlignment
+    ) -> UIStyle<PizzaLabel> {
         UILabelNativeStyle(
-            font: .systemFont(ofSize: 17).roundedIfNeeded,
-            color: .palette.labelSecondary,
+            font: .systemFont(ofSize: 17, weight: .regular).roundedIfNeeded,
+            color: color,
             alignment: alignment,
             lineHeight: 22
         )
     }
 
-    public func rubric2Label(alignment: NSTextAlignment) -> UIStyle<PizzaLabel> {
+    public func callout(
+        color: UIColor,
+        alignment: NSTextAlignment
+    ) -> UIStyle<PizzaLabel> {
         UILabelNativeStyle(
-            font: .systemFont(ofSize: 13).roundedIfNeeded,
-            color: .palette.label,
+            font: .systemFont(ofSize: 16, weight: .regular).roundedIfNeeded,
+            color: color,
+            alignment: alignment,
+            lineHeight: 21
+        )
+    }
+
+    public func subhead(
+        color: UIColor,
+        alignment: NSTextAlignment
+    ) -> UIStyle<PizzaLabel> {
+        UILabelNativeStyle(
+            font: .systemFont(ofSize: 15, weight: .regular).roundedIfNeeded,
+            color: color,
+            alignment: alignment,
+            lineHeight: 20
+        )
+    }
+
+    public func footnote(
+        color: UIColor,
+        alignment: NSTextAlignment
+    ) -> UIStyle<PizzaLabel> {
+        UILabelNativeStyle(
+            font: .systemFont(ofSize: 13, weight: .regular).roundedIfNeeded,
+            color: color,
             alignment: alignment,
             lineHeight: 18
         )
     }
 
-    public func rubric2SecondaryLabel(alignment: NSTextAlignment) -> UIStyle<PizzaLabel> {
+    public func caption1(
+        color: UIColor,
+        alignment: NSTextAlignment
+    ) -> UIStyle<PizzaLabel> {
         UILabelNativeStyle(
-            font: .systemFont(ofSize: 13).roundedIfNeeded,
-            color: .palette.labelSecondary,
+            font: .systemFont(ofSize: 12, weight: .regular).roundedIfNeeded,
+            color: color,
             alignment: alignment,
-            lineHeight: 18
+            lineHeight: 16
+        )
+    }
+    public func caption2(
+        color: UIColor,
+        alignment: NSTextAlignment
+    ) -> UIStyle<PizzaLabel> {
+        UILabelNativeStyle(
+            font: .systemFont(ofSize: 11, weight: .regular).roundedIfNeeded,
+            color: color,
+            alignment: alignment,
+            lineHeight: 13
         )
     }
 
@@ -96,11 +171,30 @@ public struct PizzaNativeNavControllerStyles: PizzaNavControllerStyles {
 public struct PizzaNativeButtonStyles: PizzaButtonStyles {
 
     public func buttonHorizontal(
+        title: String?,
         size: PizzaButtonStylesSize,
-        alignment: PizzaButtonStylesAlignment
+        alignment: PizzaButtonStylesAlignment,
+        type: PizzaButtonStylesType
     ) -> UIStyle<UIButton> {
-        fatalError()
-        // TODO: add button style
+        UIButtonStyle(
+            title: title,
+            backgroundColor: .tintColor,
+            size: size,
+            alignment: alignment,
+            type: type,
+            attributedTitleProvider: { title in
+                switch size {
+                case .large, .medium:
+                    return StringBuilder(text: title)
+                        .font(.systemFont(ofSize: 17, weight: .semibold).roundedIfNeeded)
+                        .lineHeight(21)
+                case .small:
+                    return StringBuilder(text: title)
+                        .font(.systemFont(ofSize: 15, weight: .semibold).roundedIfNeeded)
+                        .lineHeight(20)
+                }
+            }
+        )
     }
 
 }

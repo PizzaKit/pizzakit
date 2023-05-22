@@ -25,88 +25,41 @@ class ColorsPresenter: ComponentPresenter {
                         id: "color_text_1",
                         icon: .background(color: .palette.label),
                         title: "Label",
-                        titleStyle: CustomLabelStyle(
+                        titleStyle: .allStyles.body(
                             color: .palette.label,
-                            baseStyle: .allStyles.bodyLabel(alignment: .left)
+                            alignment: .left
                         )
                     ),
                     ListComponent(
                         id: "color_text_2",
                         icon: .background(color: .palette.labelSecondary),
                         title: "Label secondary",
-                        titleStyle: CustomLabelStyle(
+                        titleStyle: .allStyles.body(
                             color: .palette.labelSecondary,
-                            baseStyle: .allStyles.bodyLabel(alignment: .left)
+                            alignment: .left
                         )
                     ),
                     ListComponent(
                         id: "color_text_3",
                         icon: .background(color: .palette.labelTertiary),
                         title: "Label tertiary",
-                        titleStyle: CustomLabelStyle(
+                        titleStyle: .allStyles.body(
                             color: .palette.labelTertiary,
-                            baseStyle: .allStyles.bodyLabel(alignment: .left)
+                            alignment: .left
                         )
                     ),
                     ListComponent(
                         id: "color_text_4",
                         icon: .background(color: .palette.labelError),
                         title: "Label error",
-                        titleStyle: CustomLabelStyle(
+                        titleStyle: .allStyles.body(
                             color: .palette.labelError,
-                            baseStyle: .allStyles.bodyLabel(alignment: .left)
+                            alignment: .left
                         )
-                    )
-                ]
-            ),
-            .init(
-                id: "background_colors",
-                header: TitleComponent(
-                    id: "background_header",
-                    text: "Background",
-                    insets: .defaultHeader
-                ),
-                cells: [
-                    ListComponent(
-                        id: "color_background_1",
-                        icon: .background(color: .palette.background),
-                        title: "Background"
-                    ),
-                    ListComponent(
-                        id: "color_background_2",
-                        icon: .background(color: .palette.backgroundSecondary),
-                        title: "Background secondary"
                     )
                 ]
             )
         ])
-    }
-
-}
-
-fileprivate class CustomLabelStyle: UIStyle<PizzaLabel> {
-
-    let color: UIColor
-    let baseStyle: UIStyle<PizzaLabel>
-
-    init(
-        color: UIColor,
-        baseStyle: UIStyle<PizzaLabel>
-    ) {
-        self.color = color
-        self.baseStyle = baseStyle
-    }
-
-    override func apply(for label: PizzaLabel) {
-        baseStyle.apply(for: label)
-        if let attributedString = label.attributedText {
-            var attributes = attributedString.attributes(at: 0, effectiveRange: nil)
-            attributes[.foregroundColor] = color
-            label.attributedText = NSAttributedString(
-                string: attributedString.string,
-                attributes: attributes
-            )
-        }
     }
 
 }

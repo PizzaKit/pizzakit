@@ -53,8 +53,8 @@ public struct ListComponent: IdentifiableComponent, SelectableComponent, Compone
         icon: ComponentIcon? = nil,
         title: String? = nil,
         value: String? = nil,
-        titleStyle: UIStyle<PizzaLabel> = .allStyles.bodyLabel(alignment: .left),
-        valueStyle: UIStyle<PizzaLabel> = .allStyles.bodySecondaryLabel(alignment: .left),
+        titleStyle: UIStyle<PizzaLabel> = .allStyles.body(color: .palette.label, alignment: .left),
+        valueStyle: UIStyle<PizzaLabel> = .allStyles.body(color: .palette.labelSecondary, alignment: .left),
         selectableContext: SelectableContext? = nil,
         trailingContent: TrailingContent? = nil
     ) {

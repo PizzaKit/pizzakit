@@ -6,7 +6,7 @@ public protocol PizzaPalette {
     var labelSecondary: UIColor { get }
     var labelTertiary: UIColor { get }
 
-    var background: UIColor { get }
+    var background: UIColor { get } // TODO: удалить?
     var backgroundSecondary: UIColor { get }
 }
 
@@ -21,13 +21,58 @@ public protocol PizzaNavControllerStyles {
 }
 
 public protocol PizzaLabelStyles {
-    func bodyLabel(alignment: NSTextAlignment) -> UIStyle<PizzaLabel>
-    func bodyTint(alignment: NSTextAlignment) -> UIStyle<PizzaLabel>
-    func bodyLabelSemibold(alignment: NSTextAlignment) -> UIStyle<PizzaLabel>
-    func bodySecondaryLabel(alignment: NSTextAlignment) -> UIStyle<PizzaLabel>
 
-    func rubric2Label(alignment: NSTextAlignment) -> UIStyle<PizzaLabel>
-    func rubric2SecondaryLabel(alignment: NSTextAlignment) -> UIStyle<PizzaLabel>
+    func largeTitle(
+        color: UIColor,
+        alignment: NSTextAlignment
+    ) -> UIStyle<PizzaLabel>
+
+    func title1(
+        color: UIColor,
+        alignment: NSTextAlignment
+    ) -> UIStyle<PizzaLabel>
+    func title2(
+        color: UIColor,
+        alignment: NSTextAlignment
+    ) -> UIStyle<PizzaLabel>
+    func title3(
+        color: UIColor,
+        alignment: NSTextAlignment
+    ) -> UIStyle<PizzaLabel>
+
+    func headline(
+        color: UIColor,
+        alignment: NSTextAlignment
+    ) -> UIStyle<PizzaLabel>
+
+    func body(
+        color: UIColor,
+        alignment: NSTextAlignment
+    ) -> UIStyle<PizzaLabel>
+
+    func callout(
+        color: UIColor,
+        alignment: NSTextAlignment
+    ) -> UIStyle<PizzaLabel>
+
+    func subhead(
+        color: UIColor,
+        alignment: NSTextAlignment
+    ) -> UIStyle<PizzaLabel>
+
+    func footnote(
+        color: UIColor,
+        alignment: NSTextAlignment
+    ) -> UIStyle<PizzaLabel>
+
+    func caption1(
+        color: UIColor,
+        alignment: NSTextAlignment
+    ) -> UIStyle<PizzaLabel>
+    func caption2(
+        color: UIColor,
+        alignment: NSTextAlignment
+    ) -> UIStyle<PizzaLabel>
 }
 
 public protocol PizzaTextFieldStyles {
@@ -46,10 +91,17 @@ public enum PizzaButtonStylesAlignment {
     case leading
     case center
 }
+public enum PizzaButtonStylesType {
+    case primary
+    case secondary
+    case tertiary
+}
 public protocol PizzaButtonStyles {
     func buttonHorizontal(
+        title: String?,
         size: PizzaButtonStylesSize,
-        alignment: PizzaButtonStylesAlignment
+        alignment: PizzaButtonStylesAlignment,
+        type: PizzaButtonStylesType
     ) -> UIStyle<UIButton>
 }
 

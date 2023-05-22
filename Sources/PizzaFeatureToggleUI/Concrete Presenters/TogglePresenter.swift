@@ -61,8 +61,8 @@ class TogglePresenter: ComponentPresenter {
                 title: "Override value",
                 value: override.value.description,
                 titleStyle: anyValue.responseType == .fromOverride
-                    ? .allStyles.bodyTint(alignment: .left)
-                    : .allStyles.bodyLabel(alignment: .left),
+                    ? .allStyles.body(color: .tintColor, alignment: .left)
+                    : .allStyles.body(color: .palette.label, alignment: .left),
                 selectableContext: .init(
                     shouldDeselect: true,
                     onSelect: { [weak self] in
@@ -87,8 +87,8 @@ class TogglePresenter: ComponentPresenter {
                 title: "Remote config value",
                 value: remoteConfigValue?.anyValue.description,
                 titleStyle: anyValue.responseType == .fromRemoteConfig
-                    ? .allStyles.bodyTint(alignment: .left)
-                    : .allStyles.bodyLabel(alignment: .left)
+                    ? .allStyles.body(color: .tintColor, alignment: .left)
+                    : .allStyles.body(color: .palette.label, alignment: .left)
             )
         )
         cells.append(
@@ -97,8 +97,8 @@ class TogglePresenter: ComponentPresenter {
                 title: "Default value",
                 value: featureToggle.defaultAnyValue.description,
                 titleStyle: anyValue.responseType == .default
-                    ? .allStyles.bodyTint(alignment: .left)
-                    : .allStyles.bodyLabel(alignment: .left)
+                    ? .allStyles.body(color: .tintColor, alignment: .left)
+                    : .allStyles.body(color: .palette.label, alignment: .left)
             )
         )
 

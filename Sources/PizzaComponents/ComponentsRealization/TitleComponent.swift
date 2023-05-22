@@ -13,7 +13,7 @@ public struct TitleComponent: IdentifiableComponent {
     public init(
         id: String,
         text: String?,
-        style: UIStyle<PizzaLabel> = .allStyles.rubric2SecondaryLabel(alignment: .left),
+        style: UIStyle<PizzaLabel> = .allStyles.footnote(color: .palette.labelSecondary, alignment: .left),
         insets: NSDirectionalEdgeInsets
     ) {
         self.id = id

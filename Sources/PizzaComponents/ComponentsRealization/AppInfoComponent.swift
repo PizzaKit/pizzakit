@@ -74,7 +74,7 @@ public class AppInfoComponentView: PizzaView {
                 make.leading.trailing.equalToSuperview().inset(16)
                 make.bottom.equalToSuperview().offset(-30)
             }
-            $0.style = .allStyles.bodySecondaryLabel(alignment: .center)
+            $0.style = .allStyles.body(color: .palette.labelSecondary, alignment: .center)
             $0.numberOfLines = 0
         }
     }

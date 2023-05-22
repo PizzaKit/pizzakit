@@ -42,7 +42,7 @@ public struct SwitchComponent: IdentifiableComponent, ComponentWithSeparator {
         id: String,
         icon: ComponentIcon? = nil,
         text: String,
-        textStyle: UIStyle<PizzaLabel> = .allStyles.bodyLabel(alignment: .left),
+        textStyle: UIStyle<PizzaLabel> = .allStyles.body(color: .palette.label, alignment: .left),
         value: Bool,
         style: Style = .default,
         isEnabled: Bool = true,

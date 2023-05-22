@@ -64,8 +64,8 @@ let package = Package(
 
         // popup
         .package(
-            url: "https://github.com/huri000/SwiftEntryKit",
-            from: "2.0.0"
+            url: "https://github.com/alexfilimon/SwiftEntryKit",
+            revision: "46a72419063394db63abd04ef87169e68187681f"
         ),
 
         // services
