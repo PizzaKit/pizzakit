@@ -18,77 +18,78 @@ class ButtonsPresenter: ComponentPresenter {
                 id: "section",
                 cells: [
                     ButtonsComponent(
-                        id: "component-1",
-                        buttonConfiguration: {
-                            var configuration = UIButton.Configuration.filled()
-                            configuration.title = "Button filled"
-                            return configuration
-                        }()
+                        id: "button_1",
+                        buttonStyle: .allStyles.standard(
+                            title: "large, primary",
+                            size: .large,
+                            type: .primary
+                        )
                     ),
                     ButtonsComponent(
-                        id: "component-2",
-                        buttonConfiguration: {
-                            var configuration = UIButton.Configuration.bordered()
-                            configuration.title = "Button bordered"
-                            return configuration
-                        }()
+                        id: "button_2",
+                        buttonStyle: .allStyles.standard(
+                            title: "large, secondary",
+                            size: .large,
+                            type: .secondary
+                        )
                     ),
                     ButtonsComponent(
-                        id: "component-3",
-                        buttonConfiguration: {
-                            var configuration = UIButton.Configuration.borderedProminent()
-                            configuration.title = "Button borderedProminent"
-                            return configuration
-                        }()
+                        id: "button_3",
+                        buttonStyle: .allStyles.standard(
+                            title: "large, tertiary",
+                            size: .large,
+                            type: .tertiary
+                        )
                     ),
-                    ButtonsComponent(
-                        id: "component-4",
-                        buttonConfiguration: {
-                            var configuration = UIButton.Configuration.borderedTinted()
-                            configuration.title = "Button borderedTinted"
-                            return configuration
-                        }()
-                    ),
-                    ButtonsComponent(
-                        id: "component-5",
-                        buttonConfiguration: {
-                            var configuration = UIButton.Configuration.tinted()
-                            configuration.title = "Button tinted"
-                            return configuration
-                        }()
-                    ),
-                    ButtonsComponent(
-                        id: "component-6",
-                        buttonConfiguration: {
-                            var configuration = UIButton.Configuration.plain()
-                            configuration.title = "Button plain"
-                            return configuration
-                        }()
-                    ),
-                    ButtonsComponent(
-                        id: "component-7",
-                        buttonConfiguration: {
-                            var configuration = UIButton.Configuration.gray()
-                            configuration.title = "Button gray"
-                            return configuration
-                        }()
-                    )
-                ]
-            ),
-            .init(
-                id: "section-2",
-                cells: [
-                    ButtonsComponent(
-                        id: "component-10",
-                        buttonConfiguration: {
-                            var configuration = UIButton.Configuration.plain()
-                            configuration.title = "Remove account"
-                            configuration.buttonSize = .large
-                            configuration.titleAlignment = .center
-                            configuration.cornerStyle = .large
 
-                            return configuration
-                        }()
+                    ButtonsComponent(
+                        id: "button_4",
+                        buttonStyle: .allStyles.standard(
+                            title: "medium, primary",
+                            size: .medium,
+                            type: .primary
+                        )
+                    ),
+                    ButtonsComponent(
+                        id: "button_5",
+                        buttonStyle: .allStyles.standard(
+                            title: "medium, secondary",
+                            size: .medium,
+                            type: .secondary
+                        )
+                    ),
+                    ButtonsComponent(
+                        id: "button_6",
+                        buttonStyle: .allStyles.standard(
+                            title: "medium, tertiary",
+                            size: .medium,
+                            type: .tertiary
+                        )
+                    ),
+
+                    ButtonsComponent(
+                        id: "button_7",
+                        buttonStyle: .allStyles.standard(
+                            title: "small, primary",
+                            size: .small,
+                            type: .primary
+                        )
+                    ),
+                    ButtonsComponent(
+                        id: "button_8",
+                        buttonStyle: .allStyles.standard(
+                            title: "small, secondary",
+                            size: .small,
+                            type: .secondary
+                        )
+                    ),
+                    ButtonsComponent(
+                        id: "button_9",
+                        buttonStyle: .allStyles.standard(
+                            title: "small, tertiary",
+                            size: .small,
+                            type: .tertiary
+                        )
                     )
                 ]
             )
@@ -100,23 +101,21 @@ class ButtonsPresenter: ComponentPresenter {
 struct ButtonsComponent: IdentifiableComponent {
 
     let id: String
-    let buttonConfiguration: UIButton.Configuration
+    let buttonStyle: UIStyle<UIButton>
 
     func createRenderTarget() -> ButtonsComponentView {
         ButtonsComponentView()
     }
 
     func render(in renderTarget: ButtonsComponentView, renderType: RenderType) {
-        renderTarget.configure(buttonConfiguration: buttonConfiguration)
+        renderTarget.configure(buttonStyle: buttonStyle)
     }
 
 }
 
 class ButtonsComponentView: PizzaView {
 
-    private lazy var button = UIButton(primaryAction: .init(handler: { [weak self] _ in
-        self?.changeButtonState()
-    }))
+    private lazy var button = UIButton()
 
     override func commonInit() {
         super.commonInit()
@@ -126,40 +125,11 @@ class ButtonsComponentView: PizzaView {
             $0.snp.makeConstraints { make in
                 make.edges.equalToSuperview().inset(12)
             }
-
         }
     }
 
-    func configure(buttonConfiguration: UIButton.Configuration) {
-        var newConfig = buttonConfiguration
-        newConfig.titleTextAttributesTransformer = .init({ container in
-            var new = container
-            new.font = .preferredFont(forTextStyle: .body)
-            return new
-        })
-        newConfig.buttonSize = .large
-        newConfig.titleAlignment = .center
-        newConfig.cornerStyle = .large
-        newConfig.imagePadding = 8
-        newConfig.preferredSymbolConfigurationForImage = .init(scale: .medium)
-        button.configuration = newConfig
-        button.configurationUpdateHandler = { button in
-            var config = button.configuration
-
-            config?.image = UIImage(
-                systemSymbol: button.isHighlighted ? .cartFill : .cart
-            )
-
-            button.configuration = config
-        }
-    }
-
-    private func changeButtonState() {
-        if button.configuration?.showsActivityIndicator == true {
-            button.configuration?.showsActivityIndicator = false
-        } else {
-            button.configuration?.showsActivityIndicator = true
-        }
+    func configure(buttonStyle: UIStyle<UIButton>) {
+        button.apply(style: buttonStyle)
     }
 
 }

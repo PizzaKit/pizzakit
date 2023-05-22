@@ -1,6 +1,7 @@
 import SFSafeSymbols
 import UIKit
 import PizzaKit
+import PizzaComponents
 
 class ColorsPresenter: ComponentPresenter {
 
@@ -58,6 +59,29 @@ class ColorsPresenter: ComponentPresenter {
                         )
                     )
                 ]
+            ),
+            .init(
+                id: "tint_colors",
+                header: TitleComponent(
+                    id: "tint_colors",
+                    text: "Tint colors",
+                    insets: .defaultHeader
+                ),
+                cells: PizzaAppTheme.allTintColors.enumerated().map {
+                    var title = "Hex: \($0.element.hex)"
+                    if $0.offset == PizzaAppTheme.defaultTintColorIndex {
+                        title += " (default)"
+                    }
+                    return ListComponent(
+                        id: "tint_color_\($0.offset)",
+                        icon: .background(color: $0.element),
+                        title: title,
+                        titleStyle: .allStyles.body(
+                            color: $0.element,
+                            alignment: .left
+                        )
+                    )
+                }
             )
         ])
     }

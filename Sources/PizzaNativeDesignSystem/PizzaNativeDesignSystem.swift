@@ -19,8 +19,6 @@ public struct PizzaNativePalette: PizzaPalette {
     public let labelError: UIColor = .systemRed
     public let labelSecondary: UIColor = .secondaryLabel
     public let labelTertiary: UIColor = .tertiaryLabel
-    public let background: UIColor = .systemBackground
-    public let backgroundSecondary: UIColor = .secondarySystemBackground
 
 }
 
@@ -170,17 +168,15 @@ public struct PizzaNativeNavControllerStyles: PizzaNavControllerStyles {
 
 public struct PizzaNativeButtonStyles: PizzaButtonStyles {
 
-    public func buttonHorizontal(
+    public func standard(
         title: String?,
         size: PizzaButtonStylesSize,
-        alignment: PizzaButtonStylesAlignment,
         type: PizzaButtonStylesType
     ) -> UIStyle<UIButton> {
         UIButtonStyle(
             title: title,
             backgroundColor: .tintColor,
             size: size,
-            alignment: alignment,
             type: type,
             attributedTitleProvider: { title in
                 switch size {

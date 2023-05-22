@@ -1,6 +1,7 @@
 import SFSafeSymbols
 import UIKit
 import PizzaKit
+import PizzaComponents
 
 class MenuPresenter: ComponentPresenter {
 
@@ -89,6 +90,23 @@ class MenuPresenter: ComponentPresenter {
                             shouldDeselect: false,
                             onSelect: { [weak self] in
                                 self?.coordinator?.openButtons()
+                            }
+                        ),
+                        trailingContent: .arrow
+                    ),
+                    ListComponent(
+                        id: "popups",
+                        icon: .systemSquareRounded(
+                            .init(
+                                sfSymbol: .rectangleBottomthirdInsetFilled,
+                                backgroundColor: .systemTeal
+                            )
+                        ),
+                        title: "Popups",
+                        selectableContext: .init(
+                            shouldDeselect: false,
+                            onSelect: { [weak self] in
+                                self?.coordinator?.openPopups()
                             }
                         ),
                         trailingContent: .arrow

@@ -153,18 +153,16 @@ public struct PizzaCardPopupInfoStyle {
             titleStyle: .allStyles.title2(color: .palette.label, alignment: .center),
             descriptionStyle: .allStyles.body(color: .palette.label, alignment: .center),
             primaryButtonStyleProvider: { title in
-                return .allStyles.buttonHorizontal(
+                return .allStyles.standard(
                     title: title,
                     size: .large,
-                    alignment: .center,
                     type: .primary
                 )
             },
             secondaryButtonStyleProvider: { title in
-                return .allStyles.buttonHorizontal(
+                return .allStyles.standard(
                     title: title,
                     size: .large,
-                    alignment: .center,
                     type: .secondary
                 )
             },

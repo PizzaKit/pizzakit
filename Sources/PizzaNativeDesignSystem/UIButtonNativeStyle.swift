@@ -6,7 +6,6 @@ public class UIButtonStyle: UIStyle<UIButton> {
     public let title: String?
     public let backgroundColor: UIColor?
     public let size: PizzaButtonStylesSize
-    public let alignment: PizzaButtonStylesAlignment
     public let type: PizzaButtonStylesType
     public let attributedTitleProvider: PizzaReturnClosure<String?, StringBuilder>
 
@@ -14,14 +13,12 @@ public class UIButtonStyle: UIStyle<UIButton> {
         title: String?,
         backgroundColor: UIColor?,
         size: PizzaButtonStylesSize,
-        alignment: PizzaButtonStylesAlignment,
         type: PizzaButtonStylesType,
         attributedTitleProvider: @escaping PizzaReturnClosure<String?, StringBuilder>
     ) {
         self.title = title
         self.backgroundColor = backgroundColor
         self.size = size
-        self.alignment = alignment
         self.type = type
         self.attributedTitleProvider = attributedTitleProvider
     }
@@ -48,14 +45,6 @@ public class UIButtonStyle: UIStyle<UIButton> {
                 return nil
             case .tertiary:
                 return nil
-            }
-        }()
-        configuration.titleAlignment = {
-            switch alignment {
-            case .leading:
-                return .leading
-            case .center:
-                return .center
             }
         }()
         configuration.baseForegroundColor = {

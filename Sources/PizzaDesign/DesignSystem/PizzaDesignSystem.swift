@@ -5,9 +5,6 @@ public protocol PizzaPalette {
     var labelError: UIColor { get }
     var labelSecondary: UIColor { get }
     var labelTertiary: UIColor { get }
-
-    var background: UIColor { get } // TODO: удалить?
-    var backgroundSecondary: UIColor { get }
 }
 
 public protocol PizzaAnimationConstants {
@@ -97,10 +94,9 @@ public enum PizzaButtonStylesType {
     case tertiary
 }
 public protocol PizzaButtonStyles {
-    func buttonHorizontal(
+    func standard(
         title: String?,
         size: PizzaButtonStylesSize,
-        alignment: PizzaButtonStylesAlignment,
         type: PizzaButtonStylesType
     ) -> UIStyle<UIButton>
 }
