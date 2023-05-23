@@ -42,6 +42,7 @@ public class ComponentTableViewCell: PizzaTableCell, ComponentRenderable {
 
     public override func setHighlighted(_ highlighted: Bool, animated: Bool) {
         guard let renderTarget else { return }
+        super.setHighlighted(highlighted, animated: animated)
         renderComponent?.renderTargetSetHighlight(
             renderTarget,
             isHighlight: highlighted,

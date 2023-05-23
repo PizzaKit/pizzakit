@@ -7,8 +7,8 @@ import SFSafeSymbols
 
 public enum PizzaCardPopup {
 
-    public static func dismiss() {
-        SwiftEntryKit.dismiss()
+    public static func dismiss(completion: PizzaEmptyClosure? = nil) {
+        SwiftEntryKit.dismiss(with: completion)
     }
 
     public static func display(
@@ -47,8 +47,20 @@ public enum PizzaCardPopup {
             )
         )
 
+        let wrapper = UIView().do {
+            $0.backgroundColor = .tertiarySystemGroupedBackground
+            $0.layer.cornerCurve = .continuous
+            $0.layer.cornerRadius = 20
+        }
+        customView.do {
+            wrapper.addSubview($0)
+            $0.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+            }
+        }
+
         SwiftEntryKit.display(
-            entry: customView,
+            entry: wrapper,
             using: attributes
         )
     }
@@ -193,10 +205,6 @@ public class PizzaCardPopupView: PizzaView {
 
     public override func commonInit() {
         super.commonInit()
-
-        backgroundColor = .tertiarySystemGroupedBackground
-        layer.cornerCurve = .continuous
-        layer.cornerRadius = 20
 
         UIStackView().do { stack in
             stack.axis = .vertical
