@@ -1,7 +1,7 @@
 import UIKit
 import PizzaKit
 
-public class UILabelNativeStyle: UIStyle<PizzaLabel> {
+public class UILabelNativeStyle: UILabelStyle {
     public let font: UIFont
     public let color: UIColor
     public let alignment: NSTextAlignment
@@ -20,14 +20,20 @@ public class UILabelNativeStyle: UIStyle<PizzaLabel> {
     }
 
     public override func apply(for label: PizzaLabel) {
-        label.font = font
-        label.textColor = color
-        label.textAlignment = alignment
         label.attributedText = StringBuilder(text: label.text)
             .font(font)
             .lineHeight(lineHeight)
             .alignment(alignment)
             .foregroundColor(color)
             .build()
+    }
+
+    public override func getAttributes() -> [NSAttributedString.Key: Any] {
+        StringBuilder()
+            .font(font)
+            .lineHeight(lineHeight)
+            .alignment(alignment)
+            .foregroundColor(color)
+            .attributes
     }
 }

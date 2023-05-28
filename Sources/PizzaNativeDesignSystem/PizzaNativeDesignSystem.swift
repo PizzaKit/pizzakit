@@ -27,9 +27,9 @@ public struct PizzaNativeLabelStyles: PizzaLabelStyles {
     public func largeTitle(
         color: UIColor,
         alignment: NSTextAlignment
-    ) -> UIStyle<PizzaLabel> {
+    ) -> UILabelStyle {
         UILabelNativeStyle(
-            font: .systemFont(ofSize: 34, weight: .regular).roundedIfNeeded,
+            font: .systemFont(ofSize: 34, weight: .semibold).roundedIfNeeded,
             color: color,
             alignment: alignment,
             lineHeight: 41
@@ -39,7 +39,7 @@ public struct PizzaNativeLabelStyles: PizzaLabelStyles {
     public func title1(
         color: UIColor,
         alignment: NSTextAlignment
-    ) -> UIStyle<PizzaLabel> {
+    ) -> UILabelStyle {
         UILabelNativeStyle(
             font: .systemFont(ofSize: 28, weight: .regular).roundedIfNeeded,
             color: color,
@@ -50,7 +50,7 @@ public struct PizzaNativeLabelStyles: PizzaLabelStyles {
     public func title2(
         color: UIColor,
         alignment: NSTextAlignment
-    ) -> UIStyle<PizzaLabel> {
+    ) -> UILabelStyle {
         UILabelNativeStyle(
             font: .systemFont(ofSize: 22, weight: .bold).roundedIfNeeded,
             color: color,
@@ -61,7 +61,7 @@ public struct PizzaNativeLabelStyles: PizzaLabelStyles {
     public func title3(
         color: UIColor,
         alignment: NSTextAlignment
-    ) -> UIStyle<PizzaLabel> {
+    ) -> UILabelStyle {
         UILabelNativeStyle(
             font: .systemFont(ofSize: 20, weight: .regular).roundedIfNeeded,
             color: color,
@@ -73,7 +73,7 @@ public struct PizzaNativeLabelStyles: PizzaLabelStyles {
     public func headline(
         color: UIColor,
         alignment: NSTextAlignment
-    ) -> UIStyle<PizzaLabel> {
+    ) -> UILabelStyle {
         UILabelNativeStyle(
             font: .systemFont(ofSize: 17, weight: .semibold).roundedIfNeeded,
             color: color,
@@ -85,7 +85,7 @@ public struct PizzaNativeLabelStyles: PizzaLabelStyles {
     public func body(
         color: UIColor,
         alignment: NSTextAlignment
-    ) -> UIStyle<PizzaLabel> {
+    ) -> UILabelStyle {
         UILabelNativeStyle(
             font: .systemFont(ofSize: 17, weight: .regular).roundedIfNeeded,
             color: color,
@@ -97,7 +97,7 @@ public struct PizzaNativeLabelStyles: PizzaLabelStyles {
     public func callout(
         color: UIColor,
         alignment: NSTextAlignment
-    ) -> UIStyle<PizzaLabel> {
+    ) -> UILabelStyle {
         UILabelNativeStyle(
             font: .systemFont(ofSize: 16, weight: .regular).roundedIfNeeded,
             color: color,
@@ -109,7 +109,7 @@ public struct PizzaNativeLabelStyles: PizzaLabelStyles {
     public func subhead(
         color: UIColor,
         alignment: NSTextAlignment
-    ) -> UIStyle<PizzaLabel> {
+    ) -> UILabelStyle {
         UILabelNativeStyle(
             font: .systemFont(ofSize: 15, weight: .regular).roundedIfNeeded,
             color: color,
@@ -121,9 +121,21 @@ public struct PizzaNativeLabelStyles: PizzaLabelStyles {
     public func footnote(
         color: UIColor,
         alignment: NSTextAlignment
-    ) -> UIStyle<PizzaLabel> {
+    ) -> UILabelStyle {
         UILabelNativeStyle(
             font: .systemFont(ofSize: 13, weight: .regular).roundedIfNeeded,
+            color: color,
+            alignment: alignment,
+            lineHeight: 18
+        )
+    }
+
+    public func footnoteSemibold(
+        color: UIColor,
+        alignment: NSTextAlignment
+    ) -> UILabelStyle {
+        UILabelNativeStyle(
+            font: .systemFont(ofSize: 13, weight: .semibold).roundedIfNeeded,
             color: color,
             alignment: alignment,
             lineHeight: 18
@@ -133,7 +145,7 @@ public struct PizzaNativeLabelStyles: PizzaLabelStyles {
     public func caption1(
         color: UIColor,
         alignment: NSTextAlignment
-    ) -> UIStyle<PizzaLabel> {
+    ) -> UILabelStyle {
         UILabelNativeStyle(
             font: .systemFont(ofSize: 12, weight: .regular).roundedIfNeeded,
             color: color,
@@ -144,7 +156,7 @@ public struct PizzaNativeLabelStyles: PizzaLabelStyles {
     public func caption2(
         color: UIColor,
         alignment: NSTextAlignment
-    ) -> UIStyle<PizzaLabel> {
+    ) -> UILabelStyle {
         UILabelNativeStyle(
             font: .systemFont(ofSize: 11, weight: .regular).roundedIfNeeded,
             color: color,

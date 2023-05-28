@@ -22,54 +22,58 @@ public protocol PizzaLabelStyles {
     func largeTitle(
         color: UIColor,
         alignment: NSTextAlignment
-    ) -> UIStyle<PizzaLabel>
+    ) -> UILabelStyle
 
     func title1(
         color: UIColor,
         alignment: NSTextAlignment
-    ) -> UIStyle<PizzaLabel>
+    ) -> UILabelStyle
     func title2(
         color: UIColor,
         alignment: NSTextAlignment
-    ) -> UIStyle<PizzaLabel>
+    ) -> UILabelStyle
     func title3(
         color: UIColor,
         alignment: NSTextAlignment
-    ) -> UIStyle<PizzaLabel>
+    ) -> UILabelStyle
 
     func headline(
         color: UIColor,
         alignment: NSTextAlignment
-    ) -> UIStyle<PizzaLabel>
+    ) -> UILabelStyle
 
     func body(
         color: UIColor,
         alignment: NSTextAlignment
-    ) -> UIStyle<PizzaLabel>
+    ) -> UILabelStyle
 
     func callout(
         color: UIColor,
         alignment: NSTextAlignment
-    ) -> UIStyle<PizzaLabel>
+    ) -> UILabelStyle
 
     func subhead(
         color: UIColor,
         alignment: NSTextAlignment
-    ) -> UIStyle<PizzaLabel>
+    ) -> UILabelStyle
 
     func footnote(
         color: UIColor,
         alignment: NSTextAlignment
-    ) -> UIStyle<PizzaLabel>
+    ) -> UILabelStyle
+    func footnoteSemibold(
+        color: UIColor,
+        alignment: NSTextAlignment
+    ) -> UILabelStyle
 
     func caption1(
         color: UIColor,
         alignment: NSTextAlignment
-    ) -> UIStyle<PizzaLabel>
+    ) -> UILabelStyle
     func caption2(
         color: UIColor,
         alignment: NSTextAlignment
-    ) -> UIStyle<PizzaLabel>
+    ) -> UILabelStyle
 }
 
 public protocol PizzaTextFieldStyles {
