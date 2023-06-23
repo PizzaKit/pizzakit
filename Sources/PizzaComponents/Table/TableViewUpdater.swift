@@ -1,15 +1,12 @@
 import UIKit
+import PizzaCore
 
 public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
 
-    public struct SelectionContext {
-        let indexPath: IndexPath
-        let componentNode: ComponentNode
-    }
     public typealias Target = UITableView
-
-    public var didSelect: ((SelectionContext) -> Void)?
     private var dataSource: UITableViewDiffableDataSource<ComponentSection, ComponentNode>!
+
+    public var onScrollViewDidScroll: PizzaClosure<UIScrollView>?
 
     public func initialize(target: UITableView) {
         dataSource = .init(
@@ -186,6 +183,10 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
         } else {
             return nil
         }
+    }
+
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        onScrollViewDidScroll?(scrollView)
     }
 
 }

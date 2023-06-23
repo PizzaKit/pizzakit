@@ -8,6 +8,11 @@ public enum RenderType {
     case hard, soft
 }
 
+public enum ComponentLayoutType {
+    case layoutMargin
+    case withoutMargins
+}
+
 public enum ComponentAccessoryType {
     case arrow, check
 }
@@ -30,6 +35,9 @@ public protocol Component<RenderTarget> {
     /// Идентификатор для реюза ячеек (одинаковые компоненты будут реюзать одинаковые ячейки -
     /// для того, чтобы редко создавать RenderTarget - только один раз)
     var reuseIdentifier: String { get }
+
+    /// Стандартный тип layout-а компонента в ячейки
+    var layoutType: ComponentLayoutType { get }
 
     /// Создает `RenderTarget` для последующего заполнения. Это делается не каждый раз,
     /// а только при необходимости. Если уже такой `RenderTarget` был создан,
@@ -58,6 +66,9 @@ public extension Component {
     var reuseIdentifier: String {
         return String(reflecting: Self.self)
     }
+    var layoutType: ComponentLayoutType {
+        .layoutMargin
+    }
     func renderTargetWillDisplay(_ renderTarget: RenderTarget) {}
     func renderTargetDidEndDiplay(_ renderTarget: RenderTarget) {}
     func renderTargetSetHighlight(
@@ -80,21 +91,42 @@ public protocol SelectableComponent: Component {
 public extension Component where RenderTarget: UIView {
 
     func layout(renderTarget: RenderTarget, in container: UIView) {
-        renderTarget.do {
-            container.addSubview($0)
-            $0.snp.makeConstraints { make in
-                make
-                    .top
-                    .equalToSuperview()
-                make.leading.equalTo(container.layoutMarginsGuide.snp.leading)
-                make
-                    .bottom
-                    .equalToSuperview()
-                    .priority(999)
-                make
-                    .trailing
-                    .equalTo(container.layoutMarginsGuide.snp.trailing)
-                    .priority(999)
+        switch layoutType {
+        case .layoutMargin:
+            renderTarget.do {
+                container.addSubview($0)
+                $0.snp.makeConstraints { make in
+                    make
+                        .top
+                        .equalToSuperview()
+                    make.leading.equalTo(container.layoutMarginsGuide.snp.leading)
+                    make
+                        .bottom
+                        .equalToSuperview()
+                        .priority(999)
+                    make
+                        .trailing
+                        .equalTo(container.layoutMarginsGuide.snp.trailing)
+                        .priority(999)
+                }
+            }
+        case .withoutMargins:
+            renderTarget.do {
+                container.addSubview($0)
+                $0.snp.makeConstraints { make in
+                    make
+                        .top
+                        .equalToSuperview()
+                    make.leading.equalToSuperview()
+                    make
+                        .bottom
+                        .equalToSuperview()
+                        .priority(999)
+                    make
+                        .trailing
+                        .equalToSuperview()
+                        .priority(999)
+                }
             }
         }
     }

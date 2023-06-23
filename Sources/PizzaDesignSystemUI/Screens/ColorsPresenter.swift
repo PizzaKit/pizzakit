@@ -26,36 +26,44 @@ class ColorsPresenter: ComponentPresenter {
                         id: "color_text_1",
                         icon: .background(color: .palette.label),
                         title: "Label",
-                        titleStyle: .allStyles.body(
-                            color: .palette.label,
-                            alignment: .left
+                        labelsStyle: .init(
+                            titleStyle: .allStyles.body(
+                                color: .palette.label,
+                                alignment: .left
+                            )
                         )
                     ),
                     ListComponent(
                         id: "color_text_2",
                         icon: .background(color: .palette.labelSecondary),
                         title: "Label secondary",
-                        titleStyle: .allStyles.body(
-                            color: .palette.labelSecondary,
-                            alignment: .left
+                        labelsStyle: .init(
+                            titleStyle: .allStyles.body(
+                                color: .palette.labelSecondary,
+                                alignment: .left
+                            )
                         )
                     ),
                     ListComponent(
                         id: "color_text_3",
                         icon: .background(color: .palette.labelTertiary),
                         title: "Label tertiary",
-                        titleStyle: .allStyles.body(
-                            color: .palette.labelTertiary,
-                            alignment: .left
+                        labelsStyle: .init(
+                            titleStyle: .allStyles.body(
+                                color: .palette.labelTertiary,
+                                alignment: .left
+                            )
                         )
                     ),
                     ListComponent(
                         id: "color_text_4",
                         icon: .background(color: .palette.labelError),
                         title: "Label error",
-                        titleStyle: .allStyles.body(
-                            color: .palette.labelError,
-                            alignment: .left
+                        labelsStyle: .init(
+                            titleStyle: .allStyles.body(
+                                color: .palette.labelError,
+                                alignment: .left
+                            )
                         )
                     )
                 ]
@@ -76,9 +84,11 @@ class ColorsPresenter: ComponentPresenter {
                         id: "tint_color_\($0.offset)",
                         icon: .background(color: $0.element),
                         title: title,
-                        titleStyle: .allStyles.body(
-                            color: $0.element,
-                            alignment: .left
+                        labelsStyle: .init(
+                            titleStyle: .allStyles.body(
+                                color: $0.element,
+                                alignment: .left
+                            )
                         )
                     )
                 }

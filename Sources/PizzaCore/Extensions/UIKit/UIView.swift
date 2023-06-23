@@ -68,10 +68,16 @@ public extension UIView {
     static func animateIfNeeded(
         duration: TimeInterval,
         needAnimate: Bool,
+        options: UIView.AnimationOptions = [],
         animationBlock: @escaping PizzaEmptyClosure
     ) {
         if needAnimate {
-            UIView.animate(withDuration: duration, animations: animationBlock)
+            UIView.animate(
+                withDuration: duration,
+                delay: 0,
+                options: options,
+                animations: animationBlock
+            )
         } else {
             animationBlock()
         }

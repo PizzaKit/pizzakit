@@ -29,10 +29,10 @@ public struct PizzaNativeLabelStyles: PizzaLabelStyles {
         alignment: NSTextAlignment
     ) -> UILabelStyle {
         UILabelNativeStyle(
-            font: .systemFont(ofSize: 34, weight: .semibold).roundedIfNeeded,
+            font: .systemFont(ofSize: 32, weight: .semibold).roundedIfNeeded,
             color: color,
             alignment: alignment,
-            lineHeight: 41
+            lineHeight: 38
         )
     }
 
@@ -176,6 +176,8 @@ public struct PizzaNativeNavControllerStyles: PizzaNavControllerStyles {
         supportLargeTitle: false
     )
 
+    public let transparent: UIStyle<UINavigationController> = UINavigationControllerTransparentStyle()
+
 }
 
 public struct PizzaNativeButtonStyles: PizzaButtonStyles {
@@ -201,7 +203,34 @@ public struct PizzaNativeButtonStyles: PizzaButtonStyles {
                         .font(.systemFont(ofSize: 15, weight: .semibold).roundedIfNeeded)
                         .lineHeight(20)
                 }
-            }
+            },
+            isLoading: false
+        )
+    }
+
+    public func loading(
+        title: String?,
+        size: PizzaButtonStylesSize,
+        type: PizzaButtonStylesType
+    ) -> UIStyle<UIButton> {
+        UIButtonStyle(
+            title: title,
+            backgroundColor: .tintColor,
+            size: size,
+            type: type,
+            attributedTitleProvider: { title in
+                switch size {
+                case .large, .medium:
+                    return StringBuilder(text: title)
+                        .font(.systemFont(ofSize: 17, weight: .semibold).roundedIfNeeded)
+                        .lineHeight(21)
+                case .small:
+                    return StringBuilder(text: title)
+                        .font(.systemFont(ofSize: 15, weight: .semibold).roundedIfNeeded)
+                        .lineHeight(20)
+                }
+            },
+            isLoading: true
         )
     }
 

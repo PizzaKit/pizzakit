@@ -2,25 +2,77 @@ import PizzaKit
 import PizzaServices
 import UIKit
 import Combine
+import PizzaComponents
+
+public struct PizzaAppThemePresenterClosureActionsHandler: PizzaAppThemePresenterActionsHandler {
+
+    private let closure: PizzaEmptyClosure
+
+    public init(closure: @escaping PizzaEmptyClosure) {
+        self.closure = closure
+    }
+
+    public func proActionCompleted() {
+        closure()
+    }
+
+}
+
+public protocol PizzaAppThemePresenterActionsHandler {
+    func proActionCompleted()
+}
 
 public class PizzaAppThemePresenter: ComponentPresenter {
+
+    private struct State {
+        var changingEnabled: Bool
+        var theme: PizzaAppTheme
+    }
 
     public weak var delegate: ComponentPresenterDelegate?
 
     private let appThemeService: PizzaAppThemeService
+    private let proVersionService: PizzaProVersionService?
+    private let actionsHandler: PizzaAppThemePresenterActionsHandler?
     private var bag = Set<AnyCancellable>()
     private let feedbackGenerator = UISelectionFeedbackGenerator()
 
-    public init(appThemeService: PizzaAppThemeService) {
+    private var state: State {
+        didSet {
+            render()
+        }
+    }
+
+    public init(
+        appThemeService: PizzaAppThemeService,
+        proVersionService: PizzaProVersionService?,
+        actionsHandler: PizzaAppThemePresenterActionsHandler?
+    ) {
         self.appThemeService = appThemeService
+        self.proVersionService = proVersionService
+        self.actionsHandler = actionsHandler
+        self.state = .init(
+            changingEnabled: proVersionService?.value ?? true,
+            theme: appThemeService.value
+        )
     }
 
     public func touch() {
         appThemeService
             .valueSubject
+            .dropFirst()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] theme in
-                self?.render(theme: theme)
+                self?.state.theme = theme
+            }
+            .store(in: &bag)
+
+        proVersionService?
+            .valueSubject
+            .dropFirst()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isPro in
+                self?.state.changingEnabled = isPro
             }
             .store(in: &bag)
 
@@ -28,9 +80,11 @@ public class PizzaAppThemePresenter: ComponentPresenter {
             $0.navigationItem.title = .localized(key: "apptheme.pres.title")
             $0.navigationItem.largeTitleDisplayMode = .never
         }
+
+        render()
     }
 
-    private func render(theme: PizzaAppTheme) {
+    private func render() {
         var sections: [ComponentSection] = []
 
         let appThemeSection = ComponentSection(
@@ -44,15 +98,23 @@ public class PizzaAppThemePresenter: ComponentPresenter {
                 SwitchComponent(
                     id: "app_theme_switch",
                     text: .localized(key: "apptheme.pres.switch.text"),
-                    value: theme.themeType == .automatic,
+                    value: state.theme.themeType == .automatic,
                     isEnabled: true,
                     onChanged: { [weak self] isOn in
+                        guard let self else { return }
                         let isCurrentLight = UIApplication.allWindows
                             .first(where: { $0.isKeyWindow })?
                             .traitCollection.userInterfaceStyle == .light
-                        self?.appThemeService.value.themeType = isOn
-                            ? .automatic
-                            : (isCurrentLight ? .light : .dark)
+                        if isOn {
+                            appThemeService.value.themeType = .automatic
+                        } else if state.changingEnabled {
+                            appThemeService.value.themeType = isCurrentLight
+                                ? .light
+                                : .dark
+                        } else {
+                            render()
+                            actionsHandler?.proActionCompleted()
+                        }
                     }
                 )
             ],
@@ -64,7 +126,7 @@ public class PizzaAppThemePresenter: ComponentPresenter {
         )
         sections.append(appThemeSection)
 
-        if theme.themeType != .automatic {
+        if state.theme.themeType != .automatic {
             let manualThemeSelectionSection = ComponentSection(
                 id: "app_manual_theme_section",
                 cells: [
@@ -74,11 +136,19 @@ public class PizzaAppThemePresenter: ComponentPresenter {
                         selectableContext: .init(
                             shouldDeselect: true,
                             onSelect: { [weak self] in
-                                self?.feedbackGenerator.selectionChanged()
-                                self?.appThemeService.value.themeType = .light
+                                guard
+                                    let self,
+                                    appThemeService.value.themeType != .light
+                                else { return }
+                                if state.changingEnabled {
+                                    feedbackGenerator.selectionChanged()
+                                    appThemeService.value.themeType = .light
+                                } else {
+                                    actionsHandler?.proActionCompleted()
+                                }
                             }
                         ),
-                        trailingContent: theme.themeType == .light ? .check : nil
+                        trailingContent: state.theme.themeType == .light ? .check : nil
                     ),
                     ListComponent(
                         id: "app_manual_theme_dark",
@@ -86,11 +156,19 @@ public class PizzaAppThemePresenter: ComponentPresenter {
                         selectableContext: .init(
                             shouldDeselect: true,
                             onSelect: { [weak self] in
-                                self?.feedbackGenerator.selectionChanged()
-                                self?.appThemeService.value.themeType = .dark
+                                guard
+                                    let self,
+                                    appThemeService.value.themeType != .dark
+                                else { return }
+                                if state.changingEnabled {
+                                    feedbackGenerator.selectionChanged()
+                                    appThemeService.value.themeType = .dark
+                                } else {
+                                    actionsHandler?.proActionCompleted()
+                                }
                             }
                         ),
-                        trailingContent: theme.themeType == .dark ? .check : nil
+                        trailingContent: state.theme.themeType == .dark ? .check : nil
                     )
                 ],
                 footer: TitleComponent(
@@ -104,7 +182,7 @@ public class PizzaAppThemePresenter: ComponentPresenter {
 
         var colorComponents: [any IdentifiableComponent] = []
         for (index, color) in PizzaAppTheme.allTintColors.enumerated() {
-            let isSelected = color == theme.tintColor
+            let isSelected = color == state.theme.tintColor
             colorComponents.append(
                 ListComponent(
                     id: color.hex,
@@ -113,11 +191,27 @@ public class PizzaAppThemePresenter: ComponentPresenter {
                     selectableContext: .init(
                         shouldDeselect: true,
                         onSelect: { [weak self] in
-                            self?.feedbackGenerator.selectionChanged()
-                            self?.appThemeService.value.tintColorIndex = index
+                            guard
+                                let self,
+                                !isSelected
+                            else { return }
+                            if state.changingEnabled {
+                                feedbackGenerator.selectionChanged()
+                                appThemeService.value.tintColorIndex = index
+                            } else {
+                                actionsHandler?.proActionCompleted()
+                            }
                         }
                     ),
-                    trailingContent: isSelected ? .check : nil
+                    trailingContent: {
+                        if isSelected {
+                            return .check
+                        }
+                        if !state.changingEnabled {
+                            return .sfSymbol(.lock)
+                        }
+                        return nil
+                    }()
                 )
             )
         }

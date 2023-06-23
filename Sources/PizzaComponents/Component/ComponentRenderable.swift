@@ -53,20 +53,20 @@ public extension ComponentRenderable {
 
         /// получаем render target или создаем новый
         let currentRenderTarget = {
-            if let renderTarget {
+            /// 1. Создаем новый renderTarget
+            /// 2. Если таргет есть и он нужного типа, то возвращаем его же
+            /// 3. Иначе
+            ///   - удаляем старый renderTarget из иерархии view
+            ///   - layout-им новый renderTarget
+            let newRenderTarget = anyComponent.createRenderTarget()
+            if let renderTarget, type(of: renderTarget) == type(of: newRenderTarget) {
                 return renderTarget
             }
-            let newRenderTarget = anyComponent.createRenderTarget()
+            (renderTarget as? UIView)?.removeFromSuperview() // TODO: перенести эту логику в протокол компонента
             anyComponent.layout(renderTarget: newRenderTarget, in: componentContainerView)
             return newRenderTarget
         }()
         anyComponent.render(in: currentRenderTarget, renderType: renderType)
-//        if
-//            let accessoriesComponent = component as? ComponentWithAccessories,
-//            let accessoriesRenderable = self as? ComponentRenderableAccessories
-//        {
-//            accessoriesRenderable.setup(accessories: accessoriesComponent.accessories)
-//        }
 
         self.renderTarget = currentRenderTarget
         self.renderComponent = anyComponent

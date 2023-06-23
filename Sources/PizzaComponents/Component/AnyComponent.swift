@@ -14,6 +14,10 @@ public struct AnyComponent: Component {
         }
     }
 
+    public var layoutType: ComponentLayoutType {
+        box.layoutType
+    }
+
     public func createRenderTarget() -> Any {
         box.createRenderTarget()
     }
@@ -52,6 +56,11 @@ struct ComponentBox<Base: Component>: AnyComponentBox {
 
     var base: Any {
         return baseComponent
+    }
+
+    var layoutType: ComponentLayoutType {
+        guard let comp = base as? (any Component) else { return .layoutMargin }
+        return comp.layoutType
     }
 
     let baseComponent: Base
@@ -99,6 +108,8 @@ struct ComponentBox<Base: Component>: AnyComponentBox {
 
 internal protocol AnyComponentBox {
     var base: Any { get }
+
+    var layoutType: ComponentLayoutType { get }
 
     func createRenderTarget() -> Any
     func render(in renderTarget: Any, renderType: RenderType)

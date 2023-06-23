@@ -1,6 +1,7 @@
 import PizzaKit
 import SFSafeSymbols
 import UIKit
+import PizzaComponents
 
 class ComponentsPresenter: ComponentPresenter {
 
@@ -106,102 +107,7 @@ class ComponentsPresenter: ComponentPresenter {
                         text: "List components",
                         insets: .defaultHeader
                     ),
-                    cells: [
-                        ListComponent(
-                            id: "list_1",
-                            icon: nil,
-                            title: "Just title",
-                            value: nil,
-                            selectableContext: .init(shouldDeselect: true, onSelect: { }),
-                            trailingContent: nil
-                        ),
-                        ListComponent(
-                            id: "list_2",
-                            icon: nil,
-                            title: "Some title",
-                            value: "12",
-                            selectableContext: .init(shouldDeselect: false, onSelect: { }),
-                            trailingContent: nil
-                        ),
-                        ListComponent(
-                            id: "list_3",
-                            icon: .systemSquareRounded(
-                                .init(
-                                    sfSymbol: .appBadge,
-                                    backgroundColor: .systemBlue
-                                )
-                            ),
-                            title: "Icon and title",
-                            value: nil,
-                            selectableContext: nil,
-                            trailingContent: nil
-                        ),
-                        ListComponent(
-                            id: "list_4",
-                            icon: .systemSquareRounded(
-                                .init(
-                                    sfSymbol: .folder,
-                                    backgroundColor: .systemOrange
-                                )
-                            ),
-                            title: "Icon and title",
-                            value: "Some value",
-                            selectableContext: nil,
-                            trailingContent: nil
-                        ),
-                        ListComponent(
-                            id: "list_5",
-                            icon: .systemSquareRounded(
-                                .init(
-                                    sfSymbol: .externaldrive,
-                                    backgroundColor: .systemCyan
-                                )
-                            ),
-                            title: "Title with arrow",
-                            value: nil,
-                            selectableContext: nil,
-                            trailingContent: .arrow
-                        ),
-                        ListComponent(
-                            id: "list_6",
-                            icon: .systemSquareRounded(
-                                .init(
-                                    sfSymbol: .book,
-                                    backgroundColor: .systemIndigo
-                                )
-                            ),
-                            title: "Title with arrow",
-                            value: "And long long value",
-                            selectableContext: nil,
-                            trailingContent: .arrow
-                        ),
-                        ListComponent(
-                            id: "list_7",
-                            icon: .systemSquareRounded(
-                                .init(
-                                    sfSymbol: .figureWave,
-                                    backgroundColor: .systemRed
-                                )
-                            ),
-                            title: "Title with check",
-                            value: nil,
-                            selectableContext: nil,
-                            trailingContent: .check
-                        ),
-                        ListComponent(
-                            id: "list_8",
-                            icon: .systemSquareRounded(
-                                .init(
-                                    sfSymbol: .shift,
-                                    backgroundColor: .systemGray
-                                )
-                            ),
-                            title: "Title",
-                            value: "Value with check",
-                            selectableContext: nil,
-                            trailingContent: .check
-                        )
-                    ],
+                    cells: generateAllListComponents(),
                     footer: TitleComponent(
                         id: "list_footer",
                         text: "Supports icon, title, value, check, arrow in different variations",
@@ -256,6 +162,66 @@ class ComponentsPresenter: ComponentPresenter {
                 )
             ]
         )
+    }
+
+    private func generateAllListComponents() -> [ListComponent] {
+        var components: [ListComponent] = []
+
+        let allIcons: [ComponentIcon?] = [
+            nil,
+            .systemSquareRounded(
+                .init(
+                    sfSymbol: .paintpalette,
+                    tintColor: .white,
+                    backgroundColor: .systemRed
+                )
+            ),
+            .systemSquareRounded(
+                .init(
+                    sfSymbol: .paintpalette,
+                    tintColor: .tintColor,
+                    backgroundColor: nil
+                )
+            ),
+            .background(color: .systemPurple)
+        ]
+        var allValues: [String?] = ["Value", nil]
+        var allValuePosition: [ListComponent.ValuePosition] = [
+            .trailing,
+            .bottom
+        ]
+        var allTrailingContents: [ListComponent.TrailingContent?] = [
+            nil,
+            .arrow,
+            .check,
+            .sfSymbol(.lock)
+        ]
+
+        for icon in allIcons {
+            for value in allValues {
+                for position in allValuePosition {
+                    if position == .bottom, value == nil {
+                        continue
+                    }
+                    for content in allTrailingContents {
+                        components.append(
+                            ListComponent(
+                                id: UUID().uuidString,
+                                icon: icon,
+                                title: "Title",
+                                value: value,
+                                labelsStyle: .defaultOneLine,
+                                valuePosition: position,
+                                selectableContext: nil,
+                                trailingContent: content
+                            )
+                        )
+                    }
+                }
+            }
+        }
+
+        return components
     }
 
 }

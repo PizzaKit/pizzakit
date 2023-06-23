@@ -15,6 +15,7 @@ public protocol PizzaAnimationConstants {
 public protocol PizzaNavControllerStyles {
     var largeTitle: UIStyle<UINavigationController> { get }
     var standardTitle: UIStyle<UINavigationController> { get }
+    var transparent: UIStyle<UINavigationController> { get }
 }
 
 public protocol PizzaLabelStyles {
@@ -99,6 +100,11 @@ public enum PizzaButtonStylesType {
 }
 public protocol PizzaButtonStyles {
     func standard(
+        title: String?,
+        size: PizzaButtonStylesSize,
+        type: PizzaButtonStylesType
+    ) -> UIStyle<UIButton>
+    func loading(
         title: String?,
         size: PizzaButtonStylesSize,
         type: PizzaButtonStylesType

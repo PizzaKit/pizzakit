@@ -6,8 +6,8 @@ open class ComponentTableController: UITableViewController, ComponentPresenterDe
 
     // MARK: - Properties
 
-    private let presenter: ComponentPresenter
-    private let updater = TableViewUpdater()
+    public let presenter: ComponentPresenter
+    public let updater = TableViewUpdater()
 
     private var prevData: [ComponentSection] = []
 

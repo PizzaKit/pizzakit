@@ -4,7 +4,7 @@ final public class StringBuilder: StringBuildable {
 
     // MARK: - Private Properties
 
-    private(set) var attributes: [NSAttributedString.Key: Any]
+    public private(set) var attributes: [NSAttributedString.Key: Any]
 
     // MARK: - Initialization
 

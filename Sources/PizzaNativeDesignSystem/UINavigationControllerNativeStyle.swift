@@ -42,3 +42,17 @@ public class UINavigationControllerNativeStyle: UIStyle<UINavigationController> 
     }
 
 }
+
+public class UINavigationControllerTransparentStyle: UIStyle<UINavigationController> {
+
+    public override func apply(for navController: UINavigationController) {
+        let scrollAppearance = UINavigationBarAppearance()
+        scrollAppearance.configureWithTransparentBackground()
+
+        navController.navigationBar.standardAppearance = scrollAppearance
+        navController.navigationBar.scrollEdgeAppearance = scrollAppearance
+
+        navController.navigationBar.prefersLargeTitles = false
+    }
+
+}
