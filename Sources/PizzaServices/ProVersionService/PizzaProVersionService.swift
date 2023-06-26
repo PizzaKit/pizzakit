@@ -5,7 +5,7 @@ import UIKit
 
 public protocol PizzaProVersionService {
     var value: Bool { get }
-    var valueSubject: AnyPublisher<Bool, Never> { get }
+    var valuePublisher: AnyPublisher<Bool, Never> { get }
 }
 
 public protocol PizzaProVersionWritableService: PizzaProVersionService {
@@ -16,7 +16,7 @@ public class PizzaProVersionServiceImpl: PizzaProVersionWritableService {
 
     // MARK: - Properties
 
-    public var valueSubject: AnyPublisher<Bool, Never> {
+    public var valuePublisher: AnyPublisher<Bool, Never> {
         currentValueSubject.eraseToAnyPublisher()
     }
     public var value: Bool {

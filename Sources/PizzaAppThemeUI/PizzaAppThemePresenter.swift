@@ -59,8 +59,7 @@ public class PizzaAppThemePresenter: ComponentPresenter {
 
     public func touch() {
         appThemeService
-            .valueSubject
-            .dropFirst()
+            .valuePublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] theme in
                 self?.state.theme = theme
@@ -68,7 +67,7 @@ public class PizzaAppThemePresenter: ComponentPresenter {
             .store(in: &bag)
 
         proVersionService?
-            .valueSubject
+            .valuePublisher
             .dropFirst()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] isPro in

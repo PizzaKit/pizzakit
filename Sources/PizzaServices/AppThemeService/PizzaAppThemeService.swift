@@ -3,6 +3,7 @@ import Foundation
 import Combine
 import UIKit
 import Defaults
+import WidgetKit
 
 public struct PizzaAppTheme: Codable, Defaults.Serializable {
 
@@ -34,31 +35,34 @@ public class PizzaAppThemeService {
 
     // MARK: - Properties
 
-    public var valueSubject: AnyPublisher<PizzaAppTheme, Never> {
-        currentValueSubject.eraseToAnyPublisher()
+    public var valuePublisher: AnyPublisher<PizzaAppTheme, Never> {
+        valueSubject.eraseToAnyPublisher()
     }
     public var value: PizzaAppTheme {
         get {
-            currentValueSubject.value
+            Defaults[.appThemeKey(userDefaults: userDefaults)]
         }
         set {
-            currentValueSubject.send(newValue)
+            valueSubject.send(newValue)
         }
     }
 
-    private let currentValueSubject: CurrentValueSubject<PizzaAppTheme, Never>
+    private let valueSubject = PassthroughSubject<PizzaAppTheme, Never>()
     private var bag = Set<AnyCancellable>()
+
+    private let userDefaults: UserDefaults
 
     // MARK: - Initalization
 
-    public init() {
-        let appTheme = Defaults[.appTheme]
-        currentValueSubject = .init(appTheme)
+    public init(userDefaults: UserDefaults) {
+        self.userDefaults = userDefaults
+        valueSubject
+            .sink { [weak self] newTheme in
+                guard let self else { return }
+                Defaults[.appThemeKey(userDefaults: self.userDefaults)] = newTheme
 
-        currentValueSubject
-            .dropFirst()
-            .sink { newTheme in
-                Defaults[.appTheme] = newTheme
+                self.userDefaults.synchronize()
+                WidgetCenter.shared.reloadAllTimelines()
             }
             .store(in: &bag)
     }
@@ -66,5 +70,13 @@ public class PizzaAppThemeService {
 }
 
 fileprivate extension Defaults.Keys {
-    static let appTheme = Defaults.Key<PizzaAppTheme>("app_theme", default: .default)
+
+    static func appThemeKey(userDefaults: UserDefaults) -> Defaults.Key<PizzaAppTheme> {
+        Defaults.Key<PizzaAppTheme>(
+            "app_theme",
+            default: .default,
+            suite: userDefaults
+        )
+    }
+
 }
