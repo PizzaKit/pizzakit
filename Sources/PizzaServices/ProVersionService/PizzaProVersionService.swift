@@ -4,8 +4,8 @@ import Combine
 import UIKit
 
 public struct ProVersionState {
-    let value: Bool
-    let forceValue: Bool
+    var value: Bool
+    var forceValue: Bool
 
     public var isPro: Bool {
         forceValue || value
@@ -13,8 +13,7 @@ public struct ProVersionState {
 }
 
 public protocol PizzaProVersionService {
-    var value: Bool { get }
-    var valuePublisher: AnyPublisher<Bool, Never> { get }
+    var valuePublisher: PizzaRPublisher<Bool, Never> { get }
 
     func setValue(_ value: Bool)
     func setForceValue(_ forceValue: Bool)
@@ -24,34 +23,33 @@ public class PizzaProVersionServiceImpl: PizzaProVersionService {
 
     // MARK: - Properties
 
-    public var valuePublisher: AnyPublisher<Bool, Never> {
-        currentValueSubject
-            .map { $0.isPro }
-            .eraseToAnyPublisher()
+    private var state = ProVersionState(value: false, forceValue: false) {
+        didSet {
+            _valuePublisher.setNeedsUpdate()
+        }
     }
-    public var value: Bool {
-        currentValueSubject.value.isPro
-    }
+    private lazy var _valuePublisher = PizzaPassthroughRPublisher<Bool, Never>(
+        currentValue: { [weak self] in
+            self?.state.isPro ?? false
+        }
+    )
 
-    private let currentValueSubject: CurrentValueSubject<ProVersionState, Never>
-    private var bag = Set<AnyCancellable>()
+    public var valuePublisher: PizzaRPublisher<Bool, Never> {
+        _valuePublisher
+    }
 
     // MARK: - Initalization
 
-    public init() {
-        currentValueSubject = .init(.init(value: false, forceValue: false))
-    }
+    public init() {}
 
     // MARK: - Public Methods
 
     public func setValue(_ value: Bool) {
-        let currentState = currentValueSubject.value
-        currentValueSubject.send(.init(value: value, forceValue: currentState.forceValue))
+        state.value = value
     }
 
     public func setForceValue(_ forceValue: Bool) {
-        let currentState = currentValueSubject.value
-        currentValueSubject.send(.init(value: currentState.value, forceValue: forceValue))
+        state.forceValue = forceValue
     }
 
 }

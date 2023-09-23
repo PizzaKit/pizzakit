@@ -1,5 +1,6 @@
 import UIKit
 import PizzaCore
+import PizzaDesign
 
 public protocol PizzaRootViewControllerTransitionProvider {
     func performTransition(
@@ -57,7 +58,7 @@ open class PizzaRootViewControllerTransitionProviderFade: PizzaRootViewControlle
 
 /// Such viewController, that can display any other viewController
 /// (diplaying may be with any animation, for example fade)
-open class PizzaRootViewController: UIViewController, PizzaRootPresentable {
+open class PizzaRootViewController: PizzaController, PizzaRootPresentable {
 
     // MARK: - PRootPresentable
 
@@ -91,7 +92,7 @@ open class PizzaRootViewController: UIViewController, PizzaRootPresentable {
 
     public init(transitionProvider: PizzaRootViewControllerTransitionProvider) {
         self.transitionProvider = transitionProvider
-        super.init(nibName: nil, bundle: nil)
+        super.init()
     }
 
     required public init?(coder: NSCoder) {

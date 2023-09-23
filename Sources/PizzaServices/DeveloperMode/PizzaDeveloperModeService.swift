@@ -5,7 +5,18 @@ import SPIndicator
 import Combine
 import Defaults
 
-public class PizzaDeveloperModeService {
+public protocol PizzaDeveloperModeService {
+    var valuePublisher: PizzaRPublisher<Bool, Never> { get }
+
+    /// Метод для попытки включения
+    func tryTurnOn(
+        option: Int,
+        signature: String,
+        onNeedShowIndicator: PizzaClosure<Result<PizzaSigningCryptoHelpers.LifeTime, Error>>?
+    )
+}
+
+public class PizzaDeveloperModeServiceImpl: PizzaDeveloperModeService {
 
     // MARK: - Nested Types
 
@@ -14,60 +25,53 @@ public class PizzaDeveloperModeService {
         case verificationFailed
     }
 
+    // MARK: - PizzaDeveloperModeService
+
+    public lazy var _valuePublisher = PizzaPassthroughRPublisher<Bool, Never>(
+        currentValue: { [weak self] in
+            guard let self else { return false }
+            return Self.verifyDeveloperMode(
+                sault: self.sault,
+                deviceID: self.deviceID,
+                publicKey: self.publicKey
+            )
+        }
+    )
+    public var valuePublisher: PizzaRPublisher<Bool, Never> {
+        _valuePublisher
+    }
+
     // MARK: - Properties
 
-    public var isDeveloperMode: Bool {
-        modeSubject.value
-    }
-    public var isDeveloperModePublisher: AnyPublisher<Bool, Never> {
-        modeSubject
-            .removeDuplicates()
-            .eraseToAnyPublisher()
-    }
-
-    private let modeSubject: CurrentValueSubject<Bool, Never>
     private let sault: String
     private let deviceID: String
     private let publicKey: String
-    private let onNeedShowIndicator: PizzaClosure<Result<PizzaSigningCryptoHelpers.LifeTime, Error>>?
 
     // MARK: - Initialization
 
     public init(
         sault: String,
         deviceID: String,
-        publicKey: String,
-        onNeedShowIndicator: PizzaClosure<Result<PizzaSigningCryptoHelpers.LifeTime, Error>>?
+        publicKey: String
     ) {
         self.sault = sault
         self.deviceID = deviceID
         self.publicKey = publicKey
-        self.onNeedShowIndicator = onNeedShowIndicator
-        self.modeSubject = .init(
-            Self.verifyDeveloperMode(
-                sault: sault,
-                deviceID: deviceID,
-                publicKey: publicKey
-            )
-        )
     }
 
     // MARK: - Methods
 
     public func tryTurnOn(
         option: Int,
-        signature: String
+        signature: String,
+        onNeedShowIndicator: PizzaClosure<Result<PizzaSigningCryptoHelpers.LifeTime, Error>>?
     ) {
         // save to user defaults to restore it at next launch
         Defaults[.signature] = signature
         Defaults[.option] = option
 
-        let isVerified = Self.verifyDeveloperMode(
-            sault: sault,
-            deviceID: deviceID,
-            publicKey: publicKey
-        )
-        modeSubject.send(isVerified)
+        _valuePublisher.setNeedsUpdate()
+        let isVerified = _valuePublisher.value
 
         if isVerified {
             guard let lifeTime: PizzaSigningCryptoHelpers.LifeTime = .from(

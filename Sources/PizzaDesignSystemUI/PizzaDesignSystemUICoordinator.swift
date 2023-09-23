@@ -9,7 +9,7 @@ public protocol PizzaDesignSystemUICoordinatable: AnyObject {
     func openPopups()
 }
 
-public class PizzaDesignSystemUICoordinator<Deeplink, Session>: PizzaRouterCoordinator<Deeplink, Session>, PizzaDesignSystemUICoordinatable {
+public class PizzaDesignSystemUICoordinator<Deeplink>: PizzaRouterCoordinator<Deeplink>, PizzaDesignSystemUICoordinatable {
 
     public override func start() {
         let presenter = MenuPresenter(coordinator: self)

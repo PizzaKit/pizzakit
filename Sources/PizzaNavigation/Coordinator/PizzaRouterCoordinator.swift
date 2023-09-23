@@ -2,14 +2,13 @@ import Foundation
 import PizzaCore
 
 /// Realization of coordinator with router
-open class PizzaRouterCoordinator<Deeplink, Session>: PizzaCoordinator {
+open class PizzaRouterCoordinator<Deeplink>: PizzaCoordinator {
 
     // MARK: - Properties
 
     public private(set) var children: [PizzaRouterCoordinator] = []
     public private(set) weak var parent: PizzaRouterCoordinator?
     public private(set) var router: PizzaRouter!
-    public private(set) var session: Session!
 
     /// Need to call when such flow is not needed
     /// (for example on deinit root controller for current coordinator)
@@ -34,7 +33,7 @@ open class PizzaRouterCoordinator<Deeplink, Session>: PizzaCoordinator {
     }
 
     /// Method for checking if passed coordinator exists in children recursively
-    open func checkDependencyExistsRecursively<T: PizzaRouterCoordinator<Deeplink, Session>>(
+    open func checkDependencyExistsRecursively<T: PizzaRouterCoordinator<Deeplink>>(
         ofType coordinatorType: T.Type
     ) -> Bool {
         var hasInChildren = false
@@ -51,7 +50,7 @@ open class PizzaRouterCoordinator<Deeplink, Session>: PizzaCoordinator {
     }
 
     /// Method for checking if passed coordinator exists in children
-    open func checkDependencyExists<T: PizzaRouterCoordinator<Deeplink, Session>>(
+    open func checkDependencyExists<T: PizzaRouterCoordinator<Deeplink>>(
         ofType coordinatorType: T.Type
     ) -> Bool {
         return children.first(where: { coordinator in
@@ -61,12 +60,11 @@ open class PizzaRouterCoordinator<Deeplink, Session>: PizzaCoordinator {
 
     /// Method for adding dependency
     @discardableResult
-    open func addDependency<T: PizzaRouterCoordinator<Deeplink, Session>>(
+    open func addDependency<T: PizzaRouterCoordinator<Deeplink>>(
         coordinator: T
     ) -> T {
         let newCoordinator = coordinator
         newCoordinator.fill(router: router)
-        newCoordinator.fill(session: session)
         newCoordinator.parent = self
         newCoordinator.onFinish = { [weak self, weak newCoordinator] in
             self?.removeDependency(newCoordinator)
@@ -83,20 +81,13 @@ open class PizzaRouterCoordinator<Deeplink, Session>: PizzaCoordinator {
         self.router = router
     }
 
-    /// Method for adding session for coordinator. Called automatically
-    /// inside `addDependency` method. For root coordinator this method must be called
-    /// manually.
-    open func fill(session: Session) {
-        self.session = session
-    }
-
     // MARK: - Private Methods
 
-    private func removeDependency(_ coordinator: PizzaRouterCoordinator<Deeplink, Session>?) {
+    private func removeDependency(_ coordinator: PizzaRouterCoordinator<Deeplink>?) {
         children.removeAll(where: { $0 === coordinator })
     }
 
-    private func checkDependencyExistsRecursivelyWithCheckOfSelf<T: PizzaRouterCoordinator<Deeplink, Session>>(
+    private func checkDependencyExistsRecursivelyWithCheckOfSelf<T: PizzaRouterCoordinator<Deeplink>>(
         ofType coordinatorType: T.Type
     ) -> Bool {
         var hasInChildren = false

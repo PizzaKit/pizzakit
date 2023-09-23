@@ -97,6 +97,8 @@ public enum PizzaButtonStylesType {
     case primary
     case secondary
     case tertiary
+    case error
+    case errorTertiary
 }
 public protocol PizzaButtonStyles {
     func standard(

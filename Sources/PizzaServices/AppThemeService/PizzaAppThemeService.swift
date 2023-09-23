@@ -31,24 +31,28 @@ public struct PizzaAppTheme: Codable, Defaults.Serializable {
     }
 }
 
-public class PizzaAppThemeService {
+public protocol PizzaAppThemeService {
+    var valuePublisher: PizzaRWPublisher<PizzaAppTheme, Never> { get }
+}
+
+public class PizzaAppThemeServiceImpl: PizzaAppThemeService {
+
+    // MARK: - PizzaAppThemeService
+
+    public lazy var valuePublisher: PizzaRWPublisher<PizzaAppTheme, Never> = PizzaPassthroughRWPublisher<PizzaAppTheme, Never>(
+        currentValue: {
+            Defaults[.appThemeKey(userDefaults: self.userDefaults)]
+        },
+        onValueChanged: { [weak self] newValue in
+            guard let self else { return }
+            Defaults[.appThemeKey(userDefaults: self.userDefaults)] = newValue
+
+            self.userDefaults.synchronize()
+            WidgetCenter.shared.reloadAllTimelines()
+        }
+    )
 
     // MARK: - Properties
-
-    public var valuePublisher: AnyPublisher<PizzaAppTheme, Never> {
-        valueSubject.eraseToAnyPublisher()
-    }
-    public var value: PizzaAppTheme {
-        get {
-            Defaults[.appThemeKey(userDefaults: userDefaults)]
-        }
-        set {
-            valueSubject.send(newValue)
-        }
-    }
-
-    private let valueSubject = PassthroughSubject<PizzaAppTheme, Never>()
-    private var bag = Set<AnyCancellable>()
 
     private let userDefaults: UserDefaults
 
@@ -56,15 +60,6 @@ public class PizzaAppThemeService {
 
     public init(userDefaults: UserDefaults) {
         self.userDefaults = userDefaults
-        valueSubject
-            .sink { [weak self] newTheme in
-                guard let self else { return }
-                Defaults[.appThemeKey(userDefaults: self.userDefaults)] = newTheme
-
-                self.userDefaults.synchronize()
-                WidgetCenter.shared.reloadAllTimelines()
-            }
-            .store(in: &bag)
     }
 
 }

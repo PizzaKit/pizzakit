@@ -9,7 +9,7 @@ public protocol PizzaFeatureToggleUICoordinatable: AnyObject {
     )
 }
 
-public class PizzaFeatureToggleUICoordinator<Deeplink, Session>: PizzaRouterCoordinator<Deeplink, Session>, PizzaFeatureToggleUICoordinatable {
+public class PizzaFeatureToggleUICoordinator<Deeplink>: PizzaRouterCoordinator<Deeplink>, PizzaFeatureToggleUICoordinatable {
 
     // MARK: - Propeties
 

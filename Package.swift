@@ -107,7 +107,7 @@ let package = Package(
         ),
         .target(
             name: "PizzaNavigation",
-            dependencies: ["PizzaCore"]
+            dependencies: ["PizzaCore", "PizzaDesign"]
         ),
         .target(
             name: "PizzaServices",

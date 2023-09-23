@@ -51,15 +51,17 @@ public class PizzaAppThemePresenter: ComponentPresenter {
         self.appThemeService = appThemeService
         self.proVersionService = proVersionService
         self.actionsHandler = actionsHandler
+        self.state = .init(changingEnabled: false, theme: .default)
         self.state = .init(
-            changingEnabled: proVersionService?.value ?? true,
-            theme: appThemeService.value
+            changingEnabled: proVersionService?.valuePublisher.value ?? true,
+            theme: appThemeService.valuePublisher.value
         )
     }
 
     public func touch() {
         appThemeService
             .valuePublisher
+            .withoutCurrentValue
             .receive(on: DispatchQueue.main)
             .sink { [weak self] theme in
                 self?.state.theme = theme
@@ -68,7 +70,7 @@ public class PizzaAppThemePresenter: ComponentPresenter {
 
         proVersionService?
             .valuePublisher
-            .dropFirst()
+            .withoutCurrentValue
             .receive(on: DispatchQueue.main)
             .sink { [weak self] isPro in
                 self?.state.changingEnabled = isPro
@@ -105,9 +107,9 @@ public class PizzaAppThemePresenter: ComponentPresenter {
                             .first(where: { $0.isKeyWindow })?
                             .traitCollection.userInterfaceStyle == .light
                         if isOn {
-                            appThemeService.value.themeType = .automatic
+                            appThemeService.valuePublisher.value.themeType = .automatic
                         } else if state.changingEnabled {
-                            appThemeService.value.themeType = isCurrentLight
+                            appThemeService.valuePublisher.value.themeType = isCurrentLight
                                 ? .light
                                 : .dark
                         } else {
@@ -137,11 +139,11 @@ public class PizzaAppThemePresenter: ComponentPresenter {
                             onSelect: { [weak self] in
                                 guard
                                     let self,
-                                    appThemeService.value.themeType != .light
+                                    appThemeService.valuePublisher.value.themeType != .light
                                 else { return }
                                 if state.changingEnabled {
                                     feedbackGenerator.selectionChanged()
-                                    appThemeService.value.themeType = .light
+                                    appThemeService.valuePublisher.value.themeType = .light
                                 } else {
                                     actionsHandler?.proActionCompleted()
                                 }
@@ -157,11 +159,11 @@ public class PizzaAppThemePresenter: ComponentPresenter {
                             onSelect: { [weak self] in
                                 guard
                                     let self,
-                                    appThemeService.value.themeType != .dark
+                                    appThemeService.valuePublisher.value.themeType != .dark
                                 else { return }
                                 if state.changingEnabled {
                                     feedbackGenerator.selectionChanged()
-                                    appThemeService.value.themeType = .dark
+                                    appThemeService.valuePublisher.value.themeType = .dark
                                 } else {
                                     actionsHandler?.proActionCompleted()
                                 }
@@ -196,7 +198,7 @@ public class PizzaAppThemePresenter: ComponentPresenter {
                             else { return }
                             if state.changingEnabled {
                                 feedbackGenerator.selectionChanged()
-                                appThemeService.value.tintColorIndex = index
+                                appThemeService.valuePublisher.value.tintColorIndex = index
                             } else {
                                 actionsHandler?.proActionCompleted()
                             }

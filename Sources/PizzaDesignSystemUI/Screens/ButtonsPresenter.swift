@@ -41,9 +41,25 @@ class ButtonsPresenter: ComponentPresenter {
                             type: .tertiary
                         )
                     ),
-
                     ButtonsComponent(
                         id: "button_4",
+                        buttonStyle: .allStyles.standard(
+                            title: "large, error",
+                            size: .large,
+                            type: .error
+                        )
+                    ),
+                    ButtonsComponent(
+                        id: "button_5",
+                        buttonStyle: .allStyles.standard(
+                            title: "large, errorTertiary",
+                            size: .large,
+                            type: .errorTertiary
+                        )
+                    ),
+
+                    ButtonsComponent(
+                        id: "button_6",
                         buttonStyle: .allStyles.standard(
                             title: "medium, primary",
                             size: .medium,
@@ -51,7 +67,7 @@ class ButtonsPresenter: ComponentPresenter {
                         )
                     ),
                     ButtonsComponent(
-                        id: "button_5",
+                        id: "button_7",
                         buttonStyle: .allStyles.standard(
                             title: "medium, secondary",
                             size: .medium,
@@ -59,16 +75,32 @@ class ButtonsPresenter: ComponentPresenter {
                         )
                     ),
                     ButtonsComponent(
-                        id: "button_6",
+                        id: "button_8",
                         buttonStyle: .allStyles.standard(
                             title: "medium, tertiary",
                             size: .medium,
                             type: .tertiary
                         )
                     ),
+                    ButtonsComponent(
+                        id: "button_9",
+                        buttonStyle: .allStyles.standard(
+                            title: "medium, error",
+                            size: .medium,
+                            type: .error
+                        )
+                    ),
+                    ButtonsComponent(
+                        id: "button_10",
+                        buttonStyle: .allStyles.standard(
+                            title: "medium, errorTertiary",
+                            size: .medium,
+                            type: .errorTertiary
+                        )
+                    ),
 
                     ButtonsComponent(
-                        id: "button_7",
+                        id: "button_11",
                         buttonStyle: .allStyles.standard(
                             title: "small, primary",
                             size: .small,
@@ -76,7 +108,7 @@ class ButtonsPresenter: ComponentPresenter {
                         )
                     ),
                     ButtonsComponent(
-                        id: "button_8",
+                        id: "button_12",
                         buttonStyle: .allStyles.standard(
                             title: "small, secondary",
                             size: .small,
@@ -84,11 +116,27 @@ class ButtonsPresenter: ComponentPresenter {
                         )
                     ),
                     ButtonsComponent(
-                        id: "button_9",
+                        id: "button_13",
                         buttonStyle: .allStyles.standard(
                             title: "small, tertiary",
                             size: .small,
                             type: .tertiary
+                        )
+                    ),
+                    ButtonsComponent(
+                        id: "button_14",
+                        buttonStyle: .allStyles.standard(
+                            title: "small, error",
+                            size: .small,
+                            type: .error
+                        )
+                    ),
+                    ButtonsComponent(
+                        id: "button_15",
+                        buttonStyle: .allStyles.standard(
+                            title: "small, errorTertiary",
+                            size: .small,
+                            type: .errorTertiary
                         )
                     )
                 ]

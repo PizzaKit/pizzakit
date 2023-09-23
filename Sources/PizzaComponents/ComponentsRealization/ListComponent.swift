@@ -65,6 +65,17 @@ public struct ListComponent: IdentifiableComponent, SelectableComponent, Compone
             ),
             numberOfLines: 0
         )
+        public static let multipleLinesSmallValue: LabelsStyle = .init(
+            titleStyle: .allStyles.body(
+                color: .palette.label,
+                alignment: .left
+            ),
+            valueStyle: .allStyles.subhead(
+                color: .palette.labelSecondary,
+                alignment: .left
+            ),
+            numberOfLines: 0
+        )
     }
     public struct SelectableContext {
         public let shouldDeselect: Bool
@@ -241,7 +252,7 @@ public class ListHorizontalComponentView: ListBaseComponentView {
                 make.leading.equalToSuperview()
                 make.top.bottom.equalToSuperview().inset(12)
             }
-            $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+            $0.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
             $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         }
 
@@ -252,7 +263,7 @@ public class ListHorizontalComponentView: ListBaseComponentView {
                 make.top.bottom.equalToSuperview().inset(12)
                 make.leading.greaterThanOrEqualTo(titleLabel.snp.trailing).offset(12)
             }
-            $0.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+            $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
             $0.setContentHuggingPriority(.defaultLow, for: .horizontal)
         }
 

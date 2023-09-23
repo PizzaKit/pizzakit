@@ -2,7 +2,7 @@ import PizzaDesign
 import PizzaCore
 import UIKit
 
-open class ComponentTableController: UITableViewController, ComponentPresenterDelegate, ControllerWithScrollView {
+open class ComponentTableController: PizzaTableController, ComponentPresenterDelegate, ControllerWithScrollView {
 
     // MARK: - Properties
 

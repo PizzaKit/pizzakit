@@ -9,17 +9,20 @@ public struct TitleComponent: IdentifiableComponent {
     public let text: String?
     public let style: UIStyle<PizzaLabel>
     public let insets: NSDirectionalEdgeInsets
+    public let layoutType: ComponentLayoutType
 
     public init(
         id: String,
         text: String?,
         style: UIStyle<PizzaLabel> = .allStyles.footnote(color: .palette.labelSecondary, alignment: .left),
-        insets: NSDirectionalEdgeInsets
+        insets: NSDirectionalEdgeInsets,
+        layoutType: ComponentLayoutType = .layoutMargin
     ) {
         self.id = id
         self.text = text
         self.style = style
         self.insets = insets
+        self.layoutType = layoutType
     }
 
     public func createRenderTarget() -> TitleComponentView {

@@ -29,11 +29,11 @@ public class UIButtonStyle: UIStyle<UIButton> {
     public override func apply(for button: UIButton) {
         var configuration: UIButton.Configuration = {
             switch type {
-            case .primary:
+            case .primary, .error:
                 return UIButton.Configuration.filled()
             case .secondary:
                 return UIButton.Configuration.gray()
-            case .tertiary:
+            case .tertiary, .errorTertiary:
                 return UIButton.Configuration.plain()
             }
         }()
@@ -44,20 +44,22 @@ public class UIButtonStyle: UIStyle<UIButton> {
             switch type {
             case .primary:
                 return backgroundColor
-            case .secondary:
+            case .secondary, .tertiary, .errorTertiary:
                 return nil
-            case .tertiary:
-                return nil
+            case .error:
+                return .systemRed
             }
         }()
         configuration.baseForegroundColor = {
             switch type {
-            case .primary:
+            case .primary, .error:
                 return .white
             case .secondary:
                 return .label
             case .tertiary:
                 return .tintColor
+            case .errorTertiary:
+                return .systemRed
             }
         }()
         configuration.cornerStyle = {

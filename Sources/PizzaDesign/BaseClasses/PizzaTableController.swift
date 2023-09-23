@@ -1,7 +1,7 @@
 import UIKit
 import PizzaCore
 
-open class PizzaCollectionController: UICollectionViewController, PizzaLifecycleObservableController {
+open class PizzaTableController: UITableViewController, PizzaLifecycleObservableController {
 
     // MARK: - Properties
 
@@ -10,24 +10,7 @@ open class PizzaCollectionController: UICollectionViewController, PizzaLifecycle
     private var onWillDisappearClosures: [PizzaEmptyClosure] = []
     private var onDidDisappearClosures: [PizzaEmptyClosure] = []
     private var onDidLoadClosures: [PizzaEmptyClosure] = []
-
-    // MARK: - Initialization
-
-    public init() {
-        super.init(collectionViewLayout: UICollectionViewFlowLayout())
-    }
-
-    private override init(
-        nibName nibNameOrNil: String?,
-        bundle nibBundleOrNil: Bundle?
-    ) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    required public init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
+    
     // MARK: - UIViewController
 
     open override func viewDidAppear(_ animated: Bool) {
