@@ -6,21 +6,34 @@ import SnapKit
 public struct TitleComponent: IdentifiableComponent {
 
     public var id: String
-    public let text: String?
-    public let style: UIStyle<PizzaLabel>
+    public let stringBuildable: StringBuildable
     public let insets: NSDirectionalEdgeInsets
     public let layoutType: ComponentLayoutType
 
     public init(
         id: String,
         text: String?,
-        style: UIStyle<PizzaLabel> = .allStyles.footnote(color: .palette.labelSecondary, alignment: .left),
+        style: UILabelStyle = .allStyles.footnote(color: .palette.labelSecondary, alignment: .left),
         insets: NSDirectionalEdgeInsets,
         layoutType: ComponentLayoutType = .layoutMargin
     ) {
         self.id = id
-        self.text = text
-        self.style = style
+        self.stringBuildable = StringBuilder(
+            text: text,
+            initialAttributes: style.getAttributes()
+        )
+        self.insets = insets
+        self.layoutType = layoutType
+    }
+
+    public init(
+        id: String,
+        stringBuildable: StringBuildable,
+        insets: NSDirectionalEdgeInsets,
+        layoutType: ComponentLayoutType = .layoutMargin
+    ) {
+        self.id = id
+        self.stringBuildable = stringBuildable
         self.insets = insets
         self.layoutType = layoutType
     }
@@ -31,8 +44,7 @@ public struct TitleComponent: IdentifiableComponent {
 
     public func render(in renderTarget: TitleComponentView, renderType: RenderType) {
         renderTarget.configure(
-            text: text,
-            style: style,
+            stringBuildable: stringBuildable,
             insets: insets
         )
     }
@@ -75,12 +87,10 @@ public class TitleComponentView: PizzaView {
     }
 
     public func configure(
-        text: String?,
-        style: UIStyle<PizzaLabel>,
+        stringBuildable: StringBuildable,
         insets: NSDirectionalEdgeInsets
     ) {
-        titleLabel.text = text
-        titleLabel.style = style
+        titleLabel.attributedText = stringBuildable.build()
 
         titleLabel.snp.updateConstraints { make in
             make.edges.equalToSuperview().inset(insets)

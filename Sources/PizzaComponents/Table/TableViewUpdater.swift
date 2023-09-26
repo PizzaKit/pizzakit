@@ -185,6 +185,65 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
         }
     }
 
+    public func tableView(
+        _ tableView: UITableView,
+        accessoryButtonTappedForRowWith indexPath: IndexPath
+    ) {
+        guard
+            let componentNode = dataSource.itemIdentifier(for: indexPath),
+            let componentWithAccessories = componentNode.component as? ComponentWithAccessories
+        else { return }
+        for accessory in componentWithAccessories.accessories {
+            if case .info(let onPress) = accessory {
+                onPress?()
+            }
+        }
+    }
+
+    public func tableView(
+        _ tableView: UITableView,
+        trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+    ) -> UISwipeActionsConfiguration? {
+        guard
+            let componentNode = dataSource.itemIdentifier(for: indexPath),
+            let componentWithSwipeActions = componentNode.component as? ComponentWithSwipeActions,
+            !componentWithSwipeActions.trailingSwipeActions.isEmpty
+        else { return nil }
+        return .init(
+            actions: componentWithSwipeActions.trailingSwipeActions.map { item in
+                .init(
+                    style: item.isDestructive ? .destructive : .normal,
+                    title: item.title,
+                    handler: { _, _, completion in
+                        item.action(completion)
+                    }
+                )
+            }
+        )
+    }
+
+    public func tableView(
+        _ tableView: UITableView,
+        leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+    ) -> UISwipeActionsConfiguration? {
+        guard
+            let componentNode = dataSource.itemIdentifier(for: indexPath),
+            let componentWithSwipeActions = componentNode.component as? ComponentWithSwipeActions,
+            !componentWithSwipeActions.leadingSwipeActions.isEmpty
+        else { return nil }
+        return .init(
+            actions: componentWithSwipeActions.leadingSwipeActions.map { item in
+                .init(
+                    style: item.isDestructive ? .destructive : .normal,
+                    title: item.title,
+                    handler: { _, _, completion in
+                        item.action(completion)
+                    }
+                )
+            }
+        )
+    }
+
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         onScrollViewDidScroll?(scrollView)
     }

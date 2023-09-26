@@ -26,6 +26,8 @@ public class ComponentTableViewCell: PizzaTableCell, ComponentRenderable {
                 self.accessoryType = .disclosureIndicator
             } else if accessories.contains(.check) {
                 self.accessoryType = .checkmark
+            } else if accessories.contains(.info(onPress: nil)) {
+                self.accessoryType = .detailButton
             } else {
                 self.accessoryType = .none
             }

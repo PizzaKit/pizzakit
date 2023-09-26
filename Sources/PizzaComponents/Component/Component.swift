@@ -13,8 +13,17 @@ public enum ComponentLayoutType {
     case withoutMargins
 }
 
-public enum ComponentAccessoryType {
-    case arrow, check
+public enum ComponentAccessoryType: Equatable {
+    case arrow, check, info(onPress: PizzaEmptyClosure?)
+
+    public static func == (lhs: ComponentAccessoryType, rhs: ComponentAccessoryType) -> Bool {
+        switch (lhs, rhs) {
+        case (.arrow, .arrow), (.check, .check), (.info, .info):
+            return true
+        default:
+            return false
+        }
+    }
 }
 
 public protocol ComponentWithAccessories {
@@ -23,6 +32,27 @@ public protocol ComponentWithAccessories {
 
 public protocol ComponentWithSeparator {
     var separatorInsets: NSDirectionalEdgeInsets { get }
+}
+
+public struct ComponentSwipeAction {
+    public let title: String?
+    public let isDestructive: Bool
+    public let action: PizzaClosure<PizzaClosure<Bool>>
+
+    public init(
+        title: String?,
+        isDestructive: Bool,
+        action: @escaping PizzaClosure<PizzaClosure<Bool>>
+    ) {
+        self.title = title
+        self.isDestructive = isDestructive
+        self.action = action
+    }
+}
+
+public protocol ComponentWithSwipeActions {
+    var leadingSwipeActions: [ComponentSwipeAction] { get }
+    var trailingSwipeActions: [ComponentSwipeAction] { get }
 }
 
 /// Модель, которая в себе содержит все поля, необходимые для заполнения RenderTarget.

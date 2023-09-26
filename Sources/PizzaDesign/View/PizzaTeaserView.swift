@@ -170,6 +170,7 @@ public class PizzaTeaserView: PizzaView {
                 stack.addArrangedSubview(view)
             case .image(let image):
                 let imageView = UIImageView(image: image)
+                imageView.contentMode = .scaleAspectFit
                 imageView.snp.makeConstraints { make in
                     make.size.equalTo(style.imageSize ?? .init(side: 96))
                 }

@@ -4,11 +4,12 @@ import UIKit
 import SnapKit
 import SFSafeSymbols
 
-public struct ListComponent: IdentifiableComponent, SelectableComponent, ComponentWithSeparator, ComponentWithAccessories {
-
+public struct ListComponent: IdentifiableComponent, SelectableComponent, ComponentWithSeparator, ComponentWithAccessories, ComponentWithSwipeActions {
+    
     public enum TrailingContent {
         case arrow
         case check
+        case info(onPress: PizzaEmptyClosure)
         case sfSymbol(SFSymbol)
 
         var sfSymbol: SFSymbol? {
@@ -95,6 +96,8 @@ public struct ListComponent: IdentifiableComponent, SelectableComponent, Compone
     public let valuePosition: ValuePosition
     public let selectableContext: SelectableContext?
     public let trailingContent: TrailingContent?
+    public let leadingSwipeActions: [ComponentSwipeAction]
+    public let trailingSwipeActions: [ComponentSwipeAction]
 
     public var onSelect: PizzaEmptyClosure? {
         selectableContext?.onSelect
@@ -112,6 +115,8 @@ public struct ListComponent: IdentifiableComponent, SelectableComponent, Compone
         switch trailingContent {
         case .arrow:
             return [.arrow]
+        case .info(let onPress):
+            return [.info(onPress: onPress)]
         case .check:
             return [.check]
         case .sfSymbol:
@@ -127,7 +132,9 @@ public struct ListComponent: IdentifiableComponent, SelectableComponent, Compone
         labelsStyle: LabelsStyle = .defaultOneLine,
         valuePosition: ValuePosition = .trailing,
         selectableContext: SelectableContext? = nil,
-        trailingContent: TrailingContent? = nil
+        trailingContent: TrailingContent? = nil,
+        leadingSwipeActions: [ComponentSwipeAction] = [],
+        trailingSwipeActions: [ComponentSwipeAction] = []
     ) {
         self.id = id
         self.icon = icon
@@ -137,6 +144,8 @@ public struct ListComponent: IdentifiableComponent, SelectableComponent, Compone
         self.valuePosition = valuePosition
         self.selectableContext = selectableContext
         self.trailingContent = trailingContent
+        self.leadingSwipeActions = leadingSwipeActions
+        self.trailingSwipeActions = trailingSwipeActions
     }
 
     public func render(
