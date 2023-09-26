@@ -204,7 +204,8 @@ public struct PizzaNativeButtonStyles: PizzaButtonStyles {
                         .lineHeight(20)
                 }
             },
-            isLoading: false
+            isLoading: false,
+            imagePadding: 6
         )
     }
 
@@ -230,7 +231,8 @@ public struct PizzaNativeButtonStyles: PizzaButtonStyles {
                         .lineHeight(20)
                 }
             },
-            isLoading: true
+            isLoading: true,
+            imagePadding: 6
         )
     }
 

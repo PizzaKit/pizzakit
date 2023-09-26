@@ -13,171 +13,98 @@ class ButtonsPresenter: ComponentPresenter {
             $0.navigationItem.title = "Button styles"
         }
 
+        var enabledArray = [true, false]
+        var isLoadingArray = [true, false]
+        var sizesArray: [PizzaButtonStylesSize] = [.large, .medium, .small]
+        var typeArray: [PizzaButtonStylesType] = [.primary, .secondary, .tertiary, .error, .errorTertiary]
+
+        var counter = 0
+        var components: [any IdentifiableComponent] = []
+
+        for sizeItem in sizesArray {
+            for typeItem in typeArray {
+                for enabledItem in enabledArray {
+                    for isLoadingItem in isLoadingArray {
+
+                        let title = {
+                            let sizeString = {
+                                switch sizeItem {
+                                case .large:
+                                    return "L"
+                                case .medium:
+                                    return "M"
+                                case .small:
+                                    return "S"
+                                }
+                            }()
+                            let typeString = {
+                                switch typeItem {
+                                case .primary:
+                                    return "primary"
+                                case .secondary:
+                                    return "secondary"
+                                case .tertiary:
+                                    return "tertiary"
+                                case .error:
+                                    return "errror"
+                                case .errorTertiary:
+                                    return "errTertiary"
+                                }
+                            }()
+                            let enabledString: String? = {
+                                if enabledItem {
+                                    return nil
+                                }
+                                return "disabled"
+                            }()
+                            let loadingString: String? = {
+                                if isLoadingItem {
+                                    return "loading"
+                                }
+                                return nil
+                            }()
+
+                            return [
+                                sizeString,
+                                typeString,
+                                enabledString,
+                                loadingString
+                            ].compactMap { $0 }.joined(separator: ", ")
+                        }()
+                        components.append(
+                            PizzaButtonComponent(
+                                id: "button_\(counter)",
+                                buttonStyle: {
+                                    if isLoadingItem {
+                                        return .allStyles.loading(
+                                            title: title,
+                                            size: sizeItem,
+                                            type: typeItem
+                                        )
+                                    }
+                                    return .allStyles.standard(
+                                        title: title,
+                                        size: sizeItem,
+                                        type: typeItem
+                                    )
+                                }(),
+                                onPress: nil,
+                                isEnabled: enabledItem
+                            )
+                        )
+
+                        counter += 1
+                    }
+                }
+            }
+        }
+
         delegate?.render(sections: [
             .init(
                 id: "section",
-                cells: [
-                    ButtonsComponent(
-                        id: "button_1",
-                        buttonStyle: .allStyles.standard(
-                            title: "large, primary",
-                            size: .large,
-                            type: .primary
-                        )
-                    ),
-                    ButtonsComponent(
-                        id: "button_2",
-                        buttonStyle: .allStyles.standard(
-                            title: "large, secondary",
-                            size: .large,
-                            type: .secondary
-                        )
-                    ),
-                    ButtonsComponent(
-                        id: "button_3",
-                        buttonStyle: .allStyles.standard(
-                            title: "large, tertiary",
-                            size: .large,
-                            type: .tertiary
-                        )
-                    ),
-                    ButtonsComponent(
-                        id: "button_4",
-                        buttonStyle: .allStyles.standard(
-                            title: "large, error",
-                            size: .large,
-                            type: .error
-                        )
-                    ),
-                    ButtonsComponent(
-                        id: "button_5",
-                        buttonStyle: .allStyles.standard(
-                            title: "large, errorTertiary",
-                            size: .large,
-                            type: .errorTertiary
-                        )
-                    ),
-
-                    ButtonsComponent(
-                        id: "button_6",
-                        buttonStyle: .allStyles.standard(
-                            title: "medium, primary",
-                            size: .medium,
-                            type: .primary
-                        )
-                    ),
-                    ButtonsComponent(
-                        id: "button_7",
-                        buttonStyle: .allStyles.standard(
-                            title: "medium, secondary",
-                            size: .medium,
-                            type: .secondary
-                        )
-                    ),
-                    ButtonsComponent(
-                        id: "button_8",
-                        buttonStyle: .allStyles.standard(
-                            title: "medium, tertiary",
-                            size: .medium,
-                            type: .tertiary
-                        )
-                    ),
-                    ButtonsComponent(
-                        id: "button_9",
-                        buttonStyle: .allStyles.standard(
-                            title: "medium, error",
-                            size: .medium,
-                            type: .error
-                        )
-                    ),
-                    ButtonsComponent(
-                        id: "button_10",
-                        buttonStyle: .allStyles.standard(
-                            title: "medium, errorTertiary",
-                            size: .medium,
-                            type: .errorTertiary
-                        )
-                    ),
-
-                    ButtonsComponent(
-                        id: "button_11",
-                        buttonStyle: .allStyles.standard(
-                            title: "small, primary",
-                            size: .small,
-                            type: .primary
-                        )
-                    ),
-                    ButtonsComponent(
-                        id: "button_12",
-                        buttonStyle: .allStyles.standard(
-                            title: "small, secondary",
-                            size: .small,
-                            type: .secondary
-                        )
-                    ),
-                    ButtonsComponent(
-                        id: "button_13",
-                        buttonStyle: .allStyles.standard(
-                            title: "small, tertiary",
-                            size: .small,
-                            type: .tertiary
-                        )
-                    ),
-                    ButtonsComponent(
-                        id: "button_14",
-                        buttonStyle: .allStyles.standard(
-                            title: "small, error",
-                            size: .small,
-                            type: .error
-                        )
-                    ),
-                    ButtonsComponent(
-                        id: "button_15",
-                        buttonStyle: .allStyles.standard(
-                            title: "small, errorTertiary",
-                            size: .small,
-                            type: .errorTertiary
-                        )
-                    )
-                ]
+                cells: components
             )
         ])
-    }
-
-}
-
-struct ButtonsComponent: IdentifiableComponent {
-
-    let id: String
-    let buttonStyle: UIStyle<UIButton>
-
-    func createRenderTarget() -> ButtonsComponentView {
-        ButtonsComponentView()
-    }
-
-    func render(in renderTarget: ButtonsComponentView, renderType: RenderType) {
-        renderTarget.configure(buttonStyle: buttonStyle)
-    }
-
-}
-
-class ButtonsComponentView: PizzaView {
-
-    private lazy var button = UIButton()
-
-    override func commonInit() {
-        super.commonInit()
-
-        button.do {
-            addSubview($0)
-            $0.snp.makeConstraints { make in
-                make.edges.equalToSuperview().inset(12)
-            }
-        }
-    }
-
-    func configure(buttonStyle: UIStyle<UIButton>) {
-        button.apply(style: buttonStyle)
     }
 
 }

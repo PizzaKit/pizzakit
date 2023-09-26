@@ -9,6 +9,7 @@ public class UIButtonStyle: UIStyle<UIButton> {
     public let type: PizzaButtonStylesType
     public let attributedTitleProvider: PizzaReturnClosure<String?, StringBuilder>
     public let isLoading: Bool
+    public let imagePadding: CGFloat
 
     public init(
         title: String?,
@@ -16,7 +17,8 @@ public class UIButtonStyle: UIStyle<UIButton> {
         size: PizzaButtonStylesSize,
         type: PizzaButtonStylesType,
         attributedTitleProvider: @escaping PizzaReturnClosure<String?, StringBuilder>,
-        isLoading: Bool
+        isLoading: Bool,
+        imagePadding: CGFloat
     ) {
         self.title = title
         self.backgroundColor = backgroundColor
@@ -24,6 +26,7 @@ public class UIButtonStyle: UIStyle<UIButton> {
         self.type = type
         self.attributedTitleProvider = attributedTitleProvider
         self.isLoading = isLoading
+        self.imagePadding = imagePadding
     }
 
     public override func apply(for button: UIButton) {
@@ -83,6 +86,7 @@ public class UIButtonStyle: UIStyle<UIButton> {
             }
         }()
         configuration.showsActivityIndicator = isLoading
+        configuration.imagePadding = imagePadding
 
         button.configuration = configuration
     }
