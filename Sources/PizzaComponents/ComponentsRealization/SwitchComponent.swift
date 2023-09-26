@@ -8,18 +8,28 @@ public struct SwitchComponent: IdentifiableComponent, ComponentWithSeparator {
     public struct Style {
         public let allowPressOnWholeCell: Bool
         public let allowHapticFeedback: Bool
+        public let numberOfLines: Int
 
         public init(
             allowPressOnWholeCell: Bool,
-            allowHapticFeedback: Bool
+            allowHapticFeedback: Bool,
+            numberOfLines: Int
         ) {
             self.allowPressOnWholeCell = allowPressOnWholeCell
             self.allowHapticFeedback = allowHapticFeedback
+            self.numberOfLines = numberOfLines
         }
 
-        public static let `default` = Style(
+        public static let defaultOneLine = Style(
             allowPressOnWholeCell: true,
-            allowHapticFeedback: true
+            allowHapticFeedback: true,
+            numberOfLines: 1
+        )
+
+        public static let defaultMultipleLines = Style(
+            allowPressOnWholeCell: true,
+            allowHapticFeedback: true,
+            numberOfLines: 0
         )
     }
 
@@ -44,7 +54,7 @@ public struct SwitchComponent: IdentifiableComponent, ComponentWithSeparator {
         text: String,
         textStyle: UIStyle<PizzaLabel> = .allStyles.body(color: .palette.label, alignment: .left),
         value: Bool,
-        style: Style = .default,
+        style: Style = .defaultOneLine,
         isEnabled: Bool = true,
         onChanged: @escaping PizzaClosure<Bool>
     ) {
@@ -117,12 +127,11 @@ public class SwitchComponentView: PizzaView {
         titleLabel.do {
             addSubview($0)
             $0.snp.makeConstraints { make in
-                make.bottom.top.equalToSuperview()
+                make.bottom.top.equalToSuperview().inset(10)
                 make.leading.equalToSuperview()
                 make.trailing.equalTo(switchView.snp.leading).offset(-10)
             }
             $0.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-            $0.numberOfLines = 1
         }
 
         snp.makeConstraints { make in
@@ -153,6 +162,7 @@ public class SwitchComponentView: PizzaView {
         }
         iconView.isHidden = icon == nil
 
+        titleLabel.numberOfLines = style.numberOfLines
         titleLabel.text = text
         titleLabel.style = textStyle
 

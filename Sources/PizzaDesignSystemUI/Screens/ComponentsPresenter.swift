@@ -59,7 +59,7 @@ class ComponentsPresenter: ComponentPresenter {
                             icon: nil,
                             text: "Switch with haptic",
                             value: true,
-                            style: .default,
+                            style: .defaultOneLine,
                             isEnabled: true,
                             onChanged: { _ in }
                         ),
@@ -73,7 +73,7 @@ class ComponentsPresenter: ComponentPresenter {
                             ),
                             text: "Disabled switch",
                             value: false,
-                            style: .default,
+                            style: .defaultOneLine,
                             isEnabled: false,
                             onChanged: { _ in }
                         ),
@@ -87,7 +87,21 @@ class ComponentsPresenter: ComponentPresenter {
                             ),
                             text: "Disabled switch with long description",
                             value: true,
-                            style: .default,
+                            style: .defaultOneLine,
+                            isEnabled: false,
+                            onChanged: { _ in }
+                        ),
+                        SwitchComponent(
+                            id: "switch_4",
+                            icon: .systemSquareRounded(
+                                .init(
+                                    sfSymbol: .cursorarrowMotionlinesClick,
+                                    backgroundColor: .systemBlue
+                                )
+                            ),
+                            text: "Disabled switch with long description multiple lines",
+                            value: true,
+                            style: .defaultMultipleLines,
                             isEnabled: false,
                             onChanged: { _ in }
                         )
