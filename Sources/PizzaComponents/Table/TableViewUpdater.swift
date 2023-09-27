@@ -29,6 +29,32 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
         target.delegate = self
     }
 
+    private struct TempComponent: IdentifiableComponent {
+        let id: String
+
+        func createRenderTarget() -> UIView {
+            fatalError()
+        }
+
+        func render(in renderTarget: UIView, renderType: RenderType) {
+            fatalError()
+        }
+    }
+
+    // TODO: странная штука -> лучше убрать и если такое нужно, то не использоваться компоненты
+    public func getRenderTarget(tableView: UITableView, id: String) -> (
+        renderTarget: Any,
+        indexPath: IndexPath
+    )? {
+        if
+            let indexPath = dataSource.indexPath(for: .init(component: TempComponent(id: id))),
+            let tableViewCell = tableView.cellForRow(at: indexPath) as? ComponentTableViewCell
+        {
+            return (renderTarget: tableViewCell.renderTarget, indexPath: indexPath)
+        }
+        return nil
+    }
+
     public func performUpdates(target: UITableView, sections: [ComponentSection]) {
         // -----------------
         // | registrations |

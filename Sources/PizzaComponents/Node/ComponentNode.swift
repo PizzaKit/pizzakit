@@ -16,8 +16,7 @@ public struct ComponentNode: Hashable {
     public init<ID: Hashable>(id: ID, component: any Component) {
         if type(of: id) == AnyHashable.self {
             self.id = unsafeBitCast(id, to: AnyHashable.self)
-        }
-        else {
+        } else {
             self.id = id
         }
         self.component = component
