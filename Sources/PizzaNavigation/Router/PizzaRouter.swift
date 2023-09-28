@@ -29,6 +29,8 @@ public protocol PizzaRouter {
     func popToRoot(animated: Bool)
     /// Method for dismissing all popups and popping up to root
     func dismissAndPopToRoot()
+    /// Method for dismissing all
+    func dismissToRoot(completion: PizzaEmptyClosure?)
 
     /// Method for settings root presentable
     func setRoot(
@@ -86,6 +88,10 @@ public extension PizzaRouter {
 
     func popToRoot() {
         popToRoot(animated: true)
+    }
+
+    func dismissToRoot() {
+        dismissToRoot(completion: nil)
     }
 
     func setRoot(

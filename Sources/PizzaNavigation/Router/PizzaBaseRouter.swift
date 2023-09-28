@@ -82,6 +82,10 @@ open class PizzaBaseRouter: PizzaRouter {
         })
     }
 
+    public func dismissToRoot(completion: PizzaEmptyClosure?) {
+        root()?.toPresent().dismiss(animated: true, completion: completion)
+    }
+
     public func setRoot(
         module: PizzaPresentable?,
         animated: Bool,

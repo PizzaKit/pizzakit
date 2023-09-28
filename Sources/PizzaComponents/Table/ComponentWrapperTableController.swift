@@ -27,6 +27,8 @@ open class ComponentWrapperTableController: PizzaController, ControllerWithScrol
     open override func viewDidLoad() {
         super.viewDidLoad()
 
+        view.backgroundColor = .systemBackground
+
         addChild(tableController)
         view.addSubview(tableController.view)
         tableController.view.snp.makeConstraints { make in
