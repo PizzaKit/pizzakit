@@ -53,6 +53,15 @@ final public class StringBuilder: StringBuildable {
     }
 
     @discardableResult
+    public func fontWeight(_ weight: UIFont.Weight) -> StringBuilder {
+        if let font = attributes[.font] as? UIFont {
+            return self.font(.systemFont(ofSize: font.pointSize, weight: weight))
+        }
+
+        return self
+    }
+
+    @discardableResult
     public func lineBreakMode(_ lineBreakMode: NSLineBreakMode) -> StringBuilder {
         updateParagraphStyle { $0.lineBreakMode = lineBreakMode }
 
