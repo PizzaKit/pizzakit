@@ -164,6 +164,36 @@ public protocol PizzaFeatureToggleValueType: Codable, CustomStringConvertible {
     var nsObjectValue: NSObject { get }
 }
 
+extension Optional: PizzaFeatureToggleValueType, CustomStringConvertible where Wrapped: PizzaFeatureToggleValueType {
+
+    public static func extractFrom(
+        remoteValue: PizzaFeatureToggleRemoteValue
+    ) -> Optional<Wrapped>? {
+        if let extracted = Wrapped.extractFrom(remoteValue: remoteValue) {
+            return .some(extracted)
+        }
+        return .none
+    }
+    
+    public var nsObjectValue: NSObject {
+        switch self {
+        case .some(let value):
+            return value.nsObjectValue
+        case .none:
+            return NSNull()
+        }
+    }
+    
+    public var description: String {
+        switch self {
+        case .some(let value):
+            return value.description
+        case .none:
+            return "nil"
+        }
+    }
+}
+
 extension String: PizzaFeatureToggleValueType {
     public static func extractFrom(
         remoteValue: PizzaFeatureToggleRemoteValue

@@ -39,8 +39,11 @@ open class PizzaBaseRouter: PizzaRouter {
         animated: Bool,
         completion: PizzaEmptyClosure?
     ) {
-        guard let controller = module?.toPresent() else { return }
-        topViewController?.present(
+        guard 
+            let controller = module?.toPresent(),
+            let top = topViewController
+        else { return }
+        top.present(
             controller,
             animated: animated,
             completion: completion
