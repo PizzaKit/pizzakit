@@ -270,8 +270,50 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
         )
     }
 
+    public func tableView(
+        _ tableView: UITableView,
+        willDisplay cell: UITableViewCell,
+        forRowAt indexPath: IndexPath
+    ) {
+        guard
+            let componentNode = dataSource.itemIdentifier(for: indexPath),
+            let view = cell as? ComponentRenderable,
+            let renderTarget = view.renderTarget
+        else { return }
+        AnyComponent(componentNode.component)
+            .renderTargetWillDisplay(renderTarget)
+    }
+
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         onScrollViewDidScroll?(scrollView)
+    }
+
+    public func tableView(
+        _ tableView: UITableView,
+        willDisplayHeaderView view: UIView,
+        forSection section: Int
+    ) {
+        guard
+            let componentNode = dataSource.sectionIdentifier(for: section)?.headerNode,
+            let view = view as? ComponentRenderable,
+            let renderTarget = view.renderTarget
+        else { return }
+        AnyComponent(componentNode.component)
+            .renderTargetWillDisplay(renderTarget)
+    }
+
+    public func tableView(
+        _ tableView: UITableView,
+        willDisplayFooterView view: UIView,
+        forSection section: Int
+    ) {
+        guard
+            let componentNode = dataSource.sectionIdentifier(for: section)?.footerNode,
+            let view = view as? ComponentRenderable,
+            let renderTarget = view.renderTarget
+        else { return }
+        AnyComponent(componentNode.component)
+            .renderTargetWillDisplay(renderTarget)
     }
 
 }
