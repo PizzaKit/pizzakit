@@ -98,6 +98,7 @@ public struct ListComponent: IdentifiableComponent, SelectableComponent, Compone
     public let trailingContent: TrailingContent?
     public let leadingSwipeActions: [ComponentSwipeAction]
     public let trailingSwipeActions: [ComponentSwipeAction]
+    public let allowAnimationsOnUpdate: Bool
 
     public var onSelect: PizzaEmptyClosure? {
         selectableContext?.onSelect
@@ -134,7 +135,8 @@ public struct ListComponent: IdentifiableComponent, SelectableComponent, Compone
         selectableContext: SelectableContext? = nil,
         trailingContent: TrailingContent? = nil,
         leadingSwipeActions: [ComponentSwipeAction] = [],
-        trailingSwipeActions: [ComponentSwipeAction] = []
+        trailingSwipeActions: [ComponentSwipeAction] = [],
+        allowAnimationsOnUpdate: Bool = true
     ) {
         self.id = id
         self.icon = icon
@@ -146,6 +148,7 @@ public struct ListComponent: IdentifiableComponent, SelectableComponent, Compone
         self.trailingContent = trailingContent
         self.leadingSwipeActions = leadingSwipeActions
         self.trailingSwipeActions = trailingSwipeActions
+        self.allowAnimationsOnUpdate = allowAnimationsOnUpdate
     }
 
     public func render(
@@ -158,7 +161,7 @@ public struct ListComponent: IdentifiableComponent, SelectableComponent, Compone
             value: value,
             labelsStyle: labelsStyle,
             trailingSFSymbol: trailingContent?.sfSymbol,
-            animated: renderType == .soft
+            animated: renderType == .soft && allowAnimationsOnUpdate
         )
     }
 
