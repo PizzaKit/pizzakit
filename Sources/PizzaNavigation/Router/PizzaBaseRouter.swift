@@ -34,20 +34,24 @@ open class PizzaBaseRouter: PizzaRouter {
         getWindow()?.rootViewController as? PizzaPresentable
     }
 
+    @discardableResult
     public func present(
         module: PizzaPresentable?,
         animated: Bool,
         completion: PizzaEmptyClosure?
-    ) {
-        guard 
+    ) -> PresentedAnchor {
+        guard
             let controller = module?.toPresent(),
             let top = topViewController
-        else { return }
+        else { return _PresentedAnchorImpl(onNeedDismiss: nil) }
         top.present(
             controller,
             animated: animated,
             completion: completion
         )
+        return _PresentedAnchorImpl { [weak top] animated in
+            top?.dismiss(animated: animated)
+        }
     }
 
     public func dismiss(

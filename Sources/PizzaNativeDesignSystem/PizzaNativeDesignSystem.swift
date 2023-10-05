@@ -194,7 +194,7 @@ public struct PizzaNativeButtonStyles: PizzaButtonStyles {
             type: type,
             attributedTitleProvider: { title in
                 switch size {
-                case .large, .medium:
+                case .large, .medium, .custom:
                     return StringBuilder(text: title)
                         .font(.systemFont(ofSize: 17, weight: .semibold).roundedIfNeeded)
                         .lineHeight(21)
@@ -221,7 +221,7 @@ public struct PizzaNativeButtonStyles: PizzaButtonStyles {
             type: type,
             attributedTitleProvider: { title in
                 switch size {
-                case .large, .medium:
+                case .large, .medium,. custom:
                     return StringBuilder(text: title)
                         .font(.systemFont(ofSize: 17, weight: .semibold).roundedIfNeeded)
                         .lineHeight(21)

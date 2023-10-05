@@ -88,6 +88,7 @@ public enum PizzaButtonStylesSize {
     case large
     case medium
     case small
+    case custom(contentInsets: NSDirectionalEdgeInsets)
 }
 public enum PizzaButtonStylesAlignment {
     case leading

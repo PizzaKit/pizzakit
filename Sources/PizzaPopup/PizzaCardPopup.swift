@@ -24,6 +24,10 @@ public enum PizzaCardPopup {
             width: .offset(value: 8),
             height: .intrinsic
         )
+        attributes.positionConstraints.maxSize = .init(
+            width: .constant(value: PizzaDesignConstants.maxSmallWidth),
+            height: .intrinsic
+        )
         attributes.positionConstraints.safeArea = .empty(fillSafeArea: false)
         attributes.positionConstraints.verticalOffset = 8
         attributes.entryInteraction = .absorbTouches

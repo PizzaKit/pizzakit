@@ -10,11 +10,12 @@ public protocol PizzaRouter {
     func root() -> PizzaPresentable?
 
     /// Method for presenting new presentable over topmost
+    @discardableResult
     func present(
         module: PizzaPresentable?,
         animated: Bool,
         completion: PizzaEmptyClosure?
-    )
+    ) -> PresentedAnchor
     /// Method for dismissing current presentable
     func dismiss(
         animated: Bool,
@@ -44,10 +45,11 @@ public protocol PizzaRouter {
 
 public extension PizzaRouter {
 
+    @discardableResult
     func present(
         module: PizzaPresentable?,
         animated: Bool
-    ) {
+    ) -> PresentedAnchor {
         present(
             module: module,
             animated: animated,
@@ -55,9 +57,10 @@ public extension PizzaRouter {
         )
     }
 
+    @discardableResult
     func present(
         module: PizzaPresentable?
-    ) {
+    ) -> PresentedAnchor {
         present(
             module: module,
             animated: true,

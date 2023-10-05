@@ -1,7 +1,29 @@
 import UIKit
 import PizzaKit
+import SFSafeSymbols
 
 public class UIButtonStyle: UIStyle<UIButton> {
+
+    public struct Icon {
+        public let symbol: SFSymbol
+        public let position: IconPosition
+        public let size: CGFloat
+
+        public init(
+            symbol: SFSymbol, 
+            position: IconPosition, 
+            size: CGFloat
+        ) {
+            self.symbol = symbol
+            self.position = position
+            self.size = size
+        }
+    }
+
+    public enum IconPosition {
+        case leading
+        case trailing
+    }
 
     public let title: String?
     public let backgroundColor: UIColor?
@@ -10,6 +32,7 @@ public class UIButtonStyle: UIStyle<UIButton> {
     public let attributedTitleProvider: PizzaReturnClosure<String?, StringBuilder>
     public let isLoading: Bool
     public let imagePadding: CGFloat
+    public let icon: Icon?
 
     public init(
         title: String?,
@@ -18,7 +41,8 @@ public class UIButtonStyle: UIStyle<UIButton> {
         type: PizzaButtonStylesType,
         attributedTitleProvider: @escaping PizzaReturnClosure<String?, StringBuilder>,
         isLoading: Bool,
-        imagePadding: CGFloat
+        imagePadding: CGFloat,
+        icon: Icon? = nil
     ) {
         self.title = title
         self.backgroundColor = backgroundColor
@@ -27,6 +51,7 @@ public class UIButtonStyle: UIStyle<UIButton> {
         self.attributedTitleProvider = attributedTitleProvider
         self.isLoading = isLoading
         self.imagePadding = imagePadding
+        self.icon = icon
     }
 
     public override func apply(for button: UIButton) {
@@ -73,11 +98,13 @@ public class UIButtonStyle: UIStyle<UIButton> {
                 return .medium
             case .small:
                 return .small
+            case .custom:
+                return .fixed
             }
         }()
         configuration.buttonSize = {
             switch size {
-            case .large:
+            case .large, .custom:
                 return .large
             case .medium:
                 return .medium
@@ -87,8 +114,33 @@ public class UIButtonStyle: UIStyle<UIButton> {
         }()
         configuration.showsActivityIndicator = isLoading
         configuration.imagePadding = imagePadding
+        configuration.image = icon.map {
+            UIImage(
+                systemSymbol: $0.symbol,
+                withConfiguration: UIImage.SymbolConfiguration(pointSize: $0.size)
+            )
+        }
+        configuration.imagePlacement = {
+            switch icon?.position {
+            case .leading, .none:
+                return .leading
+            case .trailing:
+                return .trailing
+            }
+        }()
+        if case .custom(let contentInsets) = size {
+            configuration.contentInsets = contentInsets
+        }
 
         button.configuration = configuration
+    }
+
+}
+
+public extension NSDirectionalEdgeInsets {
+
+    static var defaultButtonContentInsets: NSDirectionalEdgeInsets {
+        .init(horizontal: 10, vertical: 4)
     }
 
 }

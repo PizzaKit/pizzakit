@@ -35,6 +35,8 @@ class ButtonsPresenter: ComponentPresenter {
                                     return "M"
                                 case .small:
                                     return "S"
+                                case .custom:
+                                    return "C"
                                 }
                             }()
                             let typeString = {
