@@ -116,7 +116,7 @@ class TogglesListPresenter: ComponentPresenter {
         state.items = featureToggles.map {
             let value = featureToggleService.getAnyValue(anyFeatureToggle: $0)
             let isJSON = value.valueType is PizzaFeatureToggleJSONValueType.Type
-            let isOptional = value.valueType is Optional<Any>
+            let isOptional = Mirror(reflecting: value.anyValue).displayStyle == .optional
             let color: UIColor = {
                 switch value.responseType {
                 case .fromOverride:

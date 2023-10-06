@@ -139,4 +139,25 @@ public extension UIView {
         }
     }
 
+    func onTap(completion: PizzaEmptyClosure?) {
+        let tapRecogniser = ClickListener(
+            target: self,
+            action: #selector(onViewClicked(sender:))
+        )
+        tapRecogniser.onClick = completion
+        isUserInteractionEnabled = true
+        self.addGestureRecognizer(tapRecogniser)
+    }
+
+    @objc
+    private func onViewClicked(sender: ClickListener) {
+        if let onClick = sender.onClick {
+            onClick()
+        }
+    }
+
+}
+
+fileprivate class ClickListener: UITapGestureRecognizer {
+    var onClick : PizzaEmptyClosure? = nil
 }
