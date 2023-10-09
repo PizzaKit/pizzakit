@@ -40,8 +40,8 @@ public class UIButtonStyle: UIStyle<UIButton> {
         size: PizzaButtonStylesSize,
         type: PizzaButtonStylesType,
         attributedTitleProvider: @escaping PizzaReturnClosure<String?, StringBuilder>,
-        isLoading: Bool,
-        imagePadding: CGFloat,
+        isLoading: Bool = false,
+        imagePadding: CGFloat = 0,
         icon: Icon? = nil
     ) {
         self.title = title
