@@ -1,4 +1,5 @@
 import PizzaCore
+import Foundation
 
 public enum PizzaLoggerLevel: Int, CustomStringConvertible {
     case trace
@@ -38,8 +39,27 @@ public enum PizzaLogger {
         public let file: String
         public let function: String
         public let line: UInt
+
+        public var toNSError: NSError {
+            NSError(
+                domain: label,
+                code: 1,
+                userInfo: payload
+                    .merging(
+                        [
+                            "label": label,
+                            "file": file,
+                            "function": function,
+                            "line": line,
+                            "level": level.description,
+                            "message": message
+                        ],
+                        uniquingKeysWith: { $1 }
+                    )
+            )
+        }
     }
-    public static var handler: PizzaClosure<HandlerPayload>?
+    public static var handlers: [PizzaClosure<HandlerPayload>] = []
     public static func log(
         label: String,
         level: PizzaLoggerLevel,
@@ -49,16 +69,18 @@ public enum PizzaLogger {
         function: String = #function,
         line: UInt = #line
     ) {
-        handler?(
-            .init(
-                label: label,
-                level: level,
-                message: message,
-                payload: payload,
-                file: file,
-                function: function,
-                line: line
+        handlers.forEach {
+            $0(
+                .init(
+                    label: label,
+                    level: level,
+                    message: message,
+                    payload: payload,
+                    file: file,
+                    function: function,
+                    line: line
+                )
             )
-        )
+        }
     }
 }
