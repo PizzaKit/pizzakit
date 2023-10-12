@@ -4,11 +4,17 @@ import Combine
 import UIKit
 
 public struct ProVersionState {
+    /// текущее значение (выставленное на основе покупок/подписок)
     var value: Bool
+    
+    /// нужно ли перезатирать текущее значение
+    var shouldForce: Bool
+    
+    /// каким значением нужно перезатирать
     var forceValue: Bool
 
     public var isPro: Bool {
-        forceValue || value
+        (shouldForce && forceValue) || (!shouldForce && value)
     }
 }
 
@@ -16,14 +22,18 @@ public protocol PizzaProVersionService {
     var valuePublisher: PizzaRPublisher<Bool, Never> { get }
 
     func setValue(_ value: Bool)
-    func setForceValue(_ forceValue: Bool)
+    func setForceValue(shouldForce: Bool, forceValue: Bool)
 }
 
 public class PizzaProVersionServiceImpl: PizzaProVersionService {
 
     // MARK: - Properties
 
-    private var state = ProVersionState(value: false, forceValue: false) {
+    private var state = ProVersionState(
+        value: false,
+        shouldForce: false,
+        forceValue: false
+    ) {
         didSet {
             _valuePublisher.setNeedsUpdate()
         }
@@ -48,8 +58,11 @@ public class PizzaProVersionServiceImpl: PizzaProVersionService {
         state.value = value
     }
 
-    public func setForceValue(_ forceValue: Bool) {
-        state.forceValue = forceValue
+    public func setForceValue(shouldForce: Bool, forceValue: Bool) {
+        var newState = state
+        newState.forceValue = forceValue
+        newState.shouldForce = shouldForce
+        state = newState
     }
 
 }
