@@ -89,7 +89,7 @@ public struct ListComponent: IdentifiableComponent, SelectableComponent, Compone
     }
 
     public let id: String
-    public let icon: ComponentIcon?
+    public let icon: PizzaIcon?
     public let title: String?
     public let value: String?
     public let labelsStyle: LabelsStyle
@@ -126,7 +126,7 @@ public struct ListComponent: IdentifiableComponent, SelectableComponent, Compone
 
     public init(
         id: String,
-        icon: ComponentIcon? = nil,
+        icon: PizzaIcon? = nil,
         title: String? = nil,
         value: String? = nil,
         labelsStyle: LabelsStyle = .defaultOneLine,
@@ -173,7 +173,7 @@ public struct ListComponent: IdentifiableComponent, SelectableComponent, Compone
 
 public class ListBaseComponentView: PizzaView {
 
-    let iconView = ComponentIconView()
+    let iconView = PizzaIconView()
     let titleLabel = PizzaLabel()
     let descriptionLabel = PizzaLabel()
     let trailingIconImageView = UIImageView()
@@ -190,7 +190,7 @@ public class ListBaseComponentView: PizzaView {
                 iconCenterYConstraint = make.centerY.equalToSuperview().constraint
                 iconTopConstraint = make.top.equalTo(titleLabel.snp.top).offset(3).constraint
                 make.leading.equalToSuperview()
-                make.size.equalTo(29)
+//                make.size.equalTo(29)
             }
             iconCenterYConstraint?.deactivate()
             iconTopConstraint?.deactivate()
@@ -211,7 +211,7 @@ public class ListBaseComponentView: PizzaView {
     }
 
     public func configure(
-        icon: ComponentIcon?,
+        icon: PizzaIcon?,
         title: String?,
         value: String?,
         labelsStyle: ListComponent.LabelsStyle,
@@ -219,7 +219,7 @@ public class ListBaseComponentView: PizzaView {
         animated: Bool
     ) {
         if let icon {
-            iconView.configure(icon: icon)
+            iconView.configure(icon: icon, shouldBounce: false)
         }
         iconView.isHidden = icon == nil
 
@@ -280,7 +280,7 @@ public class ListHorizontalComponentView: ListBaseComponentView {
     }
 
     public override func configure(
-        icon: ComponentIcon?,
+        icon: PizzaIcon?,
         title: String?,
         value: String?,
         labelsStyle: ListComponent.LabelsStyle,
@@ -334,7 +334,7 @@ public class ListVerticalComponentView: ListBaseComponentView {
     }
 
     public override func configure(
-        icon: ComponentIcon?,
+        icon: PizzaIcon?,
         title: String?,
         value: String?,
         labelsStyle: ListComponent.LabelsStyle,

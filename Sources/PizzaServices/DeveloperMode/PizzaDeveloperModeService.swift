@@ -30,6 +30,16 @@ public class PizzaDeveloperModeServiceImpl: PizzaDeveloperModeService {
     public lazy var _valuePublisher = PizzaPassthroughRPublisher<Bool, Never>(
         currentValue: { [weak self] in
             guard let self else { return false }
+            let isDebugBuild = {
+                #if DEBUG
+                return true
+                #else
+                return false
+                #endif
+            }()
+            if isDebugBuild {
+                return true
+            }
             return Self.verifyDeveloperMode(
                 sault: self.sault,
                 deviceID: self.deviceID,

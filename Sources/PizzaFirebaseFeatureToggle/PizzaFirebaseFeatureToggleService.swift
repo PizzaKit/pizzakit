@@ -3,6 +3,7 @@ import FirebaseRemoteConfig
 import Combine
 import Foundation
 import Defaults
+import PizzaCore
 
 extension RemoteConfigValue: PizzaFeatureToggleRemoteValue {}
 

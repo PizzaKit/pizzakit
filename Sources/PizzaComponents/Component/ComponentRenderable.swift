@@ -62,7 +62,7 @@ public extension ComponentRenderable {
             if let renderTarget, type(of: renderTarget) == type(of: newRenderTarget) {
                 return renderTarget
             }
-            (renderTarget as? UIView)?.removeFromSuperview() // TODO: перенести эту логику в протокол компонента
+            (renderTarget as? UIView)?.removeFromSuperview()
             anyComponent.layout(renderTarget: newRenderTarget, in: componentContainerView)
             return newRenderTarget
         }()

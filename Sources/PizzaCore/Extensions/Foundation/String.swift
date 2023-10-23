@@ -99,4 +99,44 @@ public extension String {
         return emailPred.evaluate(with: self)
     }
 
+    public struct SplitItem: Equatable {
+        public let string: String
+        public let isInside: Bool
+
+        public init(string: String, isInside: Bool) {
+            self.string = string
+            self.isInside = isInside
+        }
+    }
+
+    public func split(symbol: Character) -> [SplitItem] {
+        var isInside = false
+        var result: [SplitItem] = []
+        var currentString = ""
+        for char in self {
+            if char == symbol {
+                result.append(
+                    .init(
+                        string: currentString,
+                        isInside: isInside
+                    )
+                )
+                currentString = ""
+                isInside.toggle()
+            } else {
+                currentString.append(char)
+            }
+        }
+        result.append(
+            .init(
+                string: currentString,
+                isInside: isInside
+            )
+        )
+
+        return result.filter {
+            $0.string.nilIfEmpty != nil
+        }
+    }
+
 }

@@ -37,6 +37,14 @@ let package = Package(
         .library(
             name: "PizzaNativeDesignSystem",
             targets: ["PizzaNativeDesignSystem"]
+        ),
+        .library(
+            name: "PizzaOnboarding",
+            targets: ["PizzaOnboarding"]
+        ),
+        .library(
+            name: "PizzaBlockingScreen",
+            targets: ["PizzaBlockingScreen"]
         )
     ],
     dependencies: [
@@ -163,7 +171,8 @@ let package = Package(
         .target(
             name: "PizzaFeatureToggleUI",
             dependencies: [
-                "PizzaKit"
+                "PizzaKit",
+                .product(name: "FirebaseInstallations", package: "firebase-ios-sdk")
             ]
         ),
         .target(
@@ -183,6 +192,18 @@ let package = Package(
         ),
         .target(
             name: "PizzaNativeDesignSystem",
+            dependencies: [
+                "PizzaKit"
+            ]
+        ),
+        .target(
+            name: "PizzaBlockingScreen",
+            dependencies: [
+                "PizzaKit"
+            ]
+        ),
+        .target(
+            name: "PizzaOnboarding",
             dependencies: [
                 "PizzaKit"
             ]

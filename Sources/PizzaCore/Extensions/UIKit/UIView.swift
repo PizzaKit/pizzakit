@@ -112,7 +112,10 @@ public extension UIView {
             action: #selector(onViewClicked(sender:))
         )
         tapRecogniser.onClick = completion
-        isUserInteractionEnabled = true
+        isUserInteractionEnabled = completion != nil
+        if let old = gestureRecognizers?.first(where: { $0 is ClickListener }) {
+            self.removeGestureRecognizer(old)
+        }
         self.addGestureRecognizer(tapRecogniser)
     }
 

@@ -187,7 +187,8 @@ public class PizzaAppThemePresenter: ComponentPresenter {
             colorComponents.append(
                 ListComponent(
                     id: color.hex,
-                    icon: .background(color: color),
+                    icon: .init()
+                        .apply(preset: .listColoredBGWhiteFG, color: color),
                     title: PizzaAppThemeUIColorsNameHelper.colorNames[index],
                     selectableContext: .init(
                         shouldDeselect: true,

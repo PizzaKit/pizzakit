@@ -10,7 +10,7 @@ class ColorsPresenter: ComponentPresenter {
     func touch() {
         delegate?.controller.do {
             $0.navigationItem.largeTitleDisplayMode = .never
-            $0.navigationItem.title = "Label styles"
+            $0.navigationItem.title = "Colors"
         }
 
         delegate?.render(sections: [
@@ -24,7 +24,8 @@ class ColorsPresenter: ComponentPresenter {
                 cells: [
                     ListComponent(
                         id: "color_text_1",
-                        icon: .background(color: .palette.label),
+                        icon: .init()
+                            .apply(preset: .listColoredBGWhiteFG, color: .palette.label),
                         title: "Label",
                         labelsStyle: .init(
                             titleStyle: .allStyles.body(
@@ -35,7 +36,8 @@ class ColorsPresenter: ComponentPresenter {
                     ),
                     ListComponent(
                         id: "color_text_2",
-                        icon: .background(color: .palette.labelSecondary),
+                        icon: .init()
+                            .apply(preset: .listColoredBGWhiteFG, color: .palette.labelSecondary),
                         title: "Label secondary",
                         labelsStyle: .init(
                             titleStyle: .allStyles.body(
@@ -46,7 +48,8 @@ class ColorsPresenter: ComponentPresenter {
                     ),
                     ListComponent(
                         id: "color_text_3",
-                        icon: .background(color: .palette.labelTertiary),
+                        icon: .init()
+                            .apply(preset: .listColoredBGWhiteFG, color: .palette.labelTertiary),
                         title: "Label tertiary",
                         labelsStyle: .init(
                             titleStyle: .allStyles.body(
@@ -57,7 +60,8 @@ class ColorsPresenter: ComponentPresenter {
                     ),
                     ListComponent(
                         id: "color_text_4",
-                        icon: .background(color: .palette.labelError),
+                        icon: .init()
+                            .apply(preset: .listColoredBGWhiteFG, color: .palette.labelError),
                         title: "Label error",
                         labelsStyle: .init(
                             titleStyle: .allStyles.body(
@@ -82,7 +86,8 @@ class ColorsPresenter: ComponentPresenter {
                     }
                     return ListComponent(
                         id: "tint_color_\($0.offset)",
-                        icon: .background(color: $0.element),
+                        icon: .init()
+                            .apply(preset: .listColoredBGWhiteFG, color: $0.element),
                         title: title,
                         labelsStyle: .init(
                             titleStyle: .allStyles.body(

@@ -34,7 +34,7 @@ public struct SwitchComponent: IdentifiableComponent, ComponentWithSeparator {
     }
 
     public let id: String
-    public let icon: ComponentIcon?
+    public let icon: PizzaIcon?
     public let text: String
     public let textStyle: UIStyle<PizzaLabel>
     public let value: Bool
@@ -50,7 +50,7 @@ public struct SwitchComponent: IdentifiableComponent, ComponentWithSeparator {
 
     public init(
         id: String,
-        icon: ComponentIcon? = nil,
+        icon: PizzaIcon? = nil,
         text: String,
         textStyle: UIStyle<PizzaLabel> = .allStyles.body(color: .palette.label, alignment: .left),
         value: Bool,
@@ -89,7 +89,7 @@ public struct SwitchComponent: IdentifiableComponent, ComponentWithSeparator {
 
 public class SwitchComponentView: PizzaView {
 
-    private let iconView = ComponentIconView()
+    private let iconView = PizzaIconView()
     private let switchView = UISwitch()
     private let titleLabel = PizzaLabel()
 
@@ -110,7 +110,7 @@ public class SwitchComponentView: PizzaView {
             $0.snp.makeConstraints { make in
                 make.centerY.equalToSuperview()
                 make.leading.equalToSuperview()
-                make.size.equalTo(29)
+//                make.size.equalTo(29)
             }
         }
 
@@ -143,7 +143,7 @@ public class SwitchComponentView: PizzaView {
     }
 
     func configure(
-        icon: ComponentIcon?,
+        icon: PizzaIcon?,
         text: String,
         textStyle: UIStyle<PizzaLabel>,
         isOn: Bool,
@@ -158,7 +158,7 @@ public class SwitchComponentView: PizzaView {
         feedbackGeneratorEnabled = style.allowHapticFeedback
 
         if let icon {
-            iconView.configure(icon: icon)
+            iconView.configure(icon: icon, shouldBounce: false)
         }
         iconView.isHidden = icon == nil
 

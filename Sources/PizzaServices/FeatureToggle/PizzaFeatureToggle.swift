@@ -135,6 +135,21 @@ public struct PizzaFeatureToggleOverrideValue<T: PizzaFeatureToggleValueType> {
 
 public protocol PizzaFeatureToggleJSONValueType: PizzaFeatureToggleValueType {}
 
+extension Array: PizzaFeatureToggleValueType where Element: PizzaFeatureToggleValueType {
+
+    public static func extractFrom(remoteValue: PizzaFeatureToggleRemoteValue) -> Array<Element>? {
+        guard let string = remoteValue.stringValue else {
+            return nil
+        }
+        return .from(string: string)
+    }
+
+    public var nsObjectValue: NSObject {
+        NSString(string: getString() ?? "")
+    }
+
+}
+
 public extension PizzaFeatureToggleJSONValueType {
     static func extractFrom(
         remoteValue: PizzaFeatureToggleRemoteValue

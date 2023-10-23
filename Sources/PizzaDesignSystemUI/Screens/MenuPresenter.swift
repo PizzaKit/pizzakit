@@ -28,12 +28,8 @@ class MenuPresenter: ComponentPresenter {
                 cells: [
                     ListComponent(
                         id: "components",
-                        icon: .systemSquareRounded(
-                            .init(
-                                sfSymbol: .cube,
-                                backgroundColor: .systemBlue
-                            )
-                        ),
+                        icon: .init(sfSymbol: .cube)
+                            .apply(preset: .listColoredBGWhiteFG, color: .systemBlue),
                         title: "Components",
                         selectableContext: .init(
                             shouldDeselect: false,
@@ -45,12 +41,8 @@ class MenuPresenter: ComponentPresenter {
                     ),
                     ListComponent(
                         id: "label_styles",
-                        icon: .systemSquareRounded(
-                            .init(
-                                sfSymbol: .characterCursorIbeam,
-                                backgroundColor: .systemGreen
-                            )
-                        ),
+                        icon: .init(sfSymbol: .characterCursorIbeam)
+                            .apply(preset: .listColoredBGWhiteFG, color: .systemGreen),
                         title: "Label styles",
                         selectableContext: .init(
                             shouldDeselect: false,
@@ -62,12 +54,8 @@ class MenuPresenter: ComponentPresenter {
                     ),
                     ListComponent(
                         id: "colors",
-                        icon: .systemSquareRounded(
-                            .init(
-                                sfSymbol: .paintbrush,
-                                backgroundColor: .systemOrange
-                            )
-                        ),
+                        icon: .init(sfSymbol: .paintbrush)
+                            .apply(preset: .listColoredBGWhiteFG, color: .systemOrange),
                         title: "Colors",
                         selectableContext: .init(
                             shouldDeselect: false,
@@ -79,12 +67,8 @@ class MenuPresenter: ComponentPresenter {
                     ),
                     ListComponent(
                         id: "buttons",
-                        icon: .systemSquareRounded(
-                            .init(
-                                sfSymbol: .rectangleCompressVertical,
-                                backgroundColor: .systemRed
-                            )
-                        ),
+                        icon: .init(sfSymbol: .rectangleCompressVertical)
+                            .apply(preset: .listColoredBGWhiteFG, color: .systemRed),
                         title: "Buttons",
                         selectableContext: .init(
                             shouldDeselect: false,
@@ -96,12 +80,8 @@ class MenuPresenter: ComponentPresenter {
                     ),
                     ListComponent(
                         id: "popups",
-                        icon: .systemSquareRounded(
-                            .init(
-                                sfSymbol: .rectangleBottomthirdInsetFilled,
-                                backgroundColor: .systemTeal
-                            )
-                        ),
+                        icon: .init(sfSymbol: .rectangleBottomthirdInsetFilled)
+                            .apply(preset: .listColoredBGWhiteFG, color: .systemTeal),
                         title: "Popups",
                         selectableContext: .init(
                             shouldDeselect: false,

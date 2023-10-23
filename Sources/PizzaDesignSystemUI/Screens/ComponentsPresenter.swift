@@ -65,12 +65,8 @@ class ComponentsPresenter: ComponentPresenter {
                         ),
                         SwitchComponent(
                             id: "switch_2",
-                            icon: .systemSquareRounded(
-                                .init(
-                                    sfSymbol: .paintpalette,
-                                    backgroundColor: .systemGreen
-                                )
-                            ),
+                            icon: .init(sfSymbol: .paintpalette)
+                                .apply(preset: .listColoredBGWhiteFG, color: .systemGreen),
                             text: "Disabled switch",
                             value: false,
                             style: .defaultOneLine,
@@ -79,12 +75,8 @@ class ComponentsPresenter: ComponentPresenter {
                         ),
                         SwitchComponent(
                             id: "switch_3",
-                            icon: .systemSquareRounded(
-                                .init(
-                                    sfSymbol: .globe,
-                                    backgroundColor: .systemCyan
-                                )
-                            ),
+                            icon: .init(sfSymbol: .globe)
+                                .apply(preset: .listColoredBGWhiteFG, color: .systemCyan),
                             text: "Disabled switch with long description",
                             value: true,
                             style: .defaultOneLine,
@@ -93,12 +85,8 @@ class ComponentsPresenter: ComponentPresenter {
                         ),
                         SwitchComponent(
                             id: "switch_4",
-                            icon: .systemSquareRounded(
-                                .init(
-                                    sfSymbol: .cursorarrowMotionlinesClick,
-                                    backgroundColor: .systemBlue
-                                )
-                            ),
+                            icon: .init(sfSymbol: .cursorarrowMotionlinesClick)
+                                .apply(preset: .listColoredBGWhiteFG, color: .systemBlue),
                             text: "Disabled switch with long description multiple lines",
                             value: true,
                             style: .defaultMultipleLines,
@@ -181,23 +169,16 @@ class ComponentsPresenter: ComponentPresenter {
     private func generateAllListComponents() -> [ListComponent] {
         var components: [ListComponent] = []
 
-        let allIcons: [ComponentIcon?] = [
+        let allIcons: [PizzaIcon?] = [
             nil,
-            .systemSquareRounded(
-                .init(
-                    sfSymbol: .paintpalette,
-                    tintColor: .white,
-                    backgroundColor: .systemRed
-                )
-            ),
-            .systemSquareRounded(
-                .init(
-                    sfSymbol: .paintpalette,
-                    tintColor: .tintColor,
-                    backgroundColor: nil
-                )
-            ),
-            .background(color: .systemPurple)
+            .init(sfSymbol: .paintpalette)
+                .apply(preset: .listColoredBGWhiteFG, color: .systemRed),
+            .init(sfSymbol: .paintpalette)
+                .apply(preset: .listDimmedBGColoredFG, color: .systemRed),
+            .init(sfSymbol: .paintpalette)
+                .apply(preset: .listTransparentBGColoredFG, color: .systemRed),
+            .init()
+                .apply(preset: .listColoredBGWhiteFG, color: .systemRed),
         ]
         var allValues: [String?] = ["Value", nil]
         var allValuePosition: [ListComponent.ValuePosition] = [
