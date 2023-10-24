@@ -3,6 +3,7 @@ import PizzaCore
 import UIKit
 import SnapKit
 import SFSafeSymbols
+import PizzaIcon
 
 public struct ListComponent: IdentifiableComponent, SelectableComponent, ComponentWithSeparator, ComponentWithAccessories, ComponentWithSwipeActions {
     

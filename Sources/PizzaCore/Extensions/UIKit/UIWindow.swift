@@ -4,7 +4,7 @@ import NotificationCenter
 
 public extension UIWindow {
 
-    open override func motionEnded(
+    override func motionEnded(
         _ motion: UIEvent.EventSubtype,
         with event: UIEvent?
     ) {

@@ -41,20 +41,6 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
         }
     }
 
-    // TODO: странная штука -> лучше убрать и если такое нужно, то не использоваться компоненты
-    public func getRenderTarget(tableView: UITableView, id: String) -> (
-        renderTarget: Any,
-        indexPath: IndexPath
-    )? {
-        if
-            let indexPath = dataSource.indexPath(for: .init(component: TempComponent(id: id))),
-            let tableViewCell = tableView.cellForRow(at: indexPath) as? ComponentTableViewCell
-        {
-            return (renderTarget: tableViewCell.renderTarget, indexPath: indexPath)
-        }
-        return nil
-    }
-
     public func performUpdates(target: UITableView, sections: [ComponentSection]) {
         // -----------------
         // | registrations |

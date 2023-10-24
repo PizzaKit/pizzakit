@@ -2,6 +2,7 @@ import PizzaDesign
 import UIKit
 import SnapKit
 import PizzaCore
+import PizzaIcon
 
 public struct SwitchComponent: IdentifiableComponent, ComponentWithSeparator {
 

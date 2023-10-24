@@ -1,5 +1,4 @@
 import Foundation
-import PizzaServices
 import Defaults
 
 /// Фича тоггл описывается классом `PizzaFeatureToggle<T>` и протоколом `PizzaAnyFeatureToggle`.
@@ -108,7 +107,7 @@ public struct PizzaAnyFeatureToggleOverrideValue: Codable, Defaults.Serializable
     }
 
     public func encode(to encoder: Encoder) throws {
-        var container = try encoder.container(keyedBy: CodingKeys.self)
+        var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(String(describing: valueType), forKey: .valueType)
         try container.encode(value, forKey: .value)
         try container.encode(isOverrideEnabled, forKey: .isOverrideEnabled)

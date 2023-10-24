@@ -99,7 +99,7 @@ public extension String {
         return emailPred.evaluate(with: self)
     }
 
-    public struct SplitItem: Equatable {
+    struct SplitItem: Equatable {
         public let string: String
         public let isInside: Bool
 
@@ -109,7 +109,7 @@ public extension String {
         }
     }
 
-    public func split(symbol: Character) -> [SplitItem] {
+    func split(symbol: Character) -> [SplitItem] {
         var isInside = false
         var result: [SplitItem] = []
         var currentString = ""

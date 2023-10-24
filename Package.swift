@@ -13,41 +13,15 @@ let package = Package(
         .library(
             name: "PizzaKit",
             targets: ["PizzaKit"]
-        ),
-        .library(
-            name: "PizzaFirebaseFeatureToggle",
-            targets: ["PizzaFirebaseFeatureToggle"]
-        ),
-        .library(
-            name: "PizzaFirebasePushNotification",
-            targets: ["PizzaFirebasePushNotification"]
-        ),
-        .library(
-            name: "PizzaFeatureToggleUI",
-            targets: ["PizzaFeatureToggleUI"]
-        ),
-        .library(
-            name: "PizzaAppThemeUI",
-            targets: ["PizzaAppThemeUI"]
-        ),
-        .library(
-            name: "PizzaDesignSystemUI",
-            targets: ["PizzaDesignSystemUI"]
-        ),
-        .library(
-            name: "PizzaNativeDesignSystem",
-            targets: ["PizzaNativeDesignSystem"]
-        ),
-        .library(
-            name: "PizzaOnboarding",
-            targets: ["PizzaOnboarding"]
-        ),
-        .library(
-            name: "PizzaBlockingScreen",
-            targets: ["PizzaBlockingScreen"]
         )
     ],
     dependencies: [
+        // Other PizzaKit repos
+        .package(
+            url: "https://github.com/PizzaKit/pizzaicon",
+            from: "1.0.0"
+        ),
+
         // design
         .package(
             url: "https://github.com/kean/Nuke",
@@ -89,12 +63,6 @@ let package = Package(
             url: "https://github.com/Alecrim/Reachability",
             from: "1.2.1"
         ),
-
-        // feature toggle
-        .package(
-            url: "https://github.com/firebase/firebase-ios-sdk",
-            from: "10.8.0"
-        )
     ],
     targets: [
         .target(
@@ -110,7 +78,8 @@ let package = Package(
                 .product(name: "NukeUI", package: "Nuke"),
                 .product(name: "NukeExtensions", package: "Nuke"),
                 .product(name: "SFSafeSymbols", package: "SFSafeSymbols"),
-                .product(name: "SPIndicator", package: "SPIndicator")
+                .product(name: "SPIndicator", package: "SPIndicator"),
+                .product(name: "PizzaIcon", package: "pizzaicon")
             ]
         ),
         .target(
@@ -152,60 +121,6 @@ let package = Package(
                 "PizzaPopup",
                 "PizzaAlert",
                 "PizzaComponents",
-            ]
-        ),
-        .target(
-            name: "PizzaFirebaseFeatureToggle",
-            dependencies: [
-                "PizzaServices", 
-                .product(name: "FirebaseRemoteConfig", package: "firebase-ios-sdk")
-            ]
-        ),
-        .target(
-            name: "PizzaFirebasePushNotification",
-            dependencies: [
-                "PizzaServices", 
-                .product(name: "FirebaseMessaging", package: "firebase-ios-sdk")
-            ]
-        ),
-        .target(
-            name: "PizzaFeatureToggleUI",
-            dependencies: [
-                "PizzaKit",
-                .product(name: "FirebaseInstallations", package: "firebase-ios-sdk")
-            ]
-        ),
-        .target(
-            name: "PizzaAppThemeUI",
-            dependencies: [
-                "PizzaKit"
-            ],
-            resources: [
-                .process("Resources")
-            ]
-        ),
-        .target(
-            name: "PizzaDesignSystemUI",
-            dependencies: [
-                "PizzaKit"
-            ]
-        ),
-        .target(
-            name: "PizzaNativeDesignSystem",
-            dependencies: [
-                "PizzaKit"
-            ]
-        ),
-        .target(
-            name: "PizzaBlockingScreen",
-            dependencies: [
-                "PizzaKit"
-            ]
-        ),
-        .target(
-            name: "PizzaOnboarding",
-            dependencies: [
-                "PizzaKit"
             ]
         )
     ],

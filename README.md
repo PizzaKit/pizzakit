@@ -91,22 +91,3 @@ PizzaAlert()
     .build()
     .show()
 ```
-
-## PizzaBlockingScreen
-
-## PizzaOnboarding
-
-## PizzaAppThemeUI
-
-## PizzaDesignSystemUI
-
-## PizzaFeatureToggleUI
-
-## PizzaNativeDesignSystem
-
-## PizzaFirebaseFeatureToggle
-
-## PizzaFirebasePushNotifications
-
-- `PizzaFirebasePushNotificationManager` - manager for working with push notifications
-- `PizzaFirebasePushNotificationTopicsManager` - manager for working with firebase notifications topics

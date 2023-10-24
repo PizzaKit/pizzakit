@@ -34,7 +34,7 @@ public enum PizzaSigningCryptoHelpers {
             case .oneDay(let date):
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = "MM.dd.yyyy"
-                return "one_day_\(dateFormatter.string(from: date) ?? "<unknown>")"
+                return "one_day_\(dateFormatter.string(from: date))"
             case .unlimited:
                 return "unlimited"
             }
@@ -98,13 +98,12 @@ public enum PizzaSigningCryptoHelpers {
             let publicKeyData = Data(hexString: publicKey),
             let signatureData = Data(hexString: signature),
             let messageDigestData = Data(hexString: messageDigest),
-            let publicKey = try? Curve25519.Signing.PublicKey(rawRepresentation: publicKeyData),
-            let isValidSign = try? publicKey.isValidSignature(
-                signatureData,
-                for: messageDigestData
-            )
+            let publicKey = try? Curve25519.Signing.PublicKey(rawRepresentation: publicKeyData)
         else { return false }
-        return isValidSign
+        return publicKey.isValidSignature(
+            signatureData,
+            for: messageDigestData
+        )
     }
 
 }
