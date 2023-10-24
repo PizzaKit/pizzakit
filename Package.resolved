@@ -86,7 +86,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/alexfilimon/SwiftEntryKit",
       "state" : {
-        "revision" : "46a72419063394db63abd04ef87169e68187681f"
+        "revision" : "46a72419063394db63abd04ef87169e68187681f",
+        "version" : "2.0.1"
       }
     }
   ],
