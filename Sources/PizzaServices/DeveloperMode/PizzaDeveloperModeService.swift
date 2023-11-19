@@ -40,7 +40,7 @@ public class PizzaDeveloperModeServiceImpl: PizzaDeveloperModeService {
             if isDebugBuild {
                 return true
             }
-            return Self.verifyDeveloperMode(
+            return self.verifyDeveloperMode(
                 sault: self.sault,
                 deviceID: self.deviceID,
                 publicKey: self.publicKey
@@ -56,17 +56,20 @@ public class PizzaDeveloperModeServiceImpl: PizzaDeveloperModeService {
     private let sault: String
     private let deviceID: String
     private let publicKey: String
+    private let appGroup: String?
 
     // MARK: - Initialization
 
     public init(
         sault: String,
         deviceID: String,
-        publicKey: String
+        publicKey: String,
+        appGroup: String?
     ) {
         self.sault = sault
         self.deviceID = deviceID
         self.publicKey = publicKey
+        self.appGroup = appGroup
     }
 
     // MARK: - Methods
@@ -77,8 +80,8 @@ public class PizzaDeveloperModeServiceImpl: PizzaDeveloperModeService {
         onNeedShowIndicator: PizzaClosure<Result<PizzaSigningCryptoHelpers.LifeTime, Error>>?
     ) {
         // save to user defaults to restore it at next launch
-        Defaults[.signature] = signature
-        Defaults[.option] = option
+        Defaults[.signature(appGroup: appGroup)] = signature
+        Defaults[.option(appGroup: appGroup)] = option
 
         _valuePublisher.setNeedsUpdate()
         let isVerified = _valuePublisher.value
@@ -100,13 +103,13 @@ public class PizzaDeveloperModeServiceImpl: PizzaDeveloperModeService {
 
     // MARK: - Private Methods
 
-    private static func verifyDeveloperMode(
+    private func verifyDeveloperMode(
         sault: String,
         deviceID: String,
         publicKey: String
     ) -> Bool {
-        let option = Defaults[.option]
-        let signature = Defaults[.signature]
+        let option = Defaults[.option(appGroup: appGroup)]
+        let signature = Defaults[.signature(appGroup: appGroup)]
         guard let option, let signature else {
             resetUserDefaults()
             return false
@@ -141,14 +144,24 @@ public class PizzaDeveloperModeServiceImpl: PizzaDeveloperModeService {
 
     }
 
-    private static func resetUserDefaults() {
-        Defaults[.signature] = nil
-        Defaults[.option] = nil
+    private func resetUserDefaults() {
+        Defaults[.signature(appGroup: appGroup)] = nil
+        Defaults[.option(appGroup: appGroup)] = nil
     }
 
 }
 
 fileprivate extension Defaults.Keys {
-    static let signature = Defaults.Key<String?>("developer_mode_sign")
-    static let option = Defaults.Key<Int?>("developer_mode_option")
+    static func signature(appGroup: String?) -> Defaults.Key<String?> {
+        Defaults.Key<String?>(
+            "developer_mode_sign",
+            suite: UserDefaults(suiteName: appGroup) ?? .standard
+        )
+    }
+    static func option(appGroup: String?) -> Defaults.Key<Int?> {
+        Defaults.Key<Int?>(
+            "developer_mode_option",
+            suite: UserDefaults(suiteName: appGroup) ?? .standard
+        )
+    }
 }

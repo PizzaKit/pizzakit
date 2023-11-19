@@ -1,6 +1,7 @@
 import Defaults
 import PizzaCore
 import Combine
+import Foundation
 
 public struct PizzaProVersionDebugState: Codable, Defaults.Serializable {
     public var shouldForce: Bool
@@ -19,7 +20,9 @@ public protocol PizzaProVersionDebugService: AnyObject {
 
     var isForcedProVersionPublisher: PizzaRWPublisher<PizzaProVersionDebugState, Never> { get }
 
-    func initialize()
+    /// Нужно вызывать при старте приложения (или при обновлении виджета)
+    /// чтобы проверка в `proVersionService` учитывала debugMode
+    func checkForceProVersion()
 
 }
 
@@ -28,8 +31,9 @@ public class PizzaProVersionDebugServiceImpl: PizzaProVersionDebugService {
     public typealias State = PizzaProVersionDebugState
 
     private lazy var _isForcedProVersionPublisher = PizzaPassthroughRWPublisher<State, Never>(
-        currentValue: {
-            Defaults[.forceProVersion]
+        currentValue: { [weak self] in
+            guard let self else { return .init(shouldForce: false, forceValue: false) }
+            return Defaults[.forceProVersion(appGroup: self.appGroup)]
         },
         onValueChanged: { [weak self] newValue in
             self?.set(state: newValue)
@@ -41,51 +45,54 @@ public class PizzaProVersionDebugServiceImpl: PizzaProVersionDebugService {
 
     private let proVersionService: PizzaProVersionService
     private let developerModeService: PizzaDeveloperModeService
+    private let appGroup: String?
 
     private var bag = Set<AnyCancellable>()
 
     public init(
         proVersionService: PizzaProVersionService,
-        developerModeService: PizzaDeveloperModeService
+        developerModeService: PizzaDeveloperModeService,
+        appGroup: String?
     ) {
         self.proVersionService = proVersionService
         self.developerModeService = developerModeService
-    }
+        self.appGroup = appGroup
 
-    // MARK: - PizzaProVersionDebugService
-
-    public func initialize() {
         developerModeService
             .valuePublisher
             .withoutCurrentValue
             .sink { [weak self] _ in
-                self?.checkForceProVersionService()
+                self?.checkForceProVersion()
             }
             .store(in: &bag)
-        checkForceProVersionService()
     }
 
-    // MARK: - Private Methods
+    // MARK: - PizzaProVersionDebugService
 
-    private func set(state: State) {
-        Defaults[.forceProVersion] = state
-        checkForceProVersionService()
-    }
-
-    private func checkForceProVersionService() {
+    public func checkForceProVersion() {
         let isDeveloperMode = developerModeService.valuePublisher.value
-        let state = Defaults[.forceProVersion]
+        let state = Defaults[.forceProVersion(appGroup: appGroup)]
         proVersionService.setForceValue(
             shouldForce: isDeveloperMode && state.shouldForce,
             forceValue: state.forceValue
         )
     }
 
+    // MARK: - Private Methods
+
+    private func set(state: State) {
+        Defaults[.forceProVersion(appGroup: appGroup)] = state
+        checkForceProVersion()
+    }
+
 }
 
 fileprivate extension Defaults.Keys {
-    static let forceProVersion = Defaults.Key<PizzaProVersionDebugState>(
-        "forceProVersion_state",
-        default: PizzaProVersionDebugState(shouldForce: false, forceValue: true)
-    )
+    static func forceProVersion(appGroup: String?) -> Defaults.Key<PizzaProVersionDebugState> {
+        Defaults.Key<PizzaProVersionDebugState>(
+            "forceProVersion_state",
+            default: PizzaProVersionDebugState(shouldForce: false, forceValue: true),
+            suite: UserDefaults(suiteName: appGroup) ?? .standard
+        )
+    }
 }

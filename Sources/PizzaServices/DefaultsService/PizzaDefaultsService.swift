@@ -12,9 +12,10 @@ open class PizzaDefaultsService<StorageItem: PizzaDefaultsServiceStorageItem> {
 
     // MARK: - Properties
 
-    private let key = Defaults.Key<StorageItem>(
+    private lazy var key = Defaults.Key<StorageItem>(
         StorageItem.key,
-        default: StorageItem.default
+        default: StorageItem.default,
+        suite: UserDefaults(suiteName: appGroup) ?? .standard
     )
     public lazy var valuePublisher: PizzaRWPublisher<StorageItem, Never> = PizzaPassthroughRWPublisher(
         currentValue: { [weak self] in
@@ -24,11 +25,20 @@ open class PizzaDefaultsService<StorageItem: PizzaDefaultsServiceStorageItem> {
         onValueChanged: { [weak self] in
             guard let self else { return }
             Defaults[self.key] = $0
+            self.valueChanged()
         }
     )
 
+    private let appGroup: String?
+
     // MARK: - Initalization
 
-    public init() {}
+    public init(appGroup: String?) {
+        self.appGroup = appGroup
+    }
+
+    // MARK: - Methods to override
+
+    open func valueChanged() {}
 
 }
