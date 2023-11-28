@@ -49,4 +49,8 @@ open class ComponentWrapperTableController: PizzaController, ControllerWithScrol
         tableController.render(sections: sections)
     }
 
+    public func getCell(componentId: AnyHashable) -> UIView? {
+        tableController.getCell(componentId: componentId)
+    }
+
 }

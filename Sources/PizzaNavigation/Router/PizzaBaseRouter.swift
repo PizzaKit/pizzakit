@@ -49,8 +49,9 @@ open class PizzaBaseRouter: PizzaRouter {
             animated: animated,
             completion: completion
         )
-        return _PresentedAnchorImpl { [weak top] animated in
-            top?.dismiss(animated: animated)
+        return _PresentedAnchorImpl { [weak controller] (animated, completion) in
+            controller?.presentingViewController?
+                .dismiss(animated: animated, completion: completion)
         }
     }
 

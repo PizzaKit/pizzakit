@@ -54,6 +54,10 @@ open class ComponentTableController: PizzaTableController, ComponentPresenterDel
         prevData = sections
     }
 
+    public func getCell(componentId: AnyHashable) -> UIView? {
+        updater.getCell(tableView: tableView, componentId: componentId)
+    }
+
     // MARK: - ControllerWithScrollView
 
     public var scrollView: UIScrollView {

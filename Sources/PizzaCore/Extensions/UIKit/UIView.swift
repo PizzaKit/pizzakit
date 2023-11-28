@@ -106,6 +106,18 @@ public extension UIView {
         return nil
     }
 
+    func findAnyChildren<T: UIView>() -> T? {
+        if let selfProperClass = self as? T {
+            return selfProperClass
+        }
+        for subview in subviews {
+            if let result: T = subview.findAnyChildren() {
+                return result
+            }
+        }
+        return nil
+    }
+
     func onTap(completion: PizzaEmptyClosure?) {
         let tapRecogniser = ClickListener(
             target: self,

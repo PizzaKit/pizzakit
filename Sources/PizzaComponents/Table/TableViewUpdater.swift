@@ -29,16 +29,14 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
         target.delegate = self
     }
 
-    private struct TempComponent: IdentifiableComponent {
-        let id: String
-
-        func createRenderTarget() -> UIView {
-            fatalError()
+    public func getCell(
+        tableView: UITableView,
+        componentId: AnyHashable
+    ) -> UIView? {
+        guard let indexPath = dataSource.indexPath(for: .init(component: FakeComponent(id: componentId))) else {
+            return nil
         }
-
-        func render(in renderTarget: UIView, renderType: RenderType) {
-            fatalError()
-        }
+        return tableView.cellForRow(at: indexPath)
     }
 
     public func performUpdates(target: UITableView, sections: [ComponentSection]) {
@@ -300,6 +298,23 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
         else { return }
         AnyComponent(componentNode.component)
             .renderTargetWillDisplay(renderTarget)
+    }
+
+}
+
+struct FakeComponent: IdentifiableComponent {
+
+    var id: AnyHashable
+
+    init(id: AnyHashable) {
+        self.id = id
+    }
+
+    func createRenderTarget() -> UIView {
+        UIView()
+    }
+
+    func render(in renderTarget: UIView, renderType: RenderType) {
     }
 
 }
