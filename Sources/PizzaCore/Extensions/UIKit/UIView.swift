@@ -46,13 +46,14 @@ public extension UIView {
         ofColor color: UIColor,
         radius: CGFloat,
         offset: CGSize,
-        opacity: Float
+        opacity: Float,
+        masksToBounds: Bool = false
     ) {
         layer.shadowColor = color.cgColor
         layer.shadowOffset = offset
         layer.shadowRadius = radius
         layer.shadowOpacity = opacity
-        layer.masksToBounds = false
+        layer.masksToBounds = masksToBounds
     }
 
     func addBorder(color: UIColor, width: CGFloat) {
@@ -106,7 +107,7 @@ public extension UIView {
         return nil
     }
 
-    func findAnyChildren<T: UIView>() -> T? {
+    func findAnyChildren<T>() -> T? {
         if let selfProperClass = self as? T {
             return selfProperClass
         }
@@ -118,10 +119,10 @@ public extension UIView {
         return nil
     }
 
-    func onTap(completion: PizzaEmptyClosure?) {
+    func onPizzaTap(completion: PizzaEmptyClosure?) {
         let tapRecogniser = ClickListener(
             target: self,
-            action: #selector(onViewClicked(sender:))
+            action: #selector(onPizzaViewClicked(sender:))
         )
         tapRecogniser.onClick = completion
         isUserInteractionEnabled = completion != nil
@@ -132,7 +133,7 @@ public extension UIView {
     }
 
     @objc
-    private func onViewClicked(sender: ClickListener) {
+    private func onPizzaViewClicked(sender: ClickListener) {
         if let onClick = sender.onClick {
             onClick()
         }

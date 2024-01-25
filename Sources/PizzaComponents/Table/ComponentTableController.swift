@@ -46,6 +46,7 @@ open class ComponentTableController: PizzaTableController, ComponentPresenterDel
     // MARK: - ComponentPresenterDelegate
 
     public var controller: ControllerWithScrollView { self }
+    public var updaterDelegate: UpdaterDelegate?
 
     public func render(sections: [ComponentSection]) {
         if isViewLoaded {
@@ -56,6 +57,10 @@ open class ComponentTableController: PizzaTableController, ComponentPresenterDel
 
     public func getCell(componentId: AnyHashable) -> UIView? {
         updater.getCell(tableView: tableView, componentId: componentId)
+    }
+
+    public func updaterDelegate(_ updaterDelegate: UpdaterDelegate) {
+        updater.updaterDelegate = updaterDelegate
     }
 
     // MARK: - ControllerWithScrollView

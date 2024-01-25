@@ -129,8 +129,6 @@ open class PizzaRootViewController: PizzaController, PizzaRootPresentable {
         return .portrait
     }
 
-    // MARK: - Methods
-
     // MARK: - Private Methods
 
     private func setInitial(viewController: UIViewController) {

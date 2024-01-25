@@ -72,7 +72,10 @@ final public class StringBuilder: StringBuildable {
     public func lineHeight(_ lineHeight: CGFloat) -> StringBuilder {
         updateParagraphStyle {
             $0.minimumLineHeight = lineHeight
-            $0.maximumLineHeight = lineHeight
+            // не задается maximumLineHeight, потому что если переопределить `LayoutManager` и попытаться
+            // получить `boundingRect(forGlyphRange`, то `maximumLineHeight` будет вызывать неправильный рассчет -
+            // то есть будет возвращаться неправильный rect (больше, чем он есть на самом деле)
+//            $0.maximumLineHeight = lineHeight
         }
 
         return self
@@ -81,6 +84,13 @@ final public class StringBuilder: StringBuildable {
     @discardableResult
     public func letterSpacing(_ kern: CGFloat) -> StringBuilder {
         attributes[.kern] = kern
+
+        return self
+    }
+
+    @discardableResult
+    public func custom(key: NSAttributedString.Key, value: Any) -> StringBuilder {
+        attributes[key] = value
 
         return self
     }

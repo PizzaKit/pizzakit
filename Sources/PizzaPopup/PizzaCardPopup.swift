@@ -4,8 +4,11 @@ import PizzaCore
 import SwiftEntryKit
 import SnapKit
 import SFSafeSymbols
+import Combine
 
 public enum PizzaCardPopup {
+
+    private static var bag = Set<AnyCancellable>()
 
     public static func dismiss(completion: PizzaEmptyClosure? = nil) {
         SwiftEntryKit.dismiss(with: completion)
@@ -63,10 +66,28 @@ public enum PizzaCardPopup {
             }
         }
 
-        SwiftEntryKit.display(
-            entry: wrapper,
-            using: attributes
-        )
+        if UIApplication.shared.applicationState != .active {
+            NotificationCenter
+                .default
+                .publisher(for: UIApplication.didBecomeActiveNotification)
+                .first()
+                .receive(on: DispatchQueue.main)
+                .sink { _ in
+                    SwiftEntryKit.display(
+                        entry: wrapper,
+                        using: attributes
+                    )
+                }
+                .store(in: &bag)
+        } else {
+            // to fix bug with broken background animation
+            DispatchQueue.main.async {
+                SwiftEntryKit.display(
+                    entry: wrapper,
+                    using: attributes
+                )
+            }
+        }
     }
 
     public static func display(
@@ -149,6 +170,34 @@ public struct PizzaCardPopupInfoStyle {
     public let secondaryButtonStyleProvider: PizzaReturnClosure<String, UIStyle<UIButton>>
     public let closable: Bool
     public let buttonAxis: ButtonAxis
+
+    public init(
+        contentToViewInsets: UIEdgeInsets,
+        imageSize: CGSize?,
+        imageToTitleOffset: CGFloat,
+        titleToDescriptionOffset: CGFloat,
+        descriptionToButtonOffset: CGFloat,
+        betweenButtonsOffset: CGFloat,
+        titleStyle: UIStyle<PizzaLabel>,
+        descriptionStyle: UIStyle<PizzaLabel>,
+        primaryButtonStyleProvider: @escaping PizzaReturnClosure<String, UIStyle<UIButton>>,
+        secondaryButtonStyleProvider: @escaping PizzaReturnClosure<String, UIStyle<UIButton>>,
+        closable: Bool,
+        buttonAxis: ButtonAxis
+    ) {
+        self.contentToViewInsets = contentToViewInsets
+        self.imageSize = imageSize
+        self.imageToTitleOffset = imageToTitleOffset
+        self.titleToDescriptionOffset = titleToDescriptionOffset
+        self.descriptionToButtonOffset = descriptionToButtonOffset
+        self.betweenButtonsOffset = betweenButtonsOffset
+        self.titleStyle = titleStyle
+        self.descriptionStyle = descriptionStyle
+        self.primaryButtonStyleProvider = primaryButtonStyleProvider
+        self.secondaryButtonStyleProvider = secondaryButtonStyleProvider
+        self.closable = closable
+        self.buttonAxis = buttonAxis
+    }
 
     public static func `default`(
         closable: Bool,

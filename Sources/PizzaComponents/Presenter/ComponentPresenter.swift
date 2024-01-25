@@ -8,6 +8,7 @@ public protocol ControllerWithScrollView: UIViewController, PizzaLifecycleObserv
 
 public protocol ComponentPresenterDelegate: AnyObject {
     var controller: ControllerWithScrollView { get }
+    func updaterDelegate(_ updaterDelegate: UpdaterDelegate)
     func render(sections: [ComponentSection])
     func getCell(componentId: AnyHashable) -> UIView?
 }

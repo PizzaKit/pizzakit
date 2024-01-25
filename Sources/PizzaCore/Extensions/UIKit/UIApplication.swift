@@ -32,4 +32,14 @@ public extension UIApplication {
             .first?
             .windows ?? []
     }
+
+    static func goToSettings() {
+        let url: String = UIApplication.openSettingsURLString
+        guard let settingsUrl = URL(string: url) else { return }
+
+        if UIApplication.shared.canOpenURL(settingsUrl) {
+            UIApplication.shared.open(settingsUrl, completionHandler: nil)
+        }
+    }
+
 }

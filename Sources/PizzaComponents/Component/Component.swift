@@ -37,8 +37,10 @@ public protocol ComponentWithSeparator {
 public struct ComponentSwipeAction {
     public let title: String?
     public let isDestructive: Bool
+    public let color: UIColor
     public let action: PizzaClosure<PizzaClosure<Bool>>
 
+    @available(*, deprecated, message: "Use initializer with color instead")
     public init(
         title: String?,
         isDestructive: Bool,
@@ -46,6 +48,19 @@ public struct ComponentSwipeAction {
     ) {
         self.title = title
         self.isDestructive = isDestructive
+        self.color = .systemRed
+        self.action = action
+    }
+
+    public init(
+        title: String?,
+        isDestructive: Bool,
+        color: UIColor,
+        action: @escaping PizzaClosure<PizzaClosure<Bool>>
+    ) {
+        self.title = title
+        self.isDestructive = isDestructive
+        self.color = color
         self.action = action
     }
 }

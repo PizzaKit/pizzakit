@@ -14,7 +14,8 @@ public struct ComponentSection: Hashable {
         id: AnyHashable,
         header: (any IdentifiableComponent)? = nil,
         cells: [any IdentifiableComponent] = [],
-        footer: (any IdentifiableComponent)? = nil
+        footer: (any IdentifiableComponent)? = nil,
+        cellsMovable: Bool = false
     ) {
         self.id = id
         self.headerNode = header.map { .init(component: $0) }

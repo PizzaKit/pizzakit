@@ -1,15 +1,31 @@
 import UIKit
 import PizzaCore
 
+class CustomDataSource: UITableViewDiffableDataSource<ComponentSection, ComponentNode> {
+
+    var onCanMoveRow: ((IndexPath) -> Bool)?
+    var onMoveRow: ((IndexPath, IndexPath) -> Void)?
+
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        return onCanMoveRow?(indexPath) ?? false
+    }
+
+    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+         onMoveRow?(sourceIndexPath, destinationIndexPath)
+    }
+
+}
+
 public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
 
     public typealias Target = UITableView
     private var dataSource: UITableViewDiffableDataSource<ComponentSection, ComponentNode>!
+    public var updaterDelegate: UpdaterDelegate?
 
     public var onScrollViewDidScroll: PizzaClosure<UIScrollView>?
 
     public func initialize(target: UITableView) {
-        dataSource = .init(
+        let customDataSource = CustomDataSource(
             tableView: target,
             cellProvider: { tableView, indexPath, componentNode in
                 let cell = tableView.dequeueReusableCell(
@@ -25,6 +41,21 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
                 return cell
             }
         )
+        customDataSource.onCanMoveRow = { [weak self] indexPath in
+            guard let section = self?.dataSource.sectionIdentifier(for: indexPath.section) else { return false }
+            return self?.updaterDelegate?.canMoveComponent(in: section) ?? false
+        }
+        customDataSource.onMoveRow = { [weak self] source, target in
+            guard 
+                let fromSection = self?.dataSource.sectionIdentifier(for: source.section),
+                let toSection = self?.dataSource.sectionIdentifier(for: target.section)
+            else { return }
+            self?.updaterDelegate?.moveComponent(
+                from: .init(section: fromSection, index: source.row),
+                to: .init(section: toSection, index: target.row)
+            )
+        }
+        dataSource = customDataSource
         dataSource.defaultRowAnimation = .fade
         target.delegate = self
     }
@@ -72,17 +103,30 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
         }
         dataSource.apply(
             snapshot,
-            animatingDifferences: dataSource.numberOfSections(in: target) != 0 && target.window != nil
+            animatingDifferences: {
+//                if target.isEditing {
+//                    return false
+//                }
+                return dataSource.numberOfSections(in: target) != 0 && target.window != nil
+            }()
         )
 
         guard target.window != nil else { return }
 
         // update visible components
-        renderVisibleComponents(in: target)
+        DispatchQueue.main.async {
+            self.renderVisibleComponents(in: target)
+        }
+
 
         // need to update size of header/footer
-        target.beginUpdates()
-        target.endUpdates()
+        if !target.isEditing {
+            target.beginUpdates()
+            target.endUpdates()
+        }
+
+        // PS. Хаки с isEditing нужны, чтобы красиво работал reorder. В обмен на это ячейки с изменяемой
+        // высотой работать будут плохо при isEditing или вообще не будут ))
     }
 
     public func renderVisibleComponents(in target: UITableView) {

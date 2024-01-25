@@ -53,4 +53,8 @@ open class ComponentWrapperTableController: PizzaController, ControllerWithScrol
         tableController.getCell(componentId: componentId)
     }
 
+    public func updaterDelegate(_ updaterDelegate: UpdaterDelegate) {
+        tableController.updaterDelegate(updaterDelegate)
+    }
+
 }
