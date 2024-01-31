@@ -13,9 +13,12 @@ open class ComponentTableController: PizzaTableController, ComponentPresenterDel
 
     // MARK: - Initialization
 
-    public init(presenter: ComponentPresenter) {
+    public init(
+        presenter: ComponentPresenter,
+        tableViewStyle: UITableView.Style = .insetGrouped
+    ) {
         self.presenter = presenter
-        super.init(style: .insetGrouped)
+        super.init(style: tableViewStyle)
 
         presenter.delegate = self
     }

@@ -344,6 +344,26 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
             .renderTargetWillDisplay(renderTarget)
     }
 
+    public func tableView(
+        _ tableView: UITableView,
+        heightForHeaderInSection section: Int
+    ) -> CGFloat {
+        if dataSource.sectionIdentifier(for: section)?.headerNode != nil {
+            return UITableView.automaticDimension
+        }
+        return 0
+    }
+
+    public func tableView(
+        _ tableView: UITableView,
+        heightForFooterInSection section: Int
+    ) -> CGFloat {
+        if dataSource.sectionIdentifier(for: section)?.footerNode != nil {
+            return UITableView.automaticDimension
+        }
+        return 0
+    }
+
 }
 
 struct FakeComponent: IdentifiableComponent {
