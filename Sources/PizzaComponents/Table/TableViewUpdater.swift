@@ -351,6 +351,9 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
         if dataSource.sectionIdentifier(for: section)?.headerNode != nil {
             return UITableView.automaticDimension
         }
+        if tableView.style == .insetGrouped {
+            return 30
+        }
         return 0
     }
 

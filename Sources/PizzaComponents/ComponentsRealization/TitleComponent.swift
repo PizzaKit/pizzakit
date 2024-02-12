@@ -90,6 +90,10 @@ public class TitleComponentView: PizzaView {
         stringBuildable: StringBuildable,
         insets: NSDirectionalEdgeInsets
     ) {
+        // если у нас это ячейка таблицы, то уберем фон
+        let cell: UITableViewCell? = traverseAndFindClass()
+        cell?.backgroundColor = .clear
+
         titleLabel.attributedText = stringBuildable.build()
 
         titleLabel.snp.updateConstraints { make in

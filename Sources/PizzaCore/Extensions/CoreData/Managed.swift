@@ -1,11 +1,11 @@
 import CoreData
 
-public protocol Managed: AnyObject, NSFetchRequestResult {
+public protocol PizzaManaged: AnyObject, NSFetchRequestResult {
     static var entityName: String { get }
     static var defaultSortDescriptors: [NSSortDescriptor] { get }
 }
 
-public extension Managed {
+public extension PizzaManaged {
 
     static var defaultSortDescriptors: [NSSortDescriptor] {
         []
@@ -25,7 +25,7 @@ public extension Managed {
 
 }
 
-public extension Managed where Self: NSManagedObject {
+public extension PizzaManaged where Self: NSManagedObject {
 
     static var entityName: String {
         entity().name!
@@ -85,7 +85,7 @@ public extension Managed where Self: NSManagedObject {
 
 }
 
-extension Managed where Self: NSManagedObject {
+extension PizzaManaged where Self: NSManagedObject {
 
     func set<Value>(_ value: Value, for keyPath: ReferenceWritableKeyPath<Self, Value>) {
         setValue(value, forKey: keyPath.toString)

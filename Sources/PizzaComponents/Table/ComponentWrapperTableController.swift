@@ -10,8 +10,11 @@ open class ComponentWrapperTableController: PizzaController, ControllerWithScrol
 
     // MARK: - Initialization
 
-    public init(presenter: ComponentPresenter) {
-        tableController = .init(presenter: presenter)
+    public init(
+        presenter: ComponentPresenter,
+        tableViewStyle: UITableView.Style = .insetGrouped
+    ) {
+        tableController = .init(presenter: presenter, tableViewStyle: tableViewStyle)
 
         super.init()
 

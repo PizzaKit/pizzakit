@@ -3,7 +3,7 @@ import CoreData
 public extension NSManagedObjectContext {
 
     // TODO: remove
-    func insertObject<A: NSManagedObject>() -> A where A: Managed {
+    func insertObject<A: NSManagedObject>() -> A where A: PizzaManaged {
         guard
             let object = NSEntityDescription.insertNewObject(
                 forEntityName: A.entityName,
@@ -37,6 +37,23 @@ public extension NSManagedObjectContext {
         }
     }
 
+    func pizzaPerformChanges(
+        block: @escaping (NSManagedObjectContext) throws -> Void
+    ) async throws {
+        return try await withCheckedThrowingContinuation { continuation in
+            perform {
+                do {
+                    try block(self)
+                    try self.save()
+                    continuation.resume(returning: ())
+                } catch {
+                    self.rollback()
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+
     enum CreationError: Error {
         case errorInSaving, blockReturnsNil
     }
@@ -58,6 +75,13 @@ public extension NSManagedObjectContext {
                 completion?(.failure(CreationError.blockReturnsNil))
             }
         }
+    }
+
+    public func executeAndMergeChanges(using batchDeleteRequest: NSBatchDeleteRequest) throws {
+        batchDeleteRequest.resultType = .resultTypeObjectIDs
+        let result = try execute(batchDeleteRequest) as? NSBatchDeleteResult
+        let changes: [AnyHashable: Any] = [NSDeletedObjectsKey: result?.result as? [NSManagedObjectID] ?? []]
+        NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [self])
     }
 
 }
