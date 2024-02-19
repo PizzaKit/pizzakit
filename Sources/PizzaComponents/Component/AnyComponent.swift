@@ -115,7 +115,7 @@ internal protocol AnyComponentBox {
     func render(in renderTarget: Any, renderType: RenderType)
     func layout(renderTarget: Any, in container: UIView)
     func renderTargetWillDisplay(_ renderTarget: Any)
-    func renderTargetDidEndDiplay(_ renderTarget: Any)
+    func renderTargetDidEndDiplay(_ renderTarget: Any) // TODO: realize
     func renderTargetSetHighlight(
         _ renderTarget: Any,
         isHighlight: Bool,

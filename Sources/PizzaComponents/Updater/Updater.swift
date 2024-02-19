@@ -1,4 +1,5 @@
 import UIKit
+import PizzaCore
 
 public struct UpdateMoveContext {
     public let section: ComponentSection
@@ -17,11 +18,19 @@ public protocol Updater<Target> {
     associatedtype Target
 
     var updaterDelegate: UpdaterDelegate? { get set }
+    var onScrollViewDidScroll: PizzaClosure<Target>? { get set }
 
     func initialize(target: Target)
     func performUpdates(target: Target, sections: [ComponentSection])
+    
+    @available(*, deprecated, renamed: "getCell(target:componentId:)")
     func getCell(
         tableView: Target,
+        componentId: AnyHashable
+    ) -> UIView?
+    
+    func getCell(
+        target: Target,
         componentId: AnyHashable
     ) -> UIView?
 }

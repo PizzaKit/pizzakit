@@ -34,6 +34,9 @@ public class PizzaDeveloperModeServiceImpl: PizzaDeveloperModeService {
                 #if DEBUG
                 return true
                 #else
+                if self.customForceEnabled?() == true {
+                    return true
+                }
                 return false
                 #endif
             }()
@@ -57,6 +60,7 @@ public class PizzaDeveloperModeServiceImpl: PizzaDeveloperModeService {
     private let deviceID: String
     private let publicKey: String
     private let appGroup: String?
+    private let customForceEnabled: PizzaEmptyReturnClosure<Bool>?
 
     // MARK: - Initialization
 
@@ -70,6 +74,21 @@ public class PizzaDeveloperModeServiceImpl: PizzaDeveloperModeService {
         self.deviceID = deviceID
         self.publicKey = publicKey
         self.appGroup = appGroup
+        self.customForceEnabled = nil
+    }
+
+    public init(
+        sault: String,
+        deviceID: String,
+        publicKey: String,
+        appGroup: String?,
+        customForceEnabled: PizzaEmptyReturnClosure<Bool>?
+    ) {
+        self.sault = sault
+        self.deviceID = deviceID
+        self.publicKey = publicKey
+        self.appGroup = appGroup
+        self.customForceEnabled = customForceEnabled
     }
 
     // MARK: - Methods

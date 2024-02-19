@@ -46,6 +46,11 @@ public extension ComponentRenderable where Self: UITableViewHeaderFooterView {
         return contentView
     }
 }
+public extension ComponentRenderable where Self: UICollectionReusableView {
+    var componentContainerView: UIView {
+        return self
+    }
+}
 
 public extension ComponentRenderable {
     func render(component: any Component, renderType: RenderType) {

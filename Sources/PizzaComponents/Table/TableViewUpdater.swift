@@ -1,7 +1,7 @@
 import UIKit
 import PizzaCore
 
-class CustomDataSource: UITableViewDiffableDataSource<ComponentSection, ComponentNode> {
+private class CustomDataSource: UITableViewDiffableDataSource<ComponentSection, ComponentNode> {
 
     var onCanMoveRow: ((IndexPath) -> Bool)?
     var onMoveRow: ((IndexPath, IndexPath) -> Void)?
@@ -22,7 +22,7 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
     private var dataSource: UITableViewDiffableDataSource<ComponentSection, ComponentNode>!
     public var updaterDelegate: UpdaterDelegate?
 
-    public var onScrollViewDidScroll: PizzaClosure<UIScrollView>?
+    public var onScrollViewDidScroll: PizzaClosure<UITableView>?
 
     public func initialize(target: UITableView) {
         let customDataSource = CustomDataSource(
@@ -64,10 +64,17 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
         tableView: UITableView,
         componentId: AnyHashable
     ) -> UIView? {
+        getCell(target: tableView, componentId: componentId)
+    }
+
+    public func getCell(
+        target: UITableView,
+        componentId: AnyHashable
+    ) -> UIView? {
         guard let indexPath = dataSource.indexPath(for: .init(component: FakeComponent(id: componentId))) else {
             return nil
         }
-        return tableView.cellForRow(at: indexPath)
+        return target.cellForRow(at: indexPath)
     }
 
     public func performUpdates(target: UITableView, sections: [ComponentSection]) {
@@ -104,9 +111,6 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
         dataSource.apply(
             snapshot,
             animatingDifferences: {
-//                if target.isEditing {
-//                    return false
-//                }
                 return dataSource.numberOfSections(in: target) != 0 && target.window != nil
             }()
         )
@@ -192,7 +196,10 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
         }
     }
 
-    public func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
+    public func tableView(
+        _ tableView: UITableView,
+        shouldHighlightRowAt indexPath: IndexPath
+    ) -> Bool {
         guard
             let componentNode = dataSource.itemIdentifier(for: indexPath),
             let selectableComponent = componentNode.component as? (any SelectableComponent),
@@ -313,7 +320,7 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
     }
 
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        onScrollViewDidScroll?(scrollView)
+        onScrollViewDidScroll?(scrollView as! Target)
     }
 
     public func tableView(
