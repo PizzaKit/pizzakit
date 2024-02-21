@@ -33,6 +33,7 @@ open class PizzaProgressTrackLayer: CALayer {
 
     open override class func needsDisplay(forKey key: String) -> Bool {
         if key == "customProgress" {
+            print("need display for customProgress")
             return true
         }
         return super.needsDisplay(forKey: key)
@@ -55,8 +56,23 @@ open class PizzaProgressTrackLayer: CALayer {
     private var needAnimate = false
     open func update(progress: CGFloat, animated: Bool) {
         self.needAnimate = animated
-        self.removeAllAnimations()
-        self.customProgress = progress + 1
+        let newCustomProgress = progress + 1
+
+        // Если мы выставляем
+        // - или прогресс без анимации
+        // - или новый прогресс не равный текущему (с анимацией)
+        //
+        // мы должны отменить предыдущие анимации
+        //
+        // иначе, мы не должны трогать текущие анимации (пусть они завершаются как и задумывалось)
+        if 
+            !self.customProgress.isNearlyEqual(to: newCustomProgress, delta: 0.01)
+            || !animated
+        {
+            self.removeAllAnimations()
+        }
+        
+        self.customProgress = newCustomProgress
         self.needAnimate = false
     }
 

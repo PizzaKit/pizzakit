@@ -20,6 +20,13 @@ public extension UIView {
         return nil
     }
 
+    func pizzaPerformWithoutAnimation(block: PizzaEmptyClosure) {
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        block()
+        CATransaction.commit()
+    }
+
     /// Method for adding multiple subviews
     func addSubviews(_ subviews: [UIView]) {
         subviews.forEach { addSubview($0) }
