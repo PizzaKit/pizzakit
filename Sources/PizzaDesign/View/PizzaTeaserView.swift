@@ -75,6 +75,36 @@ public struct PizzaTeaserInfoStyle {
     public let errorSecondaryButtonStyleProvider: PizzaReturnClosure<String, UIStyle<UIButton>>
     public let buttonAxis: ButtonAxis
 
+    public init(
+        contentToViewInsets: UIEdgeInsets,
+        imageSize: CGSize?,
+        imageToTitleOffset: CGFloat,
+        titleToDescriptionOffset: CGFloat,
+        descriptionToButtonOffset: CGFloat,
+        betweenButtonsOffset: CGFloat,
+        titleStyle: UIStyle<PizzaLabel>,
+        descriptionStyle: UIStyle<PizzaLabel>,
+        primaryButtonStyleProvider: @escaping PizzaReturnClosure<String, UIStyle<UIButton>>,
+        secondaryButtonStyleProvider: @escaping PizzaReturnClosure<String, UIStyle<UIButton>>,
+        errorPrimaryButtonStyleProvider: @escaping PizzaReturnClosure<String, UIStyle<UIButton>>,
+        errorSecondaryButtonStyleProvider: @escaping PizzaReturnClosure<String, UIStyle<UIButton>>,
+        buttonAxis: ButtonAxis
+    ) {
+        self.contentToViewInsets = contentToViewInsets
+        self.imageSize = imageSize
+        self.imageToTitleOffset = imageToTitleOffset
+        self.titleToDescriptionOffset = titleToDescriptionOffset
+        self.descriptionToButtonOffset = descriptionToButtonOffset
+        self.betweenButtonsOffset = betweenButtonsOffset
+        self.titleStyle = titleStyle
+        self.descriptionStyle = descriptionStyle
+        self.primaryButtonStyleProvider = primaryButtonStyleProvider
+        self.secondaryButtonStyleProvider = secondaryButtonStyleProvider
+        self.errorPrimaryButtonStyleProvider = errorPrimaryButtonStyleProvider
+        self.errorSecondaryButtonStyleProvider = errorSecondaryButtonStyleProvider
+        self.buttonAxis = buttonAxis
+    }
+
     public static func `default`(
         buttonAxis: ButtonAxis
     ) -> PizzaTeaserInfoStyle {
@@ -293,10 +323,13 @@ public class PizzaTeaserController: PizzaController {
 
     // MARK: - Initialization
 
-    public init(info: PizzaTeaserInfo) {
+    public init(
+        info: PizzaTeaserInfo,
+        style: PizzaTeaserInfoStyle = .default(buttonAxis: .vertical)
+    ) {
         self.teaserView = .init(
             info: info,
-            style: .default(buttonAxis: .vertical)
+            style: style
         )
         super.init()
     }
