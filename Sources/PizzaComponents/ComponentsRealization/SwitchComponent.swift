@@ -10,15 +10,21 @@ public struct SwitchComponent: IdentifiableComponent, ComponentWithSeparator {
         public let allowPressOnWholeCell: Bool
         public let allowHapticFeedback: Bool
         public let numberOfLines: Int
+        public let minHeight: CGFloat
+        public let onTintColor: UIColor?
 
         public init(
             allowPressOnWholeCell: Bool,
             allowHapticFeedback: Bool,
-            numberOfLines: Int
+            numberOfLines: Int,
+            minHeight: CGFloat = 44,
+            onTintColor: UIColor? = nil
         ) {
             self.allowPressOnWholeCell = allowPressOnWholeCell
             self.allowHapticFeedback = allowHapticFeedback
             self.numberOfLines = numberOfLines
+            self.minHeight = minHeight
+            self.onTintColor = onTintColor
         }
 
         public static let defaultOneLine = Style(
@@ -264,6 +270,12 @@ public class SwitchComponentView: PizzaView {
         onChanged: @escaping PizzaClosure<Bool>
     ) {
         self.onChanged = onChanged
+
+        self.snp.updateConstraints { make in
+            make.height.greaterThanOrEqualTo(style.minHeight)
+        }
+
+        switchView.onTintColor = style.onTintColor
 
         tapGestureRecognizer.isEnabled = style.allowPressOnWholeCell
         feedbackGeneratorEnabled = style.allowHapticFeedback

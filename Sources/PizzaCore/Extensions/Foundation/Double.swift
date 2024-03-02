@@ -8,4 +8,8 @@ public extension Double {
         return rounded / multiplier
     }
 
+    func isNearlyEqual(to other: Double, delta: Double) -> Bool {
+        abs(other - self) < delta
+    }
+
 }

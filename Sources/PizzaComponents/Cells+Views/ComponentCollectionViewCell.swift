@@ -16,6 +16,16 @@ public class ComponentCollectionViewCell: UICollectionViewListCell, ComponentRen
         }
     }
 
+    public override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        contentView.layoutMargins = .init(horizontal: 20, vertical: 0)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     public func postRenderConfiguration(component: any Component, renderType: RenderType) {
         backgroundConfiguration = .clear()
     }

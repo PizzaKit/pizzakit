@@ -12,9 +12,14 @@ open class ComponentWrapperTableController: PizzaController, ControllerWithScrol
 
     public init(
         presenter: ComponentPresenter,
-        tableViewStyle: UITableView.Style = .insetGrouped
+        tableViewStyle: UITableView.Style = .insetGrouped,
+        cellSpawnPolicy: TableCellSpawnPolicy = .reuse
     ) {
-        tableController = .init(presenter: presenter, tableViewStyle: tableViewStyle)
+        tableController = .init(
+            presenter: presenter,
+            tableViewStyle: tableViewStyle,
+            cellSpawnPolicy: cellSpawnPolicy
+        )
 
         super.init()
 

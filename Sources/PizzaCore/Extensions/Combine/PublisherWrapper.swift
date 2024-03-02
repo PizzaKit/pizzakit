@@ -1,5 +1,7 @@
 import Combine
 
+// TODO: realize publisher with defaults library combine support
+// (когда обновление происходит при выставлении ключа в UserDefaults)
 public class PizzaRPublisher<ValueType, ErrorType: Error> {
     public var withCurrentValue: AnyPublisher<ValueType, ErrorType> {
         fatalError()

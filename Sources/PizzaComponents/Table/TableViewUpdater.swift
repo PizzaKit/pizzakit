@@ -16,21 +16,77 @@ private class CustomDataSource: UITableViewDiffableDataSource<ComponentSection, 
 
 }
 
+public enum TableCellSpawnPolicy {
+    case initialize
+    case reuse
+}
+
+private protocol TableCellSpawner {
+    func spawn(
+        for tableView: UITableView,
+        at indexPath: IndexPath,
+        componentNode: ComponentNode
+    ) -> UITableViewCell
+}
+
+private class TableInitializeCellSpawner: TableCellSpawner {
+
+    private var cache: [AnyHashable: UITableViewCell] = [:]
+
+    func spawn(
+        for tableView: UITableView,
+        at indexPath: IndexPath,
+        componentNode: ComponentNode
+    ) -> UITableViewCell {
+        if let cached = cache[componentNode.id] {
+            return cached
+        }
+        let new = ComponentTableViewCell()
+        cache[componentNode.id] = new
+        return new
+    }
+
+}
+
+private class TableReuseCellSpawner: TableCellSpawner {
+    func spawn(
+        for tableView: UITableView,
+        at indexPath: IndexPath,
+        componentNode: ComponentNode
+    ) -> UITableViewCell {
+        tableView.dequeueReusableCell(
+            withIdentifier: componentNode.component.reuseIdentifier,
+            for: indexPath
+        )
+    }
+}
+
 public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
 
     public typealias Target = UITableView
     private var dataSource: UITableViewDiffableDataSource<ComponentSection, ComponentNode>!
+    private var tableCellSpawner: TableCellSpawner = TableReuseCellSpawner()
     public var updaterDelegate: UpdaterDelegate?
 
     public var onScrollViewDidScroll: PizzaClosure<UITableView>?
 
+    public func initialize(tableSpawnPolicy: TableCellSpawnPolicy) {
+        switch tableSpawnPolicy {
+        case .initialize:
+            tableCellSpawner = TableInitializeCellSpawner()
+        case .reuse:
+            tableCellSpawner = TableReuseCellSpawner()
+        }
+    }
+
     public func initialize(target: UITableView) {
         let customDataSource = CustomDataSource(
             tableView: target,
-            cellProvider: { tableView, indexPath, componentNode in
-                let cell = tableView.dequeueReusableCell(
-                    withIdentifier: componentNode.component.reuseIdentifier,
-                    for: indexPath
+            cellProvider: { [unowned self] tableView, indexPath, componentNode in
+                let cell = self.tableCellSpawner.spawn(
+                    for: tableView,
+                    at: indexPath,
+                    componentNode: componentNode
                 ) as! (UITableViewCell & ComponentRenderable)
 
                 cell.render(
@@ -114,6 +170,7 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
                 return dataSource.numberOfSections(in: target) != 0 && target.window != nil
             }()
         )
+
 
         guard target.window != nil else { return }
 

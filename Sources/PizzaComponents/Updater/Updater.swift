@@ -6,7 +6,7 @@ public struct UpdateMoveContext {
     public let index: Int
 }
 
-public protocol UpdaterDelegate {
+public protocol UpdaterDelegate: AnyObject {
 
     func canMoveComponent(in section: ComponentSection) -> Bool
     func moveComponent(from: UpdateMoveContext, to: UpdateMoveContext)

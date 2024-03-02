@@ -8,6 +8,7 @@ open class ComponentTableController: PizzaTableController, ComponentPresenterDel
 
     public let presenter: ComponentPresenter
     public let updater = TableViewUpdater()
+    private let cellSpawnPolicy: TableCellSpawnPolicy
 
     private var prevData: [ComponentSection] = []
 
@@ -15,9 +16,11 @@ open class ComponentTableController: PizzaTableController, ComponentPresenterDel
 
     public init(
         presenter: ComponentPresenter,
-        tableViewStyle: UITableView.Style = .insetGrouped
+        tableViewStyle: UITableView.Style = .insetGrouped,
+        cellSpawnPolicy: TableCellSpawnPolicy = .reuse
     ) {
         self.presenter = presenter
+        self.cellSpawnPolicy = cellSpawnPolicy
         super.init(style: tableViewStyle)
 
         presenter.delegate = self
@@ -35,6 +38,7 @@ open class ComponentTableController: PizzaTableController, ComponentPresenterDel
         tableView.separatorInsetReference = .fromAutomaticInsets
 
         updater.initialize(target: tableView)
+        updater.initialize(tableSpawnPolicy: cellSpawnPolicy)
         presenter.touch()
 
         updater.performUpdates(target: tableView, sections: prevData)

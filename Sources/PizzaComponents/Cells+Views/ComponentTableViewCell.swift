@@ -42,7 +42,7 @@ public class ComponentTableViewCell: PizzaTableCell, ComponentRenderable {
                 top: 0,
                 left: 10000,
                 bottom: 0,
-                right: -1000 // To fix bug when part of separator was visible
+                right: -10000 // To fix bug when part of separator was visible
             )
         }
     }

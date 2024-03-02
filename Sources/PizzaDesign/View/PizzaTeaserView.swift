@@ -3,7 +3,7 @@ import PizzaCore
 import SnapKit
 import SFSafeSymbols
 
-
+// TODO: add PizzaIcon
 public struct PizzaTeaserInfo {
 
     public enum ImageType {
