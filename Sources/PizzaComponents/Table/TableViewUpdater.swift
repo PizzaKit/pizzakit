@@ -61,16 +61,16 @@ private class TableReuseCellSpawner: TableCellSpawner {
     }
 }
 
-public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
+open class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
 
     public typealias Target = UITableView
-    private var dataSource: UITableViewDiffableDataSource<ComponentSection, ComponentNode>!
+    public private(set) var dataSource: UITableViewDiffableDataSource<ComponentSection, ComponentNode>!
     private var tableCellSpawner: TableCellSpawner = TableReuseCellSpawner()
     public var updaterDelegate: UpdaterDelegate?
 
     public var onScrollViewDidScroll: PizzaClosure<UITableView>?
 
-    public func initialize(tableSpawnPolicy: TableCellSpawnPolicy) {
+    open func initialize(tableSpawnPolicy: TableCellSpawnPolicy) {
         switch tableSpawnPolicy {
         case .initialize:
             tableCellSpawner = TableInitializeCellSpawner()
@@ -79,7 +79,7 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
         }
     }
 
-    public func initialize(target: UITableView) {
+    open func initialize(target: UITableView) {
         let customDataSource = CustomDataSource(
             tableView: target,
             cellProvider: { [unowned self] tableView, indexPath, componentNode in
@@ -116,14 +116,14 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
         target.delegate = self
     }
 
-    public func getCell(
+    open func getCell(
         tableView: UITableView,
         componentId: AnyHashable
     ) -> UIView? {
         getCell(target: tableView, componentId: componentId)
     }
 
-    public func getCell(
+    open func getCell(
         target: UITableView,
         componentId: AnyHashable
     ) -> UIView? {
@@ -133,7 +133,7 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
         return target.cellForRow(at: indexPath)
     }
 
-    public func performUpdates(target: UITableView, sections: [ComponentSection]) {
+    open func performUpdates(target: UITableView, sections: [ComponentSection]) {
         // -----------------
         // | registrations |
         // -----------------
@@ -190,7 +190,7 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
         // высотой работать будут плохо при isEditing или вообще не будут ))
     }
 
-    public func renderVisibleComponents(in target: UITableView) {
+    open func renderVisibleComponents(in target: UITableView) {
         if #available(iOS 15.0, *) {
             // cells
             let itemsToRender: [(cell: ComponentRenderable, componentNode: ComponentNode, indexPath: IndexPath)] = (target.indexPathsForVisibleRows ?? [])
@@ -239,7 +239,7 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
 
     }
 
-    public func tableView(
+    open func tableView(
         _ tableView: UITableView,
         didSelectRowAt indexPath: IndexPath
     ) {
@@ -253,7 +253,7 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
         }
     }
 
-    public func tableView(
+    open func tableView(
         _ tableView: UITableView,
         shouldHighlightRowAt indexPath: IndexPath
     ) -> Bool {
@@ -265,7 +265,7 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
         return true
     }
 
-    public func tableView(
+    open func tableView(
         _ tableView: UITableView,
         viewForHeaderInSection section: Int
     ) -> UIView? {
@@ -284,7 +284,7 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
         }
     }
 
-    public func tableView(
+    open func tableView(
         _ tableView: UITableView,
         viewForFooterInSection section: Int
     ) -> UIView? {
@@ -303,7 +303,7 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
         }
     }
 
-    public func tableView(
+    open func tableView(
         _ tableView: UITableView,
         accessoryButtonTappedForRowWith indexPath: IndexPath
     ) {
@@ -318,7 +318,7 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
         }
     }
 
-    public func tableView(
+    open func tableView(
         _ tableView: UITableView,
         trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
     ) -> UISwipeActionsConfiguration? {
@@ -340,7 +340,7 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
         )
     }
 
-    public func tableView(
+    open func tableView(
         _ tableView: UITableView,
         leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath
     ) -> UISwipeActionsConfiguration? {
@@ -362,7 +362,7 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
         )
     }
 
-    public func tableView(
+    open func tableView(
         _ tableView: UITableView,
         willDisplay cell: UITableViewCell,
         forRowAt indexPath: IndexPath
@@ -376,11 +376,11 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
             .renderTargetWillDisplay(renderTarget)
     }
 
-    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    open func scrollViewDidScroll(_ scrollView: UIScrollView) {
         onScrollViewDidScroll?(scrollView as! Target)
     }
 
-    public func tableView(
+    open func tableView(
         _ tableView: UITableView,
         willDisplayHeaderView view: UIView,
         forSection section: Int
@@ -394,7 +394,7 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
             .renderTargetWillDisplay(renderTarget)
     }
 
-    public func tableView(
+    open func tableView(
         _ tableView: UITableView,
         willDisplayFooterView view: UIView,
         forSection section: Int
@@ -408,7 +408,7 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
             .renderTargetWillDisplay(renderTarget)
     }
 
-    public func tableView(
+    open func tableView(
         _ tableView: UITableView,
         heightForHeaderInSection section: Int
     ) -> CGFloat {
@@ -421,7 +421,7 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
         return 0
     }
 
-    public func tableView(
+    open func tableView(
         _ tableView: UITableView,
         heightForFooterInSection section: Int
     ) -> CGFloat {
@@ -433,19 +433,19 @@ public class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
 
 }
 
-struct FakeComponent: IdentifiableComponent {
+public struct FakeComponent: IdentifiableComponent {
 
-    var id: AnyHashable
+    public var id: AnyHashable
 
-    init(id: AnyHashable) {
+    public init(id: AnyHashable) {
         self.id = id
     }
 
-    func createRenderTarget() -> UIView {
+    public func createRenderTarget() -> UIView {
         UIView()
     }
 
-    func render(in renderTarget: UIView, renderType: RenderType) {
+    public func render(in renderTarget: UIView, renderType: RenderType) {
     }
 
 }
