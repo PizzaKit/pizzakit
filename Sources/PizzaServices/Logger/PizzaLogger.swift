@@ -83,4 +83,100 @@ public enum PizzaLogger {
             )
         }
     }
+
+    public static func tryCatchErrorAsync(
+        label: String,
+        block: () async throws -> Void,
+        file: String = #file,
+        function: String = #function,
+        line: UInt = #line
+    ) async {
+        do {
+            try await block()
+        } catch {
+            logError(
+                label: label,
+                error: error,
+                file: file,
+                function: function,
+                line: line
+            )
+        }
+    }
+
+    public static func tryCatchError(
+        label: String,
+        block: () throws -> Void,
+        file: String = #file,
+        function: String = #function,
+        line: UInt = #line
+    ) {
+        do {
+            try block()
+        } catch {
+            logError(
+                label: label,
+                error: error,
+                file: file,
+                function: function,
+                line: line
+            )
+        }
+    }
+
+    public static func logError(
+        label: String,
+        error: Error,
+        file: String = #file,
+        function: String = #function,
+        line: UInt = #line
+    ) {
+        if let nsError = error as? NSError {
+            log(
+                label: label,
+                level: .error,
+                message: "NSError \(nsError.localizedDescription) occurred",
+                payload: [
+                    "nsError": nsError,
+                    "userInfo": nsError.userInfo,
+                    "domain": nsError.domain,
+                    "code": nsError.code,
+                    "underlyingErrors": nsError.underlyingErrors,
+                    "localizedRecoverySuggestion": nsError.localizedRecoverySuggestion,
+                    "localizedFailureReason": nsError.localizedFailureReason
+                ],
+                file: file,
+                function: function,
+                line: line
+            )
+        } else if let localizedError = error as? LocalizedError {
+            log(
+                label: label,
+                level: .error,
+                message: "LocalizedError \(localizedError.localizedDescription) occurred",
+                payload: [
+                    "error": localizedError,
+                    "helpAnchor": localizedError.helpAnchor,
+                    "errorDescription": localizedError.errorDescription,
+                    "recoverySuggestion": localizedError.recoverySuggestion,
+                    "failureReason": localizedError.failureReason
+                ],
+                file: file,
+                function: function,
+                line: line
+            )
+        } else {
+            log(
+                label: label,
+                level: .error,
+                message: "Error \(error.localizedDescription) occurred",
+                payload: [
+                    "error": error
+                ],
+                file: file,
+                function: function,
+                line: line
+            )
+        }
+    }
 }

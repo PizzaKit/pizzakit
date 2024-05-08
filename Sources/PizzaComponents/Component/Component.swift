@@ -87,6 +87,8 @@ public protocol Component<RenderTarget> {
     /// Создает `RenderTarget` для последующего заполнения. Это делается не каждый раз,
     /// а только при необходимости. Если уже такой `RenderTarget` был создан,
     /// он будет переиспользоваться
+    /// TODO: подумать как сравнивать типы renderTarget при вызове метода render
+    /// без необходимости каждый раз создавать renderTarget
     func createRenderTarget() -> RenderTarget
 
     /// Происходит layout созданного renderTarget-а в контейнере

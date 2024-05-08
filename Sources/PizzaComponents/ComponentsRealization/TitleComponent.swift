@@ -17,7 +17,7 @@ public struct TitleComponent: IdentifiableComponent {
         insets: NSDirectionalEdgeInsets,
         layoutType: ComponentLayoutType = .layoutMargin
     ) {
-        self.id = id
+        self.id = id + "__" + (text ?? "text_is_nil")
         self.stringBuildable = StringBuilder(
             text: text,
             initialAttributes: style.getAttributes()
@@ -32,7 +32,7 @@ public struct TitleComponent: IdentifiableComponent {
         insets: NSDirectionalEdgeInsets,
         layoutType: ComponentLayoutType = .layoutMargin
     ) {
-        self.id = id
+        self.id = id + "__" + (stringBuildable.string ?? "text_is_nil")
         self.stringBuildable = stringBuildable
         self.insets = insets
         self.layoutType = layoutType

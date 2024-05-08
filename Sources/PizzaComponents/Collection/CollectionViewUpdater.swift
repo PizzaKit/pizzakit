@@ -1,5 +1,6 @@
 import UIKit
 import PizzaCore
+import Combine
 
 private class CustomDataSource: UICollectionViewDiffableDataSource<ComponentSection, ComponentNode> {
 
@@ -14,6 +15,8 @@ public class CollectionViewUpdater: NSObject, Updater, UICollectionViewDelegate 
 
     public var updaterDelegate: UpdaterDelegate?
     public var onScrollViewDidScroll: PizzaClosure<Target>?
+
+    private var onWindowAppearCancellable: AnyCancellable?
 
     public func initialize(target: Target) {
         let customDataSource = CustomDataSource(
@@ -126,7 +129,9 @@ public class CollectionViewUpdater: NSObject, Updater, UICollectionViewDelegate 
             }()
         )
 
-        guard target.window != nil else { return }
+//        if target.window == nil {
+//            return
+//        }
 
         // update visible components
         DispatchQueue.main.async {
@@ -136,7 +141,7 @@ public class CollectionViewUpdater: NSObject, Updater, UICollectionViewDelegate 
 
     public func renderVisibleComponents(in target: Target) {
         // cells
-        let itemsToRender: [(cell: ComponentRenderable, componentNode: ComponentNode, indexPath: IndexPath)] = (target.indexPathsForVisibleItems ?? [])
+        let itemsToSoftRender: [(cell: ComponentRenderable, componentNode: ComponentNode, indexPath: IndexPath)] = (target.indexPathsForVisibleItems ?? [])
             .compactMap { indexPath in
                 if
                     let componentNode = dataSource.itemIdentifier(for: indexPath),
@@ -146,13 +151,33 @@ public class CollectionViewUpdater: NSObject, Updater, UICollectionViewDelegate 
                 }
                 return nil
             }
-        itemsToRender.forEach {
+        itemsToSoftRender.forEach {
             $0.cell.render(component: $0.componentNode.component, renderType: .soft)
         }
 
+        // в iOS 15 когда ячейка только уходит с экрана, она все еще существует.
+        // Поэтому она при появлении на экран не будет зарендерена через cellForItem, но и
+        // в indexPathsForVisibleRows тоже не попадает.
+        // Поэтому мы от первого и последнего элемента расходимся в стороны и ищем ненулевые ячейки, а затем
+        // рендерим эти ячейки
+        let indexPathForHardRender = IndexPath.getIndexPathsForNonVisibleButExistingCells(for: target)
+        let itemsToHardRender: [(cell: ComponentRenderable, componentNode: ComponentNode, indexPath: IndexPath)] = indexPathForHardRender
+            .compactMap { indexPath in
+                if
+                    let componentNode = dataSource.itemIdentifier(for: indexPath),
+                    let cell = target.cellForItem(at: indexPath) as? ComponentRenderable
+                {
+                    return (cell: cell, componentNode: componentNode, indexPath: indexPath)
+                }
+                return nil
+            }
+        itemsToHardRender.forEach {
+            $0.cell.render(component: $0.componentNode.component, renderType: .hard)
+        }
+
         // headers
-        let sectionIndexes = Array(Set(itemsToRender.map { $0.indexPath.section }))
-        let headersToRender: [(header: ComponentRenderable, viewNode: ComponentNode, section: Int)] = sectionIndexes.compactMap { index in
+        let sectionHeaderIndexes = Array(Set(target.indexPathsForVisibleSupplementaryElements(ofKind: UICollectionView.elementKindSectionHeader).map { $0.section }))
+        let headersToRender: [(header: ComponentRenderable, viewNode: ComponentNode, section: Int)] = sectionHeaderIndexes.compactMap { index in
             target
             guard
                 let view = target.supplementaryView(
@@ -171,7 +196,8 @@ public class CollectionViewUpdater: NSObject, Updater, UICollectionViewDelegate 
         }
 
         // footers
-        let footersToRender: [(footer: ComponentRenderable, viewNode: ComponentNode, section: Int)] = sectionIndexes.compactMap { index in
+        let sectionFooterIndexes = Array(Set(target.indexPathsForVisibleSupplementaryElements(ofKind: UICollectionView.elementKindSectionFooter).map { $0.section }))
+        let footersToRender: [(footer: ComponentRenderable, viewNode: ComponentNode, section: Int)] = sectionFooterIndexes.compactMap { index in
             guard
                 let view = target.supplementaryView(
                     forElementKind: UICollectionView.elementKindSectionFooter,
@@ -186,6 +212,7 @@ public class CollectionViewUpdater: NSObject, Updater, UICollectionViewDelegate 
         footersToRender.forEach {
             $0.footer.render(component: $0.viewNode.component, renderType: .soft)
         }
+
     }
 
     public func getCell(target: Target, componentId: AnyHashable) -> UIView? {

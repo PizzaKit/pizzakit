@@ -172,7 +172,7 @@ open class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
         )
 
 
-        guard target.window != nil else { return }
+//        guard target.window != nil else { return }
 
         // update visible components
         DispatchQueue.main.async {
@@ -191,52 +191,69 @@ open class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
     }
 
     open func renderVisibleComponents(in target: UITableView) {
-        if #available(iOS 15.0, *) {
-            // cells
-            let itemsToRender: [(cell: ComponentRenderable, componentNode: ComponentNode, indexPath: IndexPath)] = (target.indexPathsForVisibleRows ?? [])
-                .compactMap { indexPath in
-                    if
-                        let componentNode = dataSource.itemIdentifier(for: indexPath),
-                        let cell = target.cellForRow(at: indexPath) as? ComponentRenderable
-                    {
-                        return (cell: cell, componentNode: componentNode, indexPath: indexPath)
-                    }
-                    return nil
+        // cells
+        let itemsToRender: [(cell: ComponentRenderable, componentNode: ComponentNode, indexPath: IndexPath)] = (target.indexPathsForVisibleRows ?? [])
+            .compactMap { indexPath in
+                if
+                    let componentNode = dataSource.itemIdentifier(for: indexPath),
+                    let cell = target.cellForRow(at: indexPath) as? ComponentRenderable
+                {
+                    return (cell: cell, componentNode: componentNode, indexPath: indexPath)
                 }
-            itemsToRender.forEach {
-                $0.cell.render(component: $0.componentNode.component, renderType: .soft)
+                return nil
             }
-
-            // headers
-            let sectionIndexes = Array(Set(itemsToRender.map { $0.indexPath.section }))
-            let headersToRender: [(header: ComponentRenderable, viewNode: ComponentNode, section: Int)] = sectionIndexes.compactMap { index in
-                guard
-                    let view = target.headerView(forSection: index) as? ComponentRenderable,
-                    let viewNode = dataSource.sectionIdentifier(for: index)?.headerNode
-                else {
-                    return nil
-                }
-                return (header: view, viewNode: viewNode, section: index)
-            }
-            headersToRender.forEach {
-                $0.header.render(component: $0.viewNode.component, renderType: .soft)
-            }
-
-            // footers
-            let footersToRender: [(footer: ComponentRenderable, viewNode: ComponentNode, section: Int)] = sectionIndexes.compactMap { index in
-                guard
-                    let view = target.footerView(forSection: index) as? ComponentRenderable,
-                    let viewNode = dataSource.sectionIdentifier(for: index)?.footerNode
-                else {
-                    return nil
-                }
-                return (footer: view, viewNode: viewNode, section: index)
-            }
-            footersToRender.forEach {
-                $0.footer.render(component: $0.viewNode.component, renderType: .soft)
-            }
+        itemsToRender.forEach {
+            $0.cell.render(component: $0.componentNode.component, renderType: .soft)
         }
 
+        // в iOS 15 когда ячейка только уходит с экрана, она все еще существует.
+        // Поэтому она при появлении на экран не будет зарендерена через cellForItem, но и
+        // в indexPathsForVisibleRows тоже не попадает.
+        // Поэтому мы от первого и последнего элемента расходимся в стороны и ищем ненулевые ячейки, а затем
+        // рендерим эти ячейки
+        let indexPathForHardRender = IndexPath.getIndexPathsForNonVisibleButExistingCells(for: target)
+        let itemsToHardRender: [(cell: ComponentRenderable, componentNode: ComponentNode, indexPath: IndexPath)] = indexPathForHardRender
+            .compactMap { indexPath in
+                if
+                    let componentNode = dataSource.itemIdentifier(for: indexPath),
+                    let cell = target.cellForRow(at: indexPath) as? ComponentRenderable
+                {
+                    return (cell: cell, componentNode: componentNode, indexPath: indexPath)
+                }
+                return nil
+            }
+        itemsToHardRender.forEach {
+            $0.cell.render(component: $0.componentNode.component, renderType: .hard)
+        }
+
+        // headers
+        let sectionIndexes = Array(Set(itemsToRender.map { $0.indexPath.section }))
+        let headersToRender: [(header: ComponentRenderable, viewNode: ComponentNode, section: Int)] = sectionIndexes.compactMap { index in
+            guard
+                let view = target.headerView(forSection: index) as? ComponentRenderable,
+                let viewNode = dataSource.sectionIdentifier(for: index)?.headerNode
+            else {
+                return nil
+            }
+            return (header: view, viewNode: viewNode, section: index)
+        }
+        headersToRender.forEach {
+            $0.header.render(component: $0.viewNode.component, renderType: .soft)
+        }
+
+        // footers
+        let footersToRender: [(footer: ComponentRenderable, viewNode: ComponentNode, section: Int)] = sectionIndexes.compactMap { index in
+            guard
+                let view = target.footerView(forSection: index) as? ComponentRenderable,
+                let viewNode = dataSource.sectionIdentifier(for: index)?.footerNode
+            else {
+                return nil
+            }
+            return (footer: view, viewNode: viewNode, section: index)
+        }
+        footersToRender.forEach {
+            $0.footer.render(component: $0.viewNode.component, renderType: .soft)
+        }
     }
 
     open func tableView(

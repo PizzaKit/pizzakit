@@ -33,7 +33,6 @@ open class PizzaProgressTrackLayer: CALayer {
 
     open override class func needsDisplay(forKey key: String) -> Bool {
         if key == "customProgress" {
-            print("need display for customProgress")
             return true
         }
         return super.needsDisplay(forKey: key)
@@ -48,6 +47,7 @@ open class PizzaProgressTrackLayer: CALayer {
             }
             animation.toValue = nil
             animation.duration = animationDuration
+            animation.timingFunction = timingFunction
             return animation
         }
         return superAction
@@ -77,6 +77,14 @@ open class PizzaProgressTrackLayer: CALayer {
     }
 
     private var animationDuration: TimeInterval?
+    private var timingFunction: CAMediaTimingFunction?
+    open func configure(
+        animationDuration: TimeInterval,
+        timingFunction: CAMediaTimingFunction
+    ) {
+        self.animationDuration = animationDuration
+        self.timingFunction = timingFunction
+    }
     open func configure(animationDuration: TimeInterval) {
         self.animationDuration = animationDuration
     }
