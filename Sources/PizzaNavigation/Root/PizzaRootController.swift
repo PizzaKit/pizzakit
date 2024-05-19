@@ -3,6 +3,7 @@ import PizzaCore
 import PizzaDesign
 
 public protocol PizzaRootViewControllerTransitionProvider {
+    func cancelActiveTransitions()
     func performTransition(
         rootController: UIViewController,
         from fromViewController: UIViewController,
@@ -17,6 +18,16 @@ open class PizzaRootViewControllerTransitionProviderFade: PizzaRootViewControlle
     public init(fadeDuration: Double) {
         self.fadeDuration = fadeDuration
     }
+    private var currentAnimation: UIViewPropertyAnimator?
+
+    public func cancelActiveTransitions() {
+        if let currentAnimation {
+            currentAnimation.stopAnimation(false)
+            currentAnimation.finishAnimation(at: .end)
+            self.currentAnimation = nil
+        }
+    }
+
     public func performTransition(
         rootController: UIViewController,
         from fromViewController: UIViewController,
@@ -30,7 +41,7 @@ open class PizzaRootViewControllerTransitionProviderFade: PizzaRootViewControlle
         rootController.view.addSubview(toViewController.view)
         toViewController.view.pinToSuperview()
 
-        let block: PizzaClosure<Bool> = { [weak fromViewController, weak toViewController, weak rootController] _ in
+        let block: PizzaEmptyClosure = { [weak fromViewController, weak toViewController, weak rootController] in
             fromViewController?.view.removeFromSuperview()
             fromViewController?.removeFromParent()
             toViewController?.didMove(toParent: rootController)
@@ -40,7 +51,8 @@ open class PizzaRootViewControllerTransitionProviderFade: PizzaRootViewControlle
         if animated {
             toViewController.view.alpha = 0
             toViewController.view.layoutIfNeeded()
-            UIView.animate(
+
+            currentAnimation = UIViewPropertyAnimator.runningPropertyAnimator(
                 withDuration: fadeDuration,
                 delay: 0.1,
                 options: .curveEaseInOut,
@@ -48,10 +60,13 @@ open class PizzaRootViewControllerTransitionProviderFade: PizzaRootViewControlle
                     toViewController.view.alpha = 1
                     fromViewController.view.alpha = 0
                 },
-                completion: block
+                completion: { _ in
+                    self.currentAnimation = nil
+                    block()
+                }
             )
         } else {
-            block(true)
+            block()
         }
     }
 }
@@ -148,13 +163,18 @@ open class PizzaRootViewController: PizzaController, PizzaRootPresentable {
             return
         }
 
+        viewControllerNew = newViewController
+
+        // Нужно для того, чтобы успеть завершить предыдущие анимации
+        // и чтобы вызвался completion у предыдущей анимации и нужные
+        // свойства переопределились - в частности viewControllerOld
+        transitionProvider.cancelActiveTransitions()
+
         guard let viewControllerOld else {
             viewControllerOld = newViewController
             setInitial(viewController: newViewController)
             return
         }
-
-        viewControllerNew = newViewController
 
         transitionProvider.performTransition(
             rootController: self,
