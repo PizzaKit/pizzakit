@@ -93,7 +93,8 @@ let package = Package(
                 .product(name: "KeychainSwift", package: "keychain-swift"),
                 .product(name: "Defaults", package: "Defaults"),
                 .product(name: "Reachability", package: "Reachability")
-            ]
+            ],
+            resources: [.copy("PrivacyInfo.xcprivacy")]
         ),
         .target(
             name: "PizzaPopup",
