@@ -83,7 +83,11 @@ public class CollectionViewUpdater: NSObject, Updater, UICollectionViewDelegate 
         target.delegate = self
     }
 
-    public func performUpdates(target: Target, sections: [ComponentSection]) {
+    public func performUpdates(
+        target: UICollectionView,
+        sections: [ComponentSection],
+        animationType: UpdaterAnimationType
+    ) {
         // -----------------
         // | registrations |
         // -----------------
@@ -125,13 +129,14 @@ public class CollectionViewUpdater: NSObject, Updater, UICollectionViewDelegate 
         dataSource.apply(
             snapshot,
             animatingDifferences: {
-                return dataSource.numberOfSections(in: target) != 0 && target.window != nil
+                switch animationType {
+                case .withAnimation, .automatic:
+                    return dataSource.numberOfSections(in: target) != 0 && target.window != nil
+                case .withoutAnimation:
+                    return false
+                }
             }()
         )
-
-//        if target.window == nil {
-//            return
-//        }
 
         // update visible components
         DispatchQueue.main.async {

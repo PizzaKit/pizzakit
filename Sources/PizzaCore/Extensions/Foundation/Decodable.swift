@@ -8,4 +8,9 @@ public extension Decodable {
         return try? decoder.decode(Self.self, from: data)
     }
 
+    static func from(data: Data) -> Self? {
+        let decoder = JSONDecoder()
+        return try? decoder.decode(Self.self, from: data)
+    }
+
 }

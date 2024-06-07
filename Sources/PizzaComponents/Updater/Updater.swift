@@ -13,6 +13,12 @@ public protocol UpdaterDelegate: AnyObject {
 
 }
 
+public enum UpdaterAnimationType {
+    case withAnimation
+    case withoutAnimation
+    case automatic
+}
+
 /// Entity for managing Target collection and perform updates
 public protocol Updater<Target> {
     associatedtype Target
@@ -21,8 +27,16 @@ public protocol Updater<Target> {
     var onScrollViewDidScroll: PizzaClosure<Target>? { get set }
 
     func initialize(target: Target)
-    func performUpdates(target: Target, sections: [ComponentSection])
-    
+    func performUpdates(
+        target: Target,
+        sections: [ComponentSection]
+    )
+    func performUpdates(
+        target: Target,
+        sections: [ComponentSection],
+        animationType: UpdaterAnimationType
+    )
+
     @available(*, deprecated, renamed: "getCell(target:componentId:)")
     func getCell(
         tableView: Target,
@@ -33,4 +47,17 @@ public protocol Updater<Target> {
         target: Target,
         componentId: AnyHashable
     ) -> UIView?
+}
+
+public extension Updater {
+    func performUpdates(
+        target: Target,
+        sections: [ComponentSection]
+    ) {
+        performUpdates(
+            target: target,
+            sections: sections,
+            animationType: .automatic
+        )
+    }
 }

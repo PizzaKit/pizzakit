@@ -1,4 +1,5 @@
 import UIKit
+import SnapKit
 
 public extension UIStackView {
 
@@ -11,4 +12,21 @@ public extension UIStackView {
     func removeAllArrangedSubviews() {
         arrangedSubviews.forEach { $0.removeFromSuperview() }
     }
+    
+    func addSeparator(height: CGFloat) {
+        addArrangedSubview(UIView().do {
+            $0.snp.makeConstraints { make in
+                make.height.equalTo(height)
+            }
+        })
+    }
+
+    func addSeparator(width: CGFloat) {
+        addArrangedSubview(UIView().do {
+            $0.snp.makeConstraints { make in
+                make.width.equalTo(width)
+            }
+        })
+    }
+
 }

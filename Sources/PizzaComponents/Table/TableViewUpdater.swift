@@ -133,7 +133,11 @@ open class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
         return target.cellForRow(at: indexPath)
     }
 
-    open func performUpdates(target: UITableView, sections: [ComponentSection]) {
+    open func performUpdates(
+        target: UITableView,
+        sections: [ComponentSection],
+        animationType: UpdaterAnimationType
+    ) {
         // -----------------
         // | registrations |
         // -----------------
@@ -167,18 +171,19 @@ open class TableViewUpdater: NSObject, Updater, UITableViewDelegate {
         dataSource.apply(
             snapshot,
             animatingDifferences: {
-                return dataSource.numberOfSections(in: target) != 0 && target.window != nil
+                switch animationType {
+                case .withAnimation, .automatic:
+                    return dataSource.numberOfSections(in: target) != 0 && target.window != nil
+                case .withoutAnimation:
+                    return false
+                }
             }()
         )
-
-
-//        guard target.window != nil else { return }
 
         // update visible components
         DispatchQueue.main.async {
             self.renderVisibleComponents(in: target)
         }
-
 
         // need to update size of header/footer
         if !target.isEditing {
