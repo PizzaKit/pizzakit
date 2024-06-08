@@ -19,7 +19,7 @@ let package = Package(
         // Other PizzaKit repos
         .package(
             url: "https://github.com/PizzaKit/pizzaicon",
-            from: "1.1.0"
+            from: "1.2.0"
         ),
 
         // design
