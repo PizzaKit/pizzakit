@@ -15,17 +15,23 @@ public class CollectionViewUpdater: NSObject, Updater, UICollectionViewDelegate 
 
     public var updaterDelegate: UpdaterDelegate?
     public var onScrollViewDidScroll: PizzaClosure<Target>?
+    private var onModifyCell: PizzaClosure<UICollectionViewCell>?
 
     private var onWindowAppearCancellable: AnyCancellable?
+
+    public func modifyCell(block: @escaping PizzaClosure<UICollectionViewCell>) {
+        self.onModifyCell = block
+    }
 
     public func initialize(target: Target) {
         let customDataSource = CustomDataSource(
             collectionView: target
-        ) { collectionView, indexPath, componentNode in
+        ) { [weak self] collectionView, indexPath, componentNode in
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: componentNode.component.reuseIdentifier,
                 for: indexPath
             ) as! (UICollectionViewCell & ComponentRenderable)
+            self?.onModifyCell?(cell)
 
             cell.render(
                 component: componentNode.component,

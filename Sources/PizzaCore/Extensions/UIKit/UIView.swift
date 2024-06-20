@@ -126,6 +126,10 @@ public extension UIView {
         return nil
     }
 
+    func findAllChildren<T>() -> [T] {
+        return findAllChildren(existing: [])
+    }
+
     func onPizzaTap(completion: PizzaEmptyClosure?) {
         let tapRecogniser = ClickListener(
             target: self,
@@ -144,6 +148,23 @@ public extension UIView {
         if let onClick = sender.onClick {
             onClick()
         }
+    }
+
+}
+
+private extension UIView {
+
+    func findAllChildren<T>(existing: [T]) -> [T] {
+        if let selfProperClass = self as? T {
+            return existing + [selfProperClass]
+        }
+        var array = existing
+        for subview in subviews {
+            array.append(
+                contentsOf: subview.findAllChildren(existing: existing)
+            )
+        }
+        return array
     }
 
 }
