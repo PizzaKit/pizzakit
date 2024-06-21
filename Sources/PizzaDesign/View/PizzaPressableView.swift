@@ -12,6 +12,16 @@ open class PizzaPressableView: PizzaView {
     private var onTouch: PizzaEmptyClosure?
 
     public private(set) var startPoint: CGPoint?
+    private var isPressed: Bool = false {
+        didSet {
+            if isPressed != oldValue {
+                onPress?(isPressed)
+            }
+            if !isPressed {
+                startPoint = nil
+            }
+        }
+    }
 
     private var tapGestureRecognizer: UITapGestureRecognizer!
 
@@ -29,7 +39,7 @@ open class PizzaPressableView: PizzaView {
             startPoint = location
         }
 
-        onPress?(true)
+        isPressed = true
     }
 
     open override func touchesEnded(
@@ -38,9 +48,8 @@ open class PizzaPressableView: PizzaView {
     ) {
         super.touchesEnded(touches, with: event)
         guard tapGestureRecognizer.isEnabled else { return }
-        
-        startPoint = nil
-        onPress?(false)
+
+        isPressed = false
     }
 
     open override func touchesCancelled(
@@ -50,8 +59,7 @@ open class PizzaPressableView: PizzaView {
         super.touchesCancelled(touches, with: event)
         guard tapGestureRecognizer.isEnabled else { return }
         
-        startPoint = nil
-        onPress?(false)
+        isPressed = false
     }
 
     open override func touchesMoved(
@@ -64,10 +72,7 @@ open class PizzaPressableView: PizzaView {
         if let touch = touches.first {
             let location = touch.location(in: self)
             let isPointContains = bounds.contains(location)
-            onPress?(isPointContains)
-            if !isPointContains {
-                startPoint = nil
-            }
+            isPressed = isPointContains
         }
     }
 
