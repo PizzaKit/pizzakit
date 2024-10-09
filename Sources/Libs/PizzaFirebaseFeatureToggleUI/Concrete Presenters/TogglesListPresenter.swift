@@ -7,6 +7,7 @@ import Combine
 import SFSafeSymbols
 import Defaults
 import PizzaComponents
+import XCoordinator
 
 class TogglesListPresenter: ComponentPresenter {
 
@@ -26,7 +27,7 @@ class TogglesListPresenter: ComponentPresenter {
 
     weak var delegate: ComponentPresenterDelegate?
     private let featureToggleService: PizzaFeatureToggleService
-    private weak var coordinator: PizzaFeatureToggleUICoordinatable?
+    private let router: WeakRouter<PizzaFeatureToggleUIRoute>
     private var state: State {
         didSet { render() }
     }
@@ -34,10 +35,10 @@ class TogglesListPresenter: ComponentPresenter {
 
     init(
         featureToggleService: PizzaFeatureToggleService,
-        coordinator: PizzaFeatureToggleUICoordinatable
+        router: WeakRouter<PizzaFeatureToggleUIRoute>
     ) {
         self.featureToggleService = featureToggleService
-        self.coordinator = coordinator
+        self.router = router
         self.state = .init(
             items: [],
             preferReferencedTime: Defaults[.preferReferencedTimeKey],
@@ -76,7 +77,7 @@ class TogglesListPresenter: ComponentPresenter {
                 value: item.value,
                 isExpanded: state.isExpanded,
                 onSelect: { [weak self] in
-                    self?.coordinator?.open(anyFeatureToggle: item.anyFeatureToggle)
+                    self?.router.trigger(.open(anyFeatureToggle: item.anyFeatureToggle))
                 }
             )
         }

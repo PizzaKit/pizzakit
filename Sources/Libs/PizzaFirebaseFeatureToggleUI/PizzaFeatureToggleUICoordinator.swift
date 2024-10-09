@@ -1,73 +1,67 @@
 import PizzaKit
-//import SPIndicator
-//
-public protocol PizzaFeatureToggleUICoordinatable: AnyObject {
-    func open(anyFeatureToggle: PizzaAnyFeatureToggle)
-    func edit(
+import SPIndicator
+import XCoordinator
+import UIKit
+
+public enum PizzaFeatureToggleUIRoute: Route {
+    case open(anyFeatureToggle: PizzaAnyFeatureToggle)
+    case edit(
         anyFeatureToggle: PizzaAnyFeatureToggle,
         anyFeatureToggleOverrideValue: PizzaAnyFeatureToggleOverrideValue
     )
+    case initial
 }
-//
-//public class PizzaFeatureToggleUICoordinator<Deeplink>: PizzaRouterCoordinator<Deeplink>, PizzaFeatureToggleUICoordinatable {
-//
-//    // MARK: - Propeties
-//
-//    private let featureToggleService: PizzaFeatureToggleService
-//
-//    // MARK: - Initialization
-//
-//    public init(featureToggleService: PizzaFeatureToggleService) {
-//        self.featureToggleService = featureToggleService
-//        super.init()
-//    }
-//
-//    // MARK: - Coordinator
-//
-//    public override func start() {
-//        let presenter = TogglesListPresenter(
-//            featureToggleService: featureToggleService,
-//            coordinator: self
-//        )
-//        let controller = ComponentTableController(presenter: presenter)
-//        router.push(module: controller)
-//    }
-//
-//    // MARK: - PizzaFeatureToggleUICoordinatable
-//
-//    public func open(anyFeatureToggle: PizzaAnyFeatureToggle) {
-//        let presenter = TogglePresenter(
-//            featureToggleService: featureToggleService,
-//            coordinator: self,
-//            featureToggle: anyFeatureToggle
-//        )
-//        let controller = ComponentTableController(presenter: presenter)
-//        router.push(module: controller)
-//    }
-//
-//    public func edit(
-//        anyFeatureToggle: PizzaAnyFeatureToggle,
-//        anyFeatureToggleOverrideValue: PizzaAnyFeatureToggleOverrideValue
-//    ) {
-//        guard let presenter = FeatureToggleValuePresenterFactory.producePresenter(
-//            anyFeatureToggle: anyFeatureToggle,
-//            anyFeatureToggleOverrideValue: anyFeatureToggleOverrideValue
-//        ) else {
-//            SPIndicator.present(title: "Unsupported type \(anyFeatureToggle.valueType)", preset: .error)
-//            return
-//        }
-//        presenter.onNeedSaveValue = { [weak self] newValue in
-//            self?.featureToggleService.setAnyOverride(
-//                forAnyFeatureToggle: anyFeatureToggle,
-//                anyOverrideValue: .init(
-//                    value: newValue,
-//                    valueType: anyFeatureToggleOverrideValue.valueType,
-//                    isOverrideEnabled: anyFeatureToggleOverrideValue.isOverrideEnabled
-//                )
-//            )
-//        }
-//        let controller = presenter.createController()
-//        router.push(module: controller)
-//    }
-//
-//}
+
+public class PizzaDesignSystemUICoordinator: NavigationCoordinator<PizzaFeatureToggleUIRoute> {
+
+    private let featureToggleService: PizzaFeatureToggleService
+
+    public init(featureToggleService: PizzaFeatureToggleService) {
+        self.featureToggleService = featureToggleService
+        let navController = UINavigationController().do {
+            $0.apply(style: .allStyles.largeTitle)
+        }
+        super.init(rootViewController: navController, initialRoute: .initial)
+    }
+
+    public override func prepareTransition(for route: PizzaFeatureToggleUIRoute) -> NavigationTransition {
+        switch route {
+        case .open(let anyFeatureToggle):
+            let presenter = TogglePresenter(
+                featureToggleService: featureToggleService,
+                router: weakRouter,
+                featureToggle: anyFeatureToggle
+            )
+            let controller = ComponentTableController(presenter: presenter)
+            return .push(controller)
+        case .edit(let anyFeatureToggle, let anyFeatureToggleOverrideValue):
+                guard let presenter = FeatureToggleValuePresenterFactory.producePresenter(
+                    anyFeatureToggle: anyFeatureToggle,
+                    anyFeatureToggleOverrideValue: anyFeatureToggleOverrideValue
+                ) else {
+                    SPIndicator.present(title: "Unsupported type \(anyFeatureToggle.valueType)", preset: .error)
+                    return .none()
+                }
+                presenter.onNeedSaveValue = { [weak self] newValue in
+                    self?.featureToggleService.setAnyOverride(
+                        forAnyFeatureToggle: anyFeatureToggle,
+                        anyOverrideValue: .init(
+                            value: newValue,
+                            valueType: anyFeatureToggleOverrideValue.valueType,
+                            isOverrideEnabled: anyFeatureToggleOverrideValue.isOverrideEnabled
+                        )
+                    )
+                }
+                let controller = presenter.createController()
+            return .push(controller)
+        case .initial:
+            let presenter = TogglesListPresenter(
+                featureToggleService: featureToggleService,
+                router: weakRouter
+            )
+            let controller = ComponentTableController(presenter: presenter)
+            return .push(controller)
+        }
+    }
+
+}

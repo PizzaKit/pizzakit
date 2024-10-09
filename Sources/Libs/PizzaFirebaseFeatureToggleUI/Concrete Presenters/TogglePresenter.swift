@@ -2,22 +2,23 @@ import PizzaKit
 import Foundation
 import Combine
 import UIKit
+import XCoordinator
 
 class TogglePresenter: ComponentPresenter {
 
     weak var delegate: ComponentPresenterDelegate?
     private let featureToggleService: PizzaFeatureToggleService
-    private weak var coordinator: PizzaFeatureToggleUICoordinatable?
+    private let router: WeakRouter<PizzaFeatureToggleUIRoute>
     private let featureToggle: PizzaAnyFeatureToggle
     private var bag = Set<AnyCancellable>()
 
     init(
         featureToggleService: PizzaFeatureToggleService,
-        coordinator: PizzaFeatureToggleUICoordinatable,
+        router: WeakRouter<PizzaFeatureToggleUIRoute>,
         featureToggle: PizzaAnyFeatureToggle
     ) {
         self.featureToggleService = featureToggleService
-        self.coordinator = coordinator
+        self.router = router
         self.featureToggle = featureToggle
     }
 
@@ -69,9 +70,11 @@ class TogglePresenter: ComponentPresenter {
                     shouldDeselect: true,
                     onSelect: { [weak self] in
                         guard let self else { return }
-                        self.coordinator?.edit(
-                            anyFeatureToggle: self.featureToggle,
-                            anyFeatureToggleOverrideValue: self.getCurrentOverride()
+                        self.router.trigger(
+                            .edit(
+                                anyFeatureToggle: self.featureToggle,
+                                anyFeatureToggleOverrideValue: self.getCurrentOverride()
+                            )
                         )
                     }
                 ),
