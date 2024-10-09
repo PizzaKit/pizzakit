@@ -1,0 +1,12 @@
+"apptheme.pres.title" = "Tema";
+
+"apptheme.pres.switch.header" = "APRESENTAÇÃO";
+"apptheme.pres.switch.text" = "Sistema";
+"apptheme.pres.switch.footer" = "Se selecionares a opção Sistema, o WhatsX vai ajustar o aspeto automaticamente com base nas definições do sistema do teu dispositivo.";
+
+"apptheme.pres.select.light" = "Tons claros";
+"apptheme.pres.select.dark" = "Tons escuros";
+"apptheme.pres.select.footer" = "Se selecionares a opção Sistema, o WhatsX vai ajustar o aspeto automaticamente com base nas definições do sistema do teu dispositivo.";
+
+"apptheme.pres.color.header" = "COR";
+"apptheme.pres.color.footer" = "Escolha a sua preferida.";

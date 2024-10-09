@@ -1,0 +1,12 @@
+"apptheme.pres.title" = "Tema";
+
+"apptheme.pres.switch.header" = "GÖRÜNÜŞ";
+"apptheme.pres.switch.text" = "Sistem";
+"apptheme.pres.switch.footer" = "Sistem segilirse, WhatsX görünüsünü cihazinin sistem ayarlarina göre otomatik olarak ayarlayacak.";
+
+"apptheme.pres.select.light" = "Açık";
+"apptheme.pres.select.dark" = "Koyu";
+"apptheme.pres.select.footer" = "Sistem seçilirse, WhatsX görünüşünü cihazının sistem ayarlarına göre otomatik olarak ayarlayacak.";
+
+"apptheme.pres.color.header" = "RENK";
+"apptheme.pres.color.footer" = "Favorinizi seçin.";

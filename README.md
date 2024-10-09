@@ -34,12 +34,6 @@ This is repository with reusable parts of app.
 - `PizzaTeaserView` - view for error/empty states
 - `PizzaPressableView` - view for handling press/touch
 
-## PizzaNavigation
-
-- Coordinator
-- Router
-- RootController - for smooth transitions between root controllers
-
 ## Pizza Services
 
 - `AnalyticsDebugService` - show/hide view over the app

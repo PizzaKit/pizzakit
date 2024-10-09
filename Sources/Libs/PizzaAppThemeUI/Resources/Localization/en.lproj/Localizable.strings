@@ -1,0 +1,12 @@
+"apptheme.pres.title" = "Appearance";
+
+"apptheme.pres.switch.header" = "APPEARANCE";
+"apptheme.pres.switch.text" = "System";
+"apptheme.pres.switch.footer" = "If system is selected, WhatsX will automatically adjust your appearance based on device's system settings.";
+
+"apptheme.pres.select.light" = "Light";
+"apptheme.pres.select.dark" = "Dark";
+"apptheme.pres.select.footer" = "If System is selected, WhatsX will automatically adjust your appearance based on your device's system settings.";
+
+"apptheme.pres.color.header" = "COLOR";
+"apptheme.pres.color.footer" = "Pick your favorite.";
