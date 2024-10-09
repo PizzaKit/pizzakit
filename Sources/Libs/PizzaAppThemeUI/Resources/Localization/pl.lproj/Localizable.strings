@@ -1,0 +1,12 @@
+"apptheme.pres.title" = "Motyw";
+
+"apptheme.pres.switch.header" = "WYGLĄD";
+"apptheme.pres.switch.text" = "System";
+"apptheme.pres.switch.footer" = "Jesli wybierzesz opcje System, WhatsX automatycznie dostosuje swój wyglad na podstawie ustawien svstemowych urzadzenia.";
+
+"apptheme.pres.select.light" = "Jasny";
+"apptheme.pres.select.dark" = "Ciemny";
+"apptheme.pres.select.footer" = "Jeśli wybierzesz opcję System, WhatsX automatycznie dostosuje swój wygląd podstawie na ustawień systemowych urządzenia.";
+
+"apptheme.pres.color.header" = "KOLOR";
+"apptheme.pres.color.footer" = "Wybierz swój ulubiony.";

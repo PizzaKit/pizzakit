@@ -1,0 +1,12 @@
+"apptheme.pres.title" = "थीम";
+
+"apptheme.pres.switch.header" = "प्रकटन";
+"apptheme.pres.switch.text" = "ऑटोमैटिक";
+"apptheme.pres.switch.footer" = "यदि सिस्टम का चयन किया जाता है, तो WhatsX स्वचालित रूप से डिवाइस की सिस्टम सेटिंग्स के आधार पर आपकी उपस्थिति को समायोजित करेगा।";
+
+"apptheme.pres.select.light" = "हल्का";
+"apptheme.pres.select.dark" = "गहरा";
+"apptheme.pres.select.footer" = "यदि सिस्टम का चयन किया जाता है, तो WhatsX आपके डिवाइस की सिस्टम सेटिंग्स के आधार पर आपके स्वरूप को स्वचालित रूप से समायोजित कर देगा।";
+
+"apptheme.pres.color.header" = "रंग";
+"apptheme.pres.color.footer" = "अपना पसंदीदा चुनें।";

@@ -1,0 +1,12 @@
+"apptheme.pres.title" = "Thema";
+
+"apptheme.pres.switch.header" = "WEERGAVE";
+"apptheme.pres.switch.text" = "Systeem";
+"apptheme.pres.switch.footer" = "Als Systeem wordt geselecteerd, past WhatsX de vormgeving automatisch aan op basis van de systeeminstellingen van je apparaat.";
+
+"apptheme.pres.select.light" = "Licht";
+"apptheme.pres.select.dark" = "Donker";
+"apptheme.pres.select.footer" = "Als Systeem wordt geselecteerd, past WhatsX de vormgeving automatisch aan op basis van de systeeminstellingen van je apparaat.";
+
+"apptheme.pres.color.header" = "KLEUR";
+"apptheme.pres.color.footer" = "Kies je favoriet.";

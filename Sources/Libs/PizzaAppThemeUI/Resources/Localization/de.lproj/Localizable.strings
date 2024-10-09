@@ -1,0 +1,12 @@
+"apptheme.pres.title" = "Design";
+
+"apptheme.pres.switch.header" = "ERSCHEINUNGSBILD";
+"apptheme.pres.switch.text" = "System";
+"apptheme.pres.switch.footer" = "Wenn „System“ ausgewählt ist, wird die Darstellung im WhatsX automatisch an die Systemeinstellungen deines Geräts angepasst.";
+
+"apptheme.pres.select.light" = "Hell";
+"apptheme.pres.select.dark" = "Dunkel";
+"apptheme.pres.select.footer" = "Wenn „System“ ausgewählt ist, wird die Darstellung im WhatsX automatisch an die Systemeinstellungen deines Geräts angepasst.";
+
+"apptheme.pres.color.header" = "FABRE";
+"apptheme.pres.color.footer" = "Wähle das, das dir am besten gefällt.";
