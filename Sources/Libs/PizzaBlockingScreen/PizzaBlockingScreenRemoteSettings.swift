@@ -26,10 +26,16 @@ public struct PizzaBlockingScreenRemoteSettings: Codable, PizzaFeatureToggleJSON
     public struct Icon: Codable {
         public let sfSymbol: String?
         public let assetName: String?
+        public let appIconName: String?
 
-        public init(sfSymbol: String?, assetName: String?) {
+        public init(
+            sfSymbol: String?,
+            assetName: String?,
+            appIconName: String?
+        ) {
             self.sfSymbol = sfSymbol
             self.assetName = assetName
+            self.appIconName = appIconName
         }
     }
 

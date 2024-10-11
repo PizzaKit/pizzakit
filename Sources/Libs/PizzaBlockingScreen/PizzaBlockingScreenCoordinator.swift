@@ -2,32 +2,32 @@ import UIKit
 import XCoordinator
 import PizzaKit
 
-enum PizzaBlockingCloseType {
+public enum PizzaBlockingCloseType {
     case closeButton
     case actionButton
 }
 
-struct PizzaBlockingClosePayload {
-    let closeType: PizzaBlockingCloseType
-    let completion: PizzaEmptyClosure?
+public struct PizzaBlockingClosePayload {
+    public let closeType: PizzaBlockingCloseType
+    public let completion: PizzaEmptyClosure?
 }
 
-enum PizzaBlockingRoute: Route {
+public enum PizzaBlockingRoute: Route {
     case open(url: URL, closeAfterOpeningURL: Bool)
     case close
 }
 
-class PizzaBlockingScreenCoordinator: BaseCoordinator<PizzaBlockingRoute, XCoordinator.Transition<UIViewController>>,
+public class PizzaBlockingScreenCoordinator: BaseCoordinator<PizzaBlockingRoute, XCoordinator.Transition<UIViewController>>,
                                  PizzaBlockingScreenControllerDelegate {
 
     private let resourcesBundle: Bundle
-    private let blockingControllerModification: PizzaClosure<UIViewController>?
+    private let blockingControllerModification: PizzaClosure<UIViewController & PizzaLifecycleObservableController>?
     private let onClose: PizzaClosure<PizzaBlockingClosePayload>
 
-    init(
+    public init(
         blockingSettings: PizzaBlockingScreenRemoteSettings,
         resourcesBundle: Bundle,
-        blockingControllerModification: PizzaClosure<UIViewController>?,
+        blockingControllerModification: PizzaClosure<UIViewController & PizzaLifecycleObservableController>?,
         onClose: @escaping PizzaClosure<PizzaBlockingClosePayload>
     ) {
         self.resourcesBundle = resourcesBundle
@@ -71,6 +71,12 @@ class PizzaBlockingScreenCoordinator: BaseCoordinator<PizzaBlockingRoute, XCoord
                             return image
                         }
                         return nil
+                    }(),
+                    appIconImage: {
+                        if let appIconName = blockingSettings.icon.appIconName {
+                            return UIImage(named: appIconName, in: .main, with: nil)
+                        }
+                        return nil
                     }()
                 ),
                 button: blockingSettings.button.map {
@@ -94,7 +100,7 @@ class PizzaBlockingScreenCoordinator: BaseCoordinator<PizzaBlockingRoute, XCoord
         controller.configure(delegate: self)
     }
 
-    override func prepareTransition(for route: PizzaBlockingRoute) -> Transition<UIViewController> {
+    override public func prepareTransition(for route: PizzaBlockingRoute) -> Transition<UIViewController> {
         switch route {
         case .open(let url, let closeAfterOpeningURL):
             if closeAfterOpeningURL {
@@ -123,11 +129,11 @@ class PizzaBlockingScreenCoordinator: BaseCoordinator<PizzaBlockingRoute, XCoord
 
     // MARK: - PizzaBlockingScreenControllerDelegate
 
-    func closeModule() {
+    public func closeModule() {
         strongRouter.trigger(.close)
     }
 
-    func open(url: URL, closeAfterOpeningURL: Bool) {
+    public func open(url: URL, closeAfterOpeningURL: Bool) {
         strongRouter.trigger(.open(url: url, closeAfterOpeningURL: closeAfterOpeningURL))
     }
 

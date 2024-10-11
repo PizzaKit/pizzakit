@@ -5,7 +5,7 @@ import SnapKit
 import SFSafeSymbols
 import PizzaIcon
 
-struct PizzaBlockingScreenView: View {
+public struct PizzaBlockingScreenView: View {
 
     private enum Constants {
         static let maxWidth: CGFloat = PizzaDesignConstants.maxSmallWidth
@@ -13,15 +13,41 @@ struct PizzaBlockingScreenView: View {
         static let plainButtonHeight: CGFloat = 50
         static let sfSymbolFontSize: CGFloat = 100
         static let spacingHeigh: CGFloat = 18
+        static let appIconSize: CGFloat = 100
     }
 
-    let model: PizzaBlockingScreenModel
-    let onButtonPress: PizzaEmptyClosure
-    let onClosePress: PizzaEmptyClosure
+    public let model: PizzaBlockingScreenModel
+    public let onButtonPress: PizzaEmptyClosure
+    public let onClosePress: PizzaEmptyClosure
+
+    public init(
+        model: PizzaBlockingScreenModel,
+        onButtonPress: @escaping PizzaEmptyClosure,
+        onClosePress: @escaping PizzaEmptyClosure
+    ) {
+        self.model = model
+        self.onButtonPress = onButtonPress
+        self.onClosePress = onClosePress
+    }
 
     @ViewBuilder
-    var imageView: some View {
+    public var imageView: some View {
         if
+            let appIconImage = model.icon.appIconImage 
+        {
+            Image(uiImage: appIconImage)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(
+                    width: Constants.appIconSize,
+                    height: Constants.appIconSize
+                )
+                .clipShape(
+                    RoundedRectangle(
+                        cornerRadius: Constants.appIconSize * 0.23
+                    )
+                )
+        } else if
             let pizzaIcon = model.icon.pizzaIcon
         {
             PizzaSUIIconView(icon: pizzaIcon, shouldBounce: true)
@@ -30,17 +56,17 @@ struct PizzaBlockingScreenView: View {
         {
             Image(uiImage: assetImage)
                 .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(maxWidth: Constants.imageMaxWidth)
         }
     }
 
-    var body: some View {
+    public var body: some View {
         ZStack {
             GeometryReader { geometry in
                 VStack {
                     Spacer()
                     imageView
-                        .aspectRatio(contentMode: .fit)
-                        .frame(maxWidth: Constants.imageMaxWidth)
 
                     Spacer()
                         .frame(height: min(max(geometry.size.height / 18, 12), 50))
@@ -141,10 +167,12 @@ public struct PizzaBlockingScreenModel {
     public struct Icon {
         public let pizzaIcon: PizzaIcon?
         public let assetImage: UIImage?
+        public let appIconImage: UIImage?
 
-        public init(pizzaIcon: PizzaIcon?, assetImage: UIImage?) {
+        public init(pizzaIcon: PizzaIcon?, assetImage: UIImage?, appIconImage: UIImage?) {
             self.pizzaIcon = pizzaIcon
             self.assetImage = assetImage
+            self.appIconImage = appIconImage
         }
     }
 
@@ -264,7 +292,8 @@ struct BlockingScreenView_Previews: PreviewProvider {
                             preset: .teaserDimmedBGColoredLarge,
                             color: .tintColor
                         ),
-                    assetImage: nil
+                    assetImage: nil,
+                    appIconImage: nil
                 ),
                 button: .init(
                     title: "Обновить",
