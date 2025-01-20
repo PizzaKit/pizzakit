@@ -1,4 +1,5 @@
 import UIKit
+import SwiftUI
 
 public protocol PizzaPalette {
     var label: UIColor { get }
@@ -8,6 +9,30 @@ public protocol PizzaPalette {
     var background: UIColor { get }
     var backgroundSecondary: UIColor { get }
     var backgroundTertiary: UIColor { get }
+}
+
+public enum PizzaSUIPalette {
+    public static var label: Color {
+        Color(uiColor: UIColor.palette.label)
+    }
+    public static var labelError: Color {
+        Color(uiColor: UIColor.palette.labelError)
+    }
+    public static var labelSecondary: Color {
+        Color(uiColor: UIColor.palette.labelSecondary)
+    }
+    public static var labelTertiary: Color {
+        Color(uiColor: UIColor.palette.labelTertiary)
+    }
+    public static var background: Color {
+        Color(uiColor: UIColor.palette.background)
+    }
+    public static var backgroundSecondary: Color {
+        Color(uiColor: UIColor.palette.backgroundSecondary)
+    }
+    public static var backgroundTertiary: Color {
+        Color(uiColor: UIColor.palette.backgroundTertiary)
+    }
 }
 
 public protocol PizzaAnimationConstants {

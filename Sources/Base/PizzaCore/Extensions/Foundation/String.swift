@@ -139,4 +139,56 @@ public extension String {
         }
     }
 
+    func select(substring: String) -> [SplitItem] {
+        var result: [SplitItem] = []
+        var currentString = ""
+
+        var index = self.startIndex // Keep track of the current index in the string
+
+        while index < self.endIndex {
+            if let range = self.range(of: substring, range: index..<self.endIndex) {
+                // Append the part before the found substring
+                let partBefore = self[index..<range.lowerBound]
+                currentString.append(contentsOf: partBefore)
+                if !currentString.isEmpty {
+                    result.append(
+                        .init(
+                            string: currentString,
+                            isInside: false // Parts before the substring are not inside
+                        )
+                    )
+                }
+
+                // Append the found substring
+                currentString = String(self[range]) // The found substring
+                result.append(
+                    .init(
+                        string: currentString,
+                        isInside: true // Substring itself is inside
+                    )
+                )
+
+                currentString = ""
+                index = range.upperBound // Move index to after the found substring
+            } else {
+                // Append the remaining part after the last substring
+                let remainingPart = self[index..<self.endIndex]
+                currentString.append(contentsOf: remainingPart)
+                if !currentString.isEmpty {
+                    result.append(
+                        .init(
+                            string: currentString,
+                            isInside: false // Remaining part is outside
+                        )
+                    )
+                }
+                break
+            }
+        }
+
+        return result.filter {
+            $0.string.nilIfEmpty != nil
+        }
+    }
+
 }
