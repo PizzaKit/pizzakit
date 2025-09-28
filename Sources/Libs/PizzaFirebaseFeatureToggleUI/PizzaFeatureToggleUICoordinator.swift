@@ -12,16 +12,19 @@ public enum PizzaFeatureToggleUIRoute: Route {
     case initial
 }
 
-public class PizzaDesignSystemUICoordinator: NavigationCoordinator<PizzaFeatureToggleUIRoute> {
+public class PizzaFeatureToggleUICoordinator: NavigationCoordinator<PizzaFeatureToggleUIRoute> {
 
     private let featureToggleService: PizzaFeatureToggleService
 
-    public init(featureToggleService: PizzaFeatureToggleService) {
+    public init(
+        rootViewController: UINavigationController?,
+        featureToggleService: PizzaFeatureToggleService
+    ) {
         self.featureToggleService = featureToggleService
-        let navController = UINavigationController().do {
+        let navController = rootViewController ?? UINavigationController().do {
             $0.apply(style: .allStyles.largeTitle)
         }
-        super.init(rootViewController: navController, initialRoute: .initial)
+        super.init(rootViewController: navController, initialRoute: nil)
     }
 
     public override func prepareTransition(for route: PizzaFeatureToggleUIRoute) -> NavigationTransition {

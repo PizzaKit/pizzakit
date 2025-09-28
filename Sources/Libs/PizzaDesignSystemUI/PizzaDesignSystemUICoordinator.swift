@@ -14,11 +14,11 @@ public enum PizzaDesignSystemUIRoute: Route {
 
 public class PizzaDesignSystemUICoordinator: NavigationCoordinator<PizzaDesignSystemUIRoute> {
 
-    public init() {
-        let navController = UINavigationController().do {
+    public init(rootViewController: UINavigationController?) {
+        let navController = rootViewController ?? UINavigationController().do {
             $0.apply(style: .allStyles.largeTitle)
         }
-        super.init(rootViewController: navController, initialRoute: .initial)
+        super.init(rootViewController: navController)
     }
 
     public override func prepareTransition(for route: PizzaDesignSystemUIRoute) -> NavigationTransition {

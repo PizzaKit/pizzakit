@@ -58,7 +58,7 @@ let package = Package(
         // Libs
         .package(
             url: "https://github.com/firebase/firebase-ios-sdk",
-            from: "11.3.0"
+            from: "12.3.0"
         ),
         .package(
             url: "https://github.com/alexfilimon/AnyAnalytics", 
@@ -68,29 +68,29 @@ let package = Package(
         // Other PizzaKit repos
         .package(
             url: "https://github.com/PizzaKit/pizzaicon",
-            from: "1.2.0"
+            from: "1.3.0"
         ),
 
         // design
         .package(
             url: "https://github.com/kean/Nuke",
-            from: "11.3.1"
+            from: "12.8.0"
         ),
         .package(
             url: "https://github.com/SnapKit/SnapKit",
-            from: "5.6.0"
+            from: "5.7.1"
         ),
         .package(
             url: "https://github.com/ninjaprox/NVActivityIndicatorView",
-            from: "5.1.1"
+            from: "5.2.0"
         ),
         .package(
             url: "https://github.com/SFSafeSymbols/SFSafeSymbols",
-            from: "4.1.1"
+            from: "6.2.0"
         ),
         .package(
             url: "https://github.com/ivanvorobei/SPIndicator",
-            from: "1.6.4"
+            from: "1.6.5"
         ),
 
         // popup
@@ -102,11 +102,11 @@ let package = Package(
         // services
         .package(
             url: "https://github.com/sindresorhus/Defaults",
-            from: "7.1.0"
+            from: "9.0.5"
         ),
         .package(
             url: "https://github.com/evgenyneu/keychain-swift",
-            from: "20.0.0"
+            from: "24.0.0"
         ), 
         .package(
             url: "https://github.com/Alecrim/Reachability",

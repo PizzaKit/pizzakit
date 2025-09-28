@@ -132,6 +132,17 @@ public class PizzaFirebaseFeatureToggleService: PizzaFeatureToggleService {
         featureToggle: PizzaFeatureToggle<T>,
         responseType: PizzaFeatureToggleResponseType
     ) -> PizzaFeatureToggleValue<T>? {
+        guard allToggles.contains(where: { $0.key == featureToggle.key }) else {
+            if responseType == .default {
+                let defaultValue = featureToggle.defaultValue
+                return .init(
+                    value: defaultValue,
+                    responseType: .default
+                )
+            }
+            return nil
+        }
+
         switch responseType {
         case .default:
             let defaultValue = featureToggle.defaultValue
