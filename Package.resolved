@@ -221,8 +221,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/alexfilimon/StableID",
       "state" : {
-        "branch" : "a46dbd9",
-        "revision" : "a46dbd9f61c041023b028785c8799dee596432a8"
+        "revision" : "a46dbd9f61c041023b028785c8799dee596432a8",
+        "version" : "1.0.0"
       }
     },
     {

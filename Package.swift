@@ -114,7 +114,7 @@ let package = Package(
         ),
         .package(
             url: "https://github.com/alexfilimon/StableID", 
-            revision: "a46dbd9"
+            from: "1.0.0"
         ),
 
         // navigation
