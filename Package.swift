@@ -113,8 +113,8 @@ let package = Package(
             from: "1.2.1"
         ),
         .package(
-            url: "https://github.com/codykerns/StableID", 
-            from: "0.2.0"
+            url: "https://github.com/alexfilimon/StableID", 
+            revision: "a46dbd9"
         ),
 
         // navigation

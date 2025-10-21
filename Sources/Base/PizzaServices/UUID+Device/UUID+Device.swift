@@ -9,41 +9,45 @@ public protocol PizzaUUIDUserIdProvider {
     var userId: AnyPublisher<String?, Never> { get }
 }
 
-public enum PizzaUUID: StableIDDelegate {
+public class PizzaUUID: StableIDDelegate  {
 
-    private static let keychain = KeychainSwift()
-    private static let deviceKey = "pizza_device_uuid"
-    private static let installationKey = "pizza_installation_uuid"
+    private let keychain = KeychainSwift()
+    private let deviceKey = "pizza_device_uuid"
+    private let installationKey = "pizza_installation_uuid"
+
+    public static let shared = PizzaUUID()
 
     /// Unique identifier for device. Stored in keychain - so will be
     /// the same for the same device after reinstalling the app
-    public static var deviceUUID: String {
+    public var deviceUUID: String {
         getOrCreate(key: deviceKey, fromKeychain: true, fromDefaults: true)
     }
 
     /// Unique identifier for installation. Stored in UserDefaults - so will be
     /// different after reinstalling the app
-    public static var installationUUID: String {
+    public var installationUUID: String {
         getOrCreate(key: installationKey, fromKeychain: false, fromDefaults: true)
     }
 
-    private static let _userIDSubject = CurrentValueSubject<String, Never>(StableID.id)
+    private let _userIDSubject: CurrentValueSubject<String, Never>
     /// Unique identifier for user. Stored in iCloud - so it will be the same
     /// between user's devices
     /// 
     /// User identifier for RevenueCat inApp Purchases
     /// https://www.reddit.com/r/iOSProgramming/comments/1db5ksy/revenue_cat_integration/
-    public static var userIDPublisher: PizzaRPublisher<String, Never> {
+    public var userIDPublisher: PizzaRPublisher<String, Never> {
         PizzaCurrentValueRPublisher(
             subject: _userIDSubject
         )
     }
 
-    public static func configure() {
+    init() {
         StableID.configure()
+        self._userIDSubject = CurrentValueSubject<String, Never>(StableID.id)
+        StableID.set(delegate: self)
     }
 
-    private static func getOrCreate(key: String, fromKeychain: Bool, fromDefaults: Bool) -> String {
+    private func getOrCreate(key: String, fromKeychain: Bool, fromDefaults: Bool) -> String {
         if let currentValue = get(key: key, fromKeychain: fromKeychain, fromDefaults: fromDefaults) {
 
             /// вдруг у нас взялось значение из keychain, но мы положим в UD, чтобы был доступ быстрее
@@ -61,7 +65,7 @@ public enum PizzaUUID: StableIDDelegate {
         return newValue
     }
 
-    private static func get(key: String, fromKeychain: Bool, fromDefaults: Bool) -> String? {
+    private func get(key: String, fromKeychain: Bool, fromDefaults: Bool) -> String? {
         var value: String?
 
         if value == nil && fromKeychain {
@@ -76,7 +80,7 @@ public enum PizzaUUID: StableIDDelegate {
         return value
     }
 
-    private static func set(key: String, value: String, toKeychain: Bool, toDefaults: Bool) {
+    private func set(key: String, value: String, toKeychain: Bool, toDefaults: Bool) {
         if toDefaults {
             let key = Defaults.Key<String?>(key, default: nil)
             Defaults[key] = value
@@ -94,7 +98,7 @@ public enum PizzaUUID: StableIDDelegate {
     }
 
     public func didChangeID(newID: String) {
-        Self._userIDSubject.send(newID)
+        _userIDSubject.send(newID)
     }
 
 }

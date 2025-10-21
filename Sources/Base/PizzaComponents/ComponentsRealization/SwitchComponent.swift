@@ -145,7 +145,11 @@ class SwitchLockOverlayView: PizzaView {
             $0.tintColor = .white
             $0.snp.makeConstraints { make in
                 make.centerY.equalTo(snp.centerY)
-                make.centerX.equalTo(snp.centerX).offset(-12)
+                if #available(iOS 26.0, *) {
+                    make.centerX.equalTo(snp.centerX).offset(-17)
+                } else {
+                    make.centerX.equalTo(snp.centerX).offset(-12)
+                }
             }
         }
 
@@ -155,7 +159,11 @@ class SwitchLockOverlayView: PizzaView {
             $0.tintColor = .systemGray
             $0.snp.makeConstraints { make in
                 make.centerY.equalTo(snp.centerY)
-                make.centerX.equalTo(snp.centerX).offset(12)
+                if #available(iOS 26.0, *) {
+                    make.centerX.equalTo(snp.centerX).offset(17)
+                } else {
+                    make.centerX.equalTo(snp.centerX).offset(12)
+                }
             }
         }
 

@@ -219,10 +219,10 @@
     {
       "identity" : "stableid",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/codykerns/StableID",
+      "location" : "https://github.com/alexfilimon/StableID",
       "state" : {
-        "revision" : "0a3b31a174bd933b58d35908d686aabb7570cd03",
-        "version" : "0.2.0"
+        "branch" : "a46dbd9",
+        "revision" : "a46dbd9f61c041023b028785c8799dee596432a8"
       }
     },
     {
