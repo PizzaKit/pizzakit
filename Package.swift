@@ -58,7 +58,7 @@ let package = Package(
         // Libs
         .package(
             url: "https://github.com/firebase/firebase-ios-sdk",
-            from: "12.3.0"
+            from: "13.1.1"
         ),
         .package(
             url: "https://github.com/alexfilimon/AnyAnalytics", 
